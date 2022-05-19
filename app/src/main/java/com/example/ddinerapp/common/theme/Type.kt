@@ -1,4 +1,4 @@
-package com.example.ddinerapp.ui.theme
+package com.example.ddinerapp.common.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
