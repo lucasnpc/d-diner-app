@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserResponse(
     val email: String,
-    val password: String,
     val userType: String,
     val businessCnpj: String
 ) : Parcelable

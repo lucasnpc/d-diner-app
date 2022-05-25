@@ -24,7 +24,8 @@ object MainServiceModule {
                 level = LogLevel.ALL
             }
             install(JsonFeature) {
-                serializer = KotlinxSerializer()
+                val json = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
+                serializer = KotlinxSerializer(json)
             }
         }
     )

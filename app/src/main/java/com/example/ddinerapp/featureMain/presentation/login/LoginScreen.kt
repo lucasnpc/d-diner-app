@@ -63,9 +63,9 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                 )
                 OutlinedButton(
                     onClick = {
-//                        viewModel.authUser(
-//                            username, password
-//                        )
+                        viewModel.authUser(
+                            username, password
+                        )
                         navController.navigate(Screen.HomeScreen.route)
                     },
                     modifier = Modifier.align(
