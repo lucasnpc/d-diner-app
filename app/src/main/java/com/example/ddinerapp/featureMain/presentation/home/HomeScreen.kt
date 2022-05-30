@@ -1,13 +1,19 @@
 package com.example.ddinerapp.featureMain.presentation.home
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -32,8 +38,45 @@ fun HomeScreen() {
     val navController = rememberNavController()
 
     Scaffold(
+        topBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Card(
+                    elevation = 4.dp, modifier = Modifier
+                        .width(56.dp)
+                        .height(56.dp),
+                    border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Person,
+                        contentDescription = "User Image",
+                        tint = MaterialTheme.colors.primaryVariant
+                    )
+                }
+                Text(text = "User Role", fontSize = 20.sp, color = Color.Black)
+                Card(
+                    elevation = 4.dp, modifier = Modifier
+                        .width(56.dp)
+                        .height(56.dp),
+                    border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Notifications,
+                        contentDescription = "Notification",
+                        tint = MaterialTheme.colors.primaryVariant
+                    )
+                }
+            }
+        },
         bottomBar = {
-            BottomNavigation {
+            BottomNavigation(backgroundColor = MaterialTheme.colors.surface) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
                 screens.forEach { screen ->
@@ -41,7 +84,8 @@ fun HomeScreen() {
                         icon = {
                             Icon(
                                 screen.icon,
-                                contentDescription = screen.contentDescription
+                                contentDescription = screen.contentDescription,
+                                tint = MaterialTheme.colors.onSurface
                             )
                         },
                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
