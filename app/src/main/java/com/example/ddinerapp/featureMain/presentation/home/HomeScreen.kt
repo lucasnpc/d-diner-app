@@ -21,7 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.ddinerapp.featureMain.presentation.cart.CartScreen
-import com.example.ddinerapp.featureMain.presentation.menu.MenuScreen
+import com.example.ddinerapp.featureMain.presentation.chooseOpt.ChooseOptScreen
 import com.example.ddinerapp.featureMain.presentation.orders.OrdersScreen
 import com.example.ddinerapp.featureMain.presentation.settings.SettingsScreen
 import com.example.ddinerapp.featureMain.presentation.utils.BottomNavItem
@@ -108,7 +108,7 @@ fun HomeScreen() {
             modifier = Modifier.padding(it)
         ) {
             composable(Screen.MenuScreen.route) {
-                MenuScreen(navController = navController)
+                ChooseOptScreen(navController = navController)
             }
             composable(route = Screen.OrdersScreen.route) {
                 OrdersScreen(navController = navController)
