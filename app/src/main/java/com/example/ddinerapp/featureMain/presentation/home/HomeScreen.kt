@@ -8,12 +8,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -28,7 +30,7 @@ import com.example.ddinerapp.featureMain.presentation.utils.BottomNavItem
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val screens = listOf(
         BottomNavItem.MenuItem,
         BottomNavItem.OrdersItem,
@@ -36,7 +38,7 @@ fun HomeScreen() {
         BottomNavItem.SettingsItem
     )
     val navController = rememberNavController()
-
+    val userRole = viewModel.getUserRole().collectAsState(initial = "")
     Scaffold(
         topBar = {
             Row(
@@ -59,7 +61,7 @@ fun HomeScreen() {
                         tint = MaterialTheme.colors.primaryVariant
                     )
                 }
-                Text(text = "User Role", fontSize = 20.sp, color = Color.Black)
+                Text(text = userRole.value, fontSize = 20.sp, color = Color.Black)
                 Card(
                     elevation = 4.dp, modifier = Modifier
                         .width(56.dp)
