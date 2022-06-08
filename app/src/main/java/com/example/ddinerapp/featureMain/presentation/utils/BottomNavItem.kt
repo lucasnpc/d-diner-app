@@ -16,7 +16,7 @@ sealed class BottomNavItem(
         BottomNavItem(
             icon = Icons.Filled.RestaurantMenu,
             contentDescription = "Menu Icon",
-            route = Screen.MenuScreen.route
+            route = Screen.OrderingScreen.route
         )
 
     object OrdersItem :

@@ -1,4 +1,4 @@
-package com.example.ddinerapp.featureMain.presentation.chooseOpt
+package com.example.ddinerapp.featureMain.presentation.orderingType
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -12,9 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.ddinerapp.featureMain.presentation.utils.OrderingScreens
 
 @Composable
-fun ChooseOptScreen(navController: NavController) {
+fun OrderingType(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -22,7 +23,8 @@ fun ChooseOptScreen(navController: NavController) {
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         Button(
-            onClick = { /*TODO*/ }, modifier = Modifier
+            onClick = { navController.navigate(OrderingScreens.OrderingDesksScreen.route) },
+            modifier = Modifier
                 .width(164.dp)
                 .height(120.dp)
         ) {
@@ -32,7 +34,8 @@ fun ChooseOptScreen(navController: NavController) {
             }
         }
         Button(
-            onClick = { /*TODO*/ }, modifier = Modifier
+            onClick = { navController.navigate(OrderingScreens.OrderingDeliveryScreen.route) },
+            modifier = Modifier
                 .width(164.dp)
                 .height(120.dp)
         ) {

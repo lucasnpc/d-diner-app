@@ -1,4 +1,4 @@
-package com.example.ddinerapp.featureMain.presentation.home
+package com.example.ddinerapp.featureMain.presentation.main
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -23,14 +23,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.ddinerapp.featureMain.presentation.cart.CartScreen
-import com.example.ddinerapp.featureMain.presentation.chooseOpt.ChooseOptScreen
+import com.example.ddinerapp.featureMain.presentation.ordering.OrderingScreen
 import com.example.ddinerapp.featureMain.presentation.orders.OrdersScreen
 import com.example.ddinerapp.featureMain.presentation.settings.SettingsScreen
 import com.example.ddinerapp.featureMain.presentation.utils.BottomNavItem
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
     val screens = listOf(
         BottomNavItem.MenuItem,
         BottomNavItem.OrdersItem,
@@ -106,11 +106,11 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     ) {
         NavHost(
             navController = navController,
-            startDestination = Screen.MenuScreen.route,
+            startDestination = Screen.OrderingScreen.route,
             modifier = Modifier.padding(it)
         ) {
-            composable(Screen.MenuScreen.route) {
-                ChooseOptScreen(navController = navController)
+            composable(Screen.OrderingScreen.route) {
+                OrderingScreen()
             }
             composable(route = Screen.OrdersScreen.route) {
                 OrdersScreen(navController = navController)
