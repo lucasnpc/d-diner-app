@@ -17,7 +17,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.ddinerapp.featureMain.presentation.login.LoginViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
@@ -67,7 +66,11 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                         viewModel.authUser(
                             username, password
                         )
-                        navController.navigate(Screen.MainScreen.route)
+                        navController.navigate(Screen.MainScreen.route) {
+                            popUpTo(Screen.LoginScreen.route) {
+                                inclusive = true
+                            }
+                        }
                     },
                     modifier = Modifier.align(
                         Alignment.End
