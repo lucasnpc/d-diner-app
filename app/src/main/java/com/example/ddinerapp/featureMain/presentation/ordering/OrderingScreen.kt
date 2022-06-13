@@ -11,7 +11,7 @@ import com.example.ddinerapp.featureMain.presentation.orderingDelivery.OrderingD
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.OrderingDesksScreen
 import com.example.ddinerapp.featureMain.presentation.orderingItems.OrderingItemsScreen
 import com.example.ddinerapp.featureMain.presentation.orderingMenu.OrderingMenuScreen
-import com.example.ddinerapp.featureMain.presentation.orderingType.OrderingType
+import com.example.ddinerapp.featureMain.presentation.orderingType.OrderingTypeScreen
 import com.example.ddinerapp.featureMain.presentation.utils.OrderingScreens
 
 @Composable
@@ -24,7 +24,7 @@ fun OrderingScreen() {
             modifier = Modifier.padding(it)
         ) {
             composable(OrderingScreens.OrderingTypeScreen.route) {
-                OrderingType(navController = navController)
+                OrderingTypeScreen(navController = navController)
             }
             composable(OrderingScreens.OrderingDesksScreen.route) {
                 OrderingDesksScreen(navController = navController)
