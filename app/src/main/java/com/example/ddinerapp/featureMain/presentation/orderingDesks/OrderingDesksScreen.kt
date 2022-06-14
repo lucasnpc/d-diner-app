@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.ddinerapp.featureMain.domain.model.Desk
+import com.example.ddinerapp.featureMain.presentation.utils.OrderingScreens
 
 val desks: List<Desk> = listOf(
     Desk(name = "Mesa - 1", isOccupied = false),
@@ -39,7 +40,7 @@ fun OrderingDesksScreen(navController: NavController) {
         ) {
             items(desks) { desk ->
                 OutlinedButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate(OrderingScreens.OrderingMenuScreen.route) },
                     modifier = Modifier
                         .width(120.dp)
                         .height(120.dp)
