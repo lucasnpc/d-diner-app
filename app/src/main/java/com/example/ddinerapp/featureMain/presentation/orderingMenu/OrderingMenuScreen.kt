@@ -15,20 +15,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.ddinerapp.featureMain.domain.model.MenuItem
+import com.example.ddinerapp.featureMain.presentation.utils.OrderingScreens
 
 val items: List<MenuItem> = listOf(
-    MenuItem(price = 10.0, description = "banana", category = "Lanches"),
-    MenuItem(price = 10.0, description = "banana", category = "Pratos"),
-    MenuItem(price = 10.0, description = "banana", category = "Bebidas"),
-    MenuItem(price = 10.0, description = "banana", category = "Lanches"),
-    MenuItem(price = 10.0, description = "banana", category = "Pratos"),
-    MenuItem(price = 10.0, description = "banana", category = "Lanches"),
-    MenuItem(price = 10.0, description = "banana", category = "Bebidas"),
+    MenuItem(price = 10.0, description = "lanche banana", category = "Lanches"),
+    MenuItem(price = 10.0, description = "prato", category = "Pratos"),
+    MenuItem(price = 10.0, description = "coca", category = "Bebidas"),
+    MenuItem(price = 10.0, description = "lanche x-salada", category = "Lanches"),
+    MenuItem(price = 10.0, description = "bife", category = "Pratos"),
+    MenuItem(price = 10.0, description = "lanche x-bacon", category = "Lanches"),
+    MenuItem(price = 10.0, description = "fanta", category = "Bebidas"),
+    MenuItem(price = 10.0, description = "batata", category = "Porções"),
     MenuItem(price = 10.0, description = "banana", category = "Porções"),
-    MenuItem(price = 10.0, description = "banana", category = "Porções"),
-    MenuItem(price = 10.0, description = "banana", category = "Pratos"),
-    MenuItem(price = 10.0, description = "banana", category = "Bebidas"),
-    MenuItem(price = 10.0, description = "banana", category = "Sobremesas"),
+    MenuItem(price = 10.0, description = "filé", category = "Pratos"),
+    MenuItem(price = 10.0, description = "guaraná", category = "Bebidas"),
+    MenuItem(price = 10.0, description = "bolo", category = "Sobremesas"),
 )
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -42,7 +43,8 @@ fun OrderingMenuScreen(navController: NavController) {
         ) {
             items(itemsCategory) { item ->
                 OutlinedButton(
-                    onClick = { /*TODO*/ }, modifier = Modifier
+                    onClick = { navController.navigate(OrderingScreens.OrderingItemsScreen.route + "/${item.category}") },
+                    modifier = Modifier
                         .width(120.dp)
                         .height(120.dp)
                         .padding(4.dp),
