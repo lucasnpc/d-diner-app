@@ -1,6 +1,7 @@
 package com.example.ddinerapp.featureMain.presentation.main
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -12,18 +13,25 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.ddinerapp.featureMain.presentation.cart.CartScreen
-import com.example.ddinerapp.featureMain.presentation.ordering.OrderingScreen
+import com.example.ddinerapp.featureMain.presentation.orderingDelivery.OrderingDeliveryScreen
+import com.example.ddinerapp.featureMain.presentation.orderingDesks.OrderingDesksScreen
+import com.example.ddinerapp.featureMain.presentation.orderingItems.OrderingItemsScreen
+import com.example.ddinerapp.featureMain.presentation.orderingMenu.OrderingMenuScreen
+import com.example.ddinerapp.featureMain.presentation.orderingType.OrderingTypeScreen
 import com.example.ddinerapp.featureMain.presentation.orders.OrdersScreen
 import com.example.ddinerapp.featureMain.presentation.settings.SettingsScreen
 import com.example.ddinerapp.featureMain.presentation.utils.BottomNavItem
@@ -50,8 +58,8 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
             ) {
                 Card(
                     elevation = 4.dp, modifier = Modifier
-                        .width(56.dp)
-                        .height(56.dp),
+                        .width(40.dp)
+                        .height(40.dp),
                     border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
                     shape = RoundedCornerShape(16.dp)
                 ) {
@@ -61,11 +69,11 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                         tint = MaterialTheme.colors.primaryVariant
                     )
                 }
-                Text(text = userRole.value, fontSize = 20.sp, color = Color.Black)
+                Text(text = userRole.value, fontSize = 18.sp, color = Color.Black)
                 Card(
                     elevation = 4.dp, modifier = Modifier
-                        .width(56.dp)
-                        .height(56.dp),
+                        .width(40.dp)
+                        .height(40.dp),
                     border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
                     shape = RoundedCornerShape(16.dp)
                 ) {
@@ -106,11 +114,42 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
     ) {
         NavHost(
             navController = navController,
-            startDestination = Screen.OrderingScreen.route,
-            modifier = Modifier.padding(it)
+            startDestination = Screen.OrderingTypeScreen.route,
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFFFFFFFF),
+                            Color(0xFFC4C4C4)
+                        )
+                    )
+                )
         ) {
-            composable(Screen.OrderingScreen.route) {
-                OrderingScreen()
+            composable(route = Screen.OrderingTypeScreen.route) {
+                OrderingTypeScreen(navController = navController)
+            }
+            composable(route = Screen.OrderingDesksScreen.route) {
+                OrderingDesksScreen(navController = navController)
+            }
+            composable(route = Screen.OrderingDeliveryScreen.route) {
+                OrderingDeliveryScreen(navController = navController)
+            }
+            composable(route = Screen.OrderingMenuScreen.route) {
+                OrderingMenuScreen(navController = navController)
+            }
+            composable(
+                route = Screen.OrderingItemsScreen.route + "/{itemCategory}",
+                arguments = listOf(navArgument("itemCategory") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                })
+            ) { backStackEntry ->
+                OrderingItemsScreen(
+                    navController = navController,
+                    backStackEntry.arguments?.getString("itemCategory")
+                )
             }
             composable(route = Screen.OrdersScreen.route) {
                 OrdersScreen(navController = navController)

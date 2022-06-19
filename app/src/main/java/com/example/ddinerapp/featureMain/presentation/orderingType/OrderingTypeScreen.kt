@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.ddinerapp.featureMain.presentation.utils.OrderingScreens
+import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
 fun OrderingTypeScreen(navController: NavController) {
@@ -22,7 +22,7 @@ fun OrderingTypeScreen(navController: NavController) {
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         Button(
-            onClick = { navController.navigate(OrderingScreens.OrderingDesksScreen.route) },
+            onClick = { navController.navigate(Screen.OrderingDesksScreen.route) },
             modifier = Modifier
                 .width(164.dp)
                 .height(120.dp),
@@ -41,7 +41,7 @@ fun OrderingTypeScreen(navController: NavController) {
             }
         }
         Button(
-            onClick = { navController.navigate(OrderingScreens.OrderingDeliveryScreen.route) },
+            onClick = { navController.navigate(Screen.OrderingDeliveryScreen.route) },
             modifier = Modifier
                 .width(164.dp)
                 .height(120.dp),
