@@ -21,7 +21,7 @@ fun CartScreen(navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp)
+            .padding(start = 8.dp, end = 8.dp)
     ) {
         Text(
             text = "Carrinho",
