@@ -2,78 +2,65 @@ package com.example.ddinerapp.featureMain.presentation.orderingDelivery
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.material.TextFieldColors
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.ddinerapp.featureMain.presentation.utils.*
+
+private val formFields = listOf(
+    FormField(
+        name = "name", label = "Nome", validators = listOf(TextValidator.Required)
+    ),
+    FormField(
+        name = "phone", label = "Telefone", validators = listOf(TextValidator.Required)
+    ),
+    FormField(
+        name = "street", label = "Rua", validators = listOf(TextValidator.Required)
+    ),
+    FormField(
+        name = "number", label = "Número", validators = listOf(TextValidator.Required)
+    ),
+    FormField(
+        name = "district", label = "Bairro", validators = listOf(TextValidator.Required)
+    ),
+    FormField(
+        name = "city", label = "Cidade", validators = listOf(TextValidator.Required)
+    )
+)
 
 @Composable
 fun OrderingDeliveryScreen(navController: NavController) {
-    var name by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
-    var street by remember { mutableStateOf("") }
-    var number by remember { mutableStateOf("") }
-    var district by remember { mutableStateOf("") }
-    var city by remember { mutableStateOf("") }
-    val textFieldColor = TextFieldDefaults.outlinedTextFieldColors(backgroundColor = Color.White)
+    val state by remember { mutableStateOf(FormState()) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        OutlinedTextField(
-            value = name,
-            onValueChange = { name = it },
-            label = { Text(text = "Nome") },
-            modifier = Modifier.fillMaxWidth(),
-            colors = textFieldColor
-        )
-        OutlinedTextField(
-            value = phone,
-            onValueChange = { phone = it },
-            label = { Text(text = "Telefone") },
-            modifier = Modifier.fillMaxWidth(),
-            colors = textFieldColor
-        )
-        OutlinedTextField(
-            value = street,
-            onValueChange = { street = it },
-            label = { Text(text = "Rua") },
-            modifier = Modifier.fillMaxWidth(),
-            colors = textFieldColor
-        )
-        OutlinedTextField(
-            value = number,
-            onValueChange = { number = it },
-            label = { Text(text = "Número") },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = textFieldColor
-        )
-        OutlinedTextField(
-            value = district,
-            onValueChange = { district = it },
-            label = { Text(text = "Bairro") },
-            modifier = Modifier.fillMaxWidth(),
-            colors = textFieldColor
-        )
-        OutlinedTextField(
-            value = city,
-            onValueChange = { city = it },
-            label = { Text(text = "Cidade") },
-            modifier = Modifier.fillMaxWidth(),
-            colors = textFieldColor
-        )
+        Form(state = state, fields = formFields)
+        OutlinedButton(
+            onClick = {
+                if (state.validate())
+                    navController.navigate(Screen.OrderingMenuScreen.route)
+            },
+            modifier = Modifier.align(Alignment.End),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xFF01DC34),
+                contentColor = Color.White
+            )
+        ) {
+            Text(text = "Avançar")
+        }
     }
 }

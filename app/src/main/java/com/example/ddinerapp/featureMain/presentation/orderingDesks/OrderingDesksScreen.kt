@@ -22,15 +22,15 @@ import com.example.ddinerapp.featureMain.domain.model.Desk
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 val desks: List<Desk> = listOf(
-    Desk(name = "Mesa - 1", isOccupied = false),
-    Desk(name = "Mesa - 2", isOccupied = false),
-    Desk(name = "Mesa - 3", isOccupied = false),
-    Desk(name = "Mesa - 4", isOccupied = false),
-    Desk(name = "Mesa - 5", isOccupied = true),
-    Desk(name = "Mesa - 6", isOccupied = false),
-    Desk(name = "Mesa - 7", isOccupied = false),
-    Desk(name = "Mesa - 8", isOccupied = true),
-    Desk(name = "Mesa - 9", isOccupied = false),
+    Desk(id = 1, name = "Mesa - 1", isOccupied = false),
+    Desk(id = 2, name = "Mesa - 2", isOccupied = false),
+    Desk(id = 3, name = "Mesa - 3", isOccupied = false),
+    Desk(id = 4, name = "Mesa - 4", isOccupied = false),
+    Desk(id = 5, name = "Mesa - 5", isOccupied = true),
+    Desk(id = 6, name = "Mesa - 6", isOccupied = false),
+    Desk(id = 7, name = "Mesa - 7", isOccupied = false),
+    Desk(id = 8, name = "Mesa - 8", isOccupied = true),
+    Desk(id = 9, name = "Mesa - 9", isOccupied = false),
 )
 
 @OptIn(ExperimentalFoundationApi::class)
