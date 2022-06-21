@@ -66,7 +66,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                         viewModel.authUser(
                             username, password
                         )
-                        navController.navigate(Screen.MainScreen.route) {
+                        navController.navigate(Screen.OrderingTypeScreen.route) {
                             popUpTo(Screen.LoginScreen.route) {
                                 inclusive = true
                             }

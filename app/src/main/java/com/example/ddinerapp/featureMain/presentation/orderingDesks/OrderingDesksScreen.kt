@@ -42,7 +42,11 @@ fun OrderingDesksScreen(navController: NavController) {
     ) {
         items(desks) { desk ->
             OutlinedButton(
-                onClick = { navController.navigate(Screen.OrderingMenuScreen.route) },
+                onClick = {
+                    navController.navigate(Screen.HomeScreen.route) {
+                        popUpTo(Screen.OrderingTypeScreen.route)
+                    }
+                },
                 modifier = Modifier
                     .width(120.dp)
                     .height(120.dp)

@@ -52,7 +52,9 @@ fun OrderingDeliveryScreen(navController: NavController) {
         OutlinedButton(
             onClick = {
                 if (state.validate())
-                    navController.navigate(Screen.OrderingMenuScreen.route)
+                    navController.navigate(Screen.HomeScreen.route) {
+                        popUpTo(Screen.OrderingTypeScreen.route)
+                    }
             },
             modifier = Modifier.align(Alignment.End),
             colors = ButtonDefaults.buttonColors(

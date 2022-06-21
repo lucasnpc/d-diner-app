@@ -1,4 +1,4 @@
-package com.example.ddinerapp.featureMain.presentation.main
+package com.example.ddinerapp.featureMain.presentation.home
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -27,18 +27,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.ddinerapp.featureMain.presentation.cart.CartScreen
-import com.example.ddinerapp.featureMain.presentation.orderingDelivery.OrderingDeliveryScreen
-import com.example.ddinerapp.featureMain.presentation.orderingDesks.OrderingDesksScreen
 import com.example.ddinerapp.featureMain.presentation.orderingItems.OrderingItemsScreen
 import com.example.ddinerapp.featureMain.presentation.orderingMenu.OrderingMenuScreen
-import com.example.ddinerapp.featureMain.presentation.orderingType.OrderingTypeScreen
 import com.example.ddinerapp.featureMain.presentation.orders.OrdersScreen
 import com.example.ddinerapp.featureMain.presentation.settings.SettingsScreen
 import com.example.ddinerapp.featureMain.presentation.utils.BottomNavItem
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
-fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val screens = listOf(
         BottomNavItem.MenuItem,
         BottomNavItem.OrdersItem,
@@ -114,7 +111,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
     ) {
         NavHost(
             navController = navController,
-            startDestination = Screen.OrderingTypeScreen.route,
+            startDestination = Screen.OrderingMenuScreen.route,
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
@@ -127,15 +124,6 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                     )
                 )
         ) {
-            composable(route = Screen.OrderingTypeScreen.route) {
-                OrderingTypeScreen(navController = navController)
-            }
-            composable(route = Screen.OrderingDesksScreen.route) {
-                OrderingDesksScreen(navController = navController)
-            }
-            composable(route = Screen.OrderingDeliveryScreen.route) {
-                OrderingDeliveryScreen(navController = navController)
-            }
             composable(route = Screen.OrderingMenuScreen.route) {
                 OrderingMenuScreen(navController = navController)
             }

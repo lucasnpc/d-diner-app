@@ -12,8 +12,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.ddinerapp.common.theme.DDinerAppTheme
+import com.example.ddinerapp.featureMain.presentation.home.HomeScreen
 import com.example.ddinerapp.featureMain.presentation.login.LoginScreen
-import com.example.ddinerapp.featureMain.presentation.main.MainScreen
+import com.example.ddinerapp.featureMain.presentation.orderingDelivery.OrderingDeliveryScreen
+import com.example.ddinerapp.featureMain.presentation.orderingDesks.OrderingDesksScreen
+import com.example.ddinerapp.featureMain.presentation.orderingType.OrderingTypeScreen
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,8 +39,17 @@ class MainActivity : ComponentActivity() {
                         composable(route = Screen.LoginScreen.route) {
                             LoginScreen(navController = navController)
                         }
-                        composable(route = Screen.MainScreen.route) {
-                            MainScreen()
+                        composable(route = Screen.OrderingTypeScreen.route) {
+                            OrderingTypeScreen(navController = navController)
+                        }
+                        composable(route = Screen.OrderingDesksScreen.route) {
+                            OrderingDesksScreen(navController = navController)
+                        }
+                        composable(route = Screen.OrderingDeliveryScreen.route) {
+                            OrderingDeliveryScreen(navController = navController)
+                        }
+                        composable(route = Screen.HomeScreen.route){
+                            HomeScreen()
                         }
                     }
                 }
