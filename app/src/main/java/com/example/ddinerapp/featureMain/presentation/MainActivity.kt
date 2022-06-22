@@ -8,9 +8,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.ddinerapp.common.theme.DDinerAppTheme
 import com.example.ddinerapp.featureMain.presentation.home.HomeScreen
 import com.example.ddinerapp.featureMain.presentation.login.LoginScreen
@@ -48,8 +50,17 @@ class MainActivity : ComponentActivity() {
                         composable(route = Screen.OrderingDeliveryScreen.route) {
                             OrderingDeliveryScreen(navController = navController)
                         }
-                        composable(route = Screen.HomeScreen.route){
-                            HomeScreen()
+                        composable(
+                            route = Screen.HomeScreen.route + "/{desk}",
+                            arguments = listOf(
+                                navArgument("desk") {
+                                    type = NavType.StringType
+                                    defaultValue = ""
+                                })
+                        ) { backStackEntry ->
+                            HomeScreen(
+                                desk = backStackEntry.arguments?.getString("desk")
+                            )
                         }
                     }
                 }

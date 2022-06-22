@@ -51,8 +51,12 @@ fun OrderingDeliveryScreen(navController: NavController) {
         Form(state = state, fields = formFields)
         OutlinedButton(
             onClick = {
+                val deliveryData: ArrayList<String> = ArrayList()
+                state.fields.forEach {
+                    deliveryData.add(it.text)
+                }
                 if (state.validate())
-                    navController.navigate(Screen.HomeScreen.route) {
+                    navController.navigate(Screen.HomeScreen.route + "/Delivery") {
                         popUpTo(Screen.OrderingTypeScreen.route)
                     }
             },

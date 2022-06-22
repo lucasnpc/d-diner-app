@@ -6,10 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +34,10 @@ import com.example.ddinerapp.featureMain.presentation.utils.BottomNavItem
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    viewModel: HomeViewModel = hiltViewModel(),
+    desk: String?
+) {
     val screens = listOf(
         BottomNavItem.MenuItem,
         BottomNavItem.OrdersItem,
@@ -43,7 +45,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
         BottomNavItem.SettingsItem
     )
     val navController = rememberNavController()
-    val userRole = viewModel.getUserRole().collectAsState(initial = "")
+    // viewModel.getUserRole().collectAsState(initial = "")
     Scaffold(
         topBar = {
             Row(
@@ -53,31 +55,33 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Card(
-                    elevation = 4.dp, modifier = Modifier
-                        .width(40.dp)
-                        .height(40.dp),
+                OutlinedButton(
+                    onClick = {/*TODO*/ },
                     border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Person,
+                        imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "User Image",
-                        tint = MaterialTheme.colors.primaryVariant
+                        tint = MaterialTheme.colors.primaryVariant,
+                        modifier = Modifier
+                            .width(32.dp)
+                            .height(32.dp)
                     )
                 }
-                Text(text = userRole.value, fontSize = 18.sp, color = Color.Black)
-                Card(
-                    elevation = 4.dp, modifier = Modifier
-                        .width(40.dp)
-                        .height(40.dp),
+                Text(text = desk.toString(), fontSize = 20.sp, color = Color.Black)
+                OutlinedButton(
+                    onClick = { /*TODO*/ },
                     border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Notifications,
                         contentDescription = "Notification",
-                        tint = MaterialTheme.colors.primaryVariant
+                        tint = MaterialTheme.colors.primaryVariant,
+                        modifier = Modifier
+                            .width(32.dp)
+                            .height(32.dp)
                     )
                 }
             }
