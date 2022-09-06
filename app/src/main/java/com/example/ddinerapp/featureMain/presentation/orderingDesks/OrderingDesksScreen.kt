@@ -1,10 +1,9 @@
 package com.example.ddinerapp.featureMain.presentation.orderingDesks
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedButton
@@ -33,11 +32,10 @@ val desks: List<Desk> = listOf(
     Desk(id = 9, name = "Mesa - 9", isOccupied = false),
 )
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OrderingDesksScreen(navController: NavController) {
     LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
+        columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         items(desks) { desk ->

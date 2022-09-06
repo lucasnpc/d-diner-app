@@ -1,10 +1,9 @@
 package com.example.ddinerapp.featureMain.presentation.orderingMenu
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -32,12 +31,11 @@ val items: List<MenuItem> = listOf(
     MenuItem(price = 10.0, description = "bolo", category = "Sobremesas"),
 )
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OrderingMenuScreen(navController: NavController) {
     val itemsCategory = items.distinctBy { it.category }
     LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
+        columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         items(itemsCategory) { item ->
