@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
                         navController = navController, startDestination = Screen.LoginScreen.route
                     ) {
                         composable(route = Screen.LoginScreen.route) {
-                            LoginScreen(navController = navController)
+                            LoginScreen()
                         }
                         composable(route = Screen.OrderingTypeScreen.route) {
                             OrderingTypeScreen(navController = navController)
