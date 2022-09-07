@@ -30,11 +30,6 @@ fun LoginScreen(navController: NavController) {
         contract = FirebaseAuthUIActivityResultContract(),
         onResult = { result ->
             if (result.resultCode == RESULT_OK) {
-                navController.navigate(Screen.OrderingTypeScreen.route) {
-                    popUpTo(Screen.LoginScreen.route) {
-                        inclusive = true
-                    }
-                }
             }
         }
     )

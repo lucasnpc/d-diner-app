@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -30,7 +31,6 @@ class MainActivity : ComponentActivity() {
     private val viewModel: LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        observeAuthState()
         installSplashScreen()
         setContent {
             DDinerAppTheme {
@@ -39,6 +39,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val navController = rememberNavController()
+                    observeAuthState(navController)
                     NavHost(
                         navController = navController, startDestination = Screen.LoginScreen.route
                     ) {
@@ -72,11 +73,23 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun observeAuthState() {
+    private fun observeAuthState(navController: NavHostController) {
         viewModel.authenticationState.observe(this) {
             when (it) {
-                AuthenticationState.AUTHENTICATED -> println("User Authenticated")
-                AuthenticationState.UNAUTHENTICATED -> println("User Unauthenticated")
+                AuthenticationState.AUTHENTICATED -> {
+                    navController.navigate(Screen.OrderingTypeScreen.route) {
+                        popUpTo(Screen.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+                AuthenticationState.UNAUTHENTICATED -> {
+                    navController.navigate(Screen.LoginScreen.route) {
+                        popUpTo(Screen.OrderingTypeScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
                 else -> println("Some Error Occured")
             }
         }

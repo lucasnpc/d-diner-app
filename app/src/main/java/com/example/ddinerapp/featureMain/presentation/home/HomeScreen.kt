@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,6 +33,7 @@ import com.example.ddinerapp.featureMain.presentation.orders.OrdersScreen
 import com.example.ddinerapp.featureMain.presentation.settings.SettingsScreen
 import com.example.ddinerapp.featureMain.presentation.utils.BottomNavItem
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
+import com.firebase.ui.auth.AuthUI
 
 @Composable
 fun HomeScreen(
@@ -45,6 +47,7 @@ fun HomeScreen(
         BottomNavItem.SettingsItem
     )
     val navController = rememberNavController()
+    val context = LocalContext.current
     // viewModel.getUserRole().collectAsState(initial = "")
     Scaffold(
         topBar = {
@@ -56,7 +59,7 @@ fun HomeScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 OutlinedButton(
-                    onClick = {/*TODO*/ },
+                    onClick = { AuthUI.getInstance().signOut(context) },
                     border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
                     shape = RoundedCornerShape(16.dp)
                 ) {
