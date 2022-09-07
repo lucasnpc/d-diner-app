@@ -3,6 +3,7 @@ package com.example.ddinerapp.featureMain.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -14,8 +15,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.ddinerapp.common.theme.DDinerAppTheme
+import com.example.ddinerapp.common.util.AuthenticationState
 import com.example.ddinerapp.featureMain.presentation.home.HomeScreen
 import com.example.ddinerapp.featureMain.presentation.login.LoginScreen
+import com.example.ddinerapp.featureMain.presentation.login.LoginViewModel
 import com.example.ddinerapp.featureMain.presentation.orderingDelivery.OrderingDeliveryScreen
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.OrderingDesksScreen
 import com.example.ddinerapp.featureMain.presentation.orderingType.OrderingTypeScreen
@@ -24,9 +27,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val viewModel: LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        observeAuthState()
         installSplashScreen()
         setContent {
             DDinerAppTheme {
@@ -64,6 +68,16 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun observeAuthState() {
+        viewModel.authenticationState.observe(this) {
+            when (it) {
+                AuthenticationState.AUTHENTICATED -> println("User Authenticated")
+                AuthenticationState.UNAUTHENTICATED -> println("User Unauthenticated")
+                else -> println("Some Error Occured")
             }
         }
     }
