@@ -81,11 +81,17 @@ class MainActivity : ComponentActivity() {
                         popUpTo(Screen.LoginScreen.route) {
                             inclusive = true
                         }
+                        popUpTo(Screen.OrderingTypeScreen.route) {
+                            inclusive = true
+                        }
                     }
                 }
                 AuthenticationState.UNAUTHENTICATED -> {
                     navController.navigate(Screen.LoginScreen.route) {
                         popUpTo(Screen.OrderingTypeScreen.route) {
+                            inclusive = true
+                        }
+                        popUpTo(Screen.LoginScreen.route) {
                             inclusive = true
                         }
                     }
