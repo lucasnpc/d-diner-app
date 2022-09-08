@@ -1,5 +1,6 @@
 package com.example.ddinerapp.featureMain.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,7 +10,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,20 +17,25 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.ddinerapp.common.theme.DDinerAppTheme
 import com.example.ddinerapp.common.util.AuthenticationState
+import com.example.ddinerapp.featureAuthentication.AuthenticationActivity
 import com.example.ddinerapp.featureMain.presentation.home.HomeScreen
-import com.example.ddinerapp.featureMain.presentation.login.LoginScreen
-import com.example.ddinerapp.featureMain.presentation.login.LoginViewModel
+import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
 import com.example.ddinerapp.featureMain.presentation.orderingDelivery.OrderingDeliveryScreen
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.OrderingDesksScreen
 import com.example.ddinerapp.featureMain.presentation.orderingType.OrderingTypeScreen
+import com.example.ddinerapp.featureMain.presentation.utils.AuthViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val viewModel: LoginViewModel by viewModels()
+
+    private val authViewModel: AuthViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        observeAuthState()
         installSplashScreen()
         setContent {
             DDinerAppTheme {
@@ -39,13 +44,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val navController = rememberNavController()
-                    observeAuthState(navController)
                     NavHost(
-                        navController = navController, startDestination = Screen.LoginScreen.route
+                        navController = navController,
+                        startDestination = Screen.OrderingTypeScreen.route
                     ) {
-                        composable(route = Screen.LoginScreen.route) {
-                            LoginScreen()
-                        }
                         composable(route = Screen.OrderingTypeScreen.route) {
                             OrderingTypeScreen(navController = navController)
                         }
@@ -64,6 +66,7 @@ class MainActivity : ComponentActivity() {
                                 })
                         ) { backStackEntry ->
                             HomeScreen(
+                                homeViewModel,
                                 desk = backStackEntry.arguments?.getString("desk")
                             )
                         }
@@ -73,28 +76,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun observeAuthState(navController: NavHostController) {
-        viewModel.authenticationState.observe(this) {
+    private fun observeAuthState() {
+        authViewModel.authenticationState.observe(this) {
             when (it) {
-                AuthenticationState.AUTHENTICATED -> {
-                    navController.navigate(Screen.OrderingTypeScreen.route) {
-                        popUpTo(Screen.LoginScreen.route) {
-                            inclusive = true
-                        }
-                        popUpTo(Screen.OrderingTypeScreen.route) {
-                            inclusive = true
-                        }
-                    }
-                }
                 AuthenticationState.UNAUTHENTICATED -> {
-                    navController.navigate(Screen.LoginScreen.route) {
-                        popUpTo(Screen.OrderingTypeScreen.route) {
-                            inclusive = true
-                        }
-                        popUpTo(Screen.LoginScreen.route) {
-                            inclusive = true
-                        }
-                    }
+                    startActivity(Intent(this@MainActivity, AuthenticationActivity::class.java))
+                    finish()
                 }
                 else -> println("Some Error Occured")
             }

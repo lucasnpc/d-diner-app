@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -37,7 +36,7 @@ import com.firebase.ui.auth.AuthUI
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: HomeViewModel,
     desk: String?
 ) {
     val screens = listOf(

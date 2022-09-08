@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.DDinerApp" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/black</item>
+    <style name="Theme.DDinerApp" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">#C45757</item>
+        <item name="colorAccent">@color/white</item>
     </style>
 </resources>
