@@ -1,4 +1,4 @@
-package com.example.ddinerapp.featureMain.presentation.utils
+package com.example.ddinerapp.featureAuthentication.presentation.signUp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
@@ -10,7 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(
+class SignUpViewModel @Inject constructor(
     private val repository: MainRepository,
     private val store: DataStoreManager
 ) : ViewModel() {

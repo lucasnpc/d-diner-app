@@ -23,14 +23,14 @@ import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
 import com.example.ddinerapp.featureMain.presentation.orderingDelivery.OrderingDeliveryScreen
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.OrderingDesksScreen
 import com.example.ddinerapp.featureMain.presentation.orderingType.OrderingTypeScreen
-import com.example.ddinerapp.featureMain.presentation.utils.AuthViewModel
+import com.example.ddinerapp.featureAuthentication.presentation.signUp.SignUpViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val authViewModel: AuthViewModel by viewModels()
+    private val signUpViewModel: SignUpViewModel by viewModels()
     private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun observeAuthState() {
-        authViewModel.authenticationState.observe(this) {
+        signUpViewModel.authenticationState.observe(this) {
             when (it) {
                 AuthenticationState.UNAUTHENTICATED -> {
                     startActivity(Intent(this@MainActivity, AuthenticationActivity::class.java))
