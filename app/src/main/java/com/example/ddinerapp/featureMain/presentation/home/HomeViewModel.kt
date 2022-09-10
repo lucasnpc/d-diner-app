@@ -8,4 +8,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val store: DataStoreManager) : ViewModel() {
     fun getUserRole() = store.userRole
+
+    fun clearPreferences() = store.clearDataStore()
 }

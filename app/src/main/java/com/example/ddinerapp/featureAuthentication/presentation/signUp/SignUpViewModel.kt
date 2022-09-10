@@ -2,10 +2,7 @@ package com.example.ddinerapp.featureAuthentication.presentation.signUp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ddinerapp.common.util.AuthenticationState
-import com.example.ddinerapp.common.util.DataStoreManager
-import com.example.ddinerapp.common.util.ROLE_FIELD
-import com.example.ddinerapp.common.util.USERS_COLLECTION
+import com.example.ddinerapp.common.util.*
 import com.example.ddinerapp.featureMain.domain.repository.MainRepository
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
@@ -34,8 +31,12 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             db.collection(USERS_COLLECTION).document(firebaseUser.email.toString()).get()
                 .addOnSuccessListener { document ->
-                    document.getString(ROLE_FIELD)
-                        ?.let { role -> storeManager.setUserRole(role) }
+
+                    storeManager.run {
+                        setUserRole(document.getString(ROLE_FIELD).toString())
+                        setBusinessCnpj(document.getString(CNPJ_FIELD).toString())
+                    }
+
                     _authenticationState.value = AuthenticationState.AUTHENTICATED
                     _loading.value = false
                 }

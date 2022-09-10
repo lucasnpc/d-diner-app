@@ -78,6 +78,7 @@ class MainActivity : ComponentActivity() {
         FirebaseUserLiveData().observe(this) {
             if (it == null) {
                 startActivity(Intent(this@MainActivity, AuthenticationActivity::class.java))
+                homeViewModel.clearPreferences()
                 finish()
             }
         }

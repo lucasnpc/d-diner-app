@@ -57,10 +57,7 @@ class SignUpFragment : Fragment() {
     private fun observeLoading() {
         lifecycleScope.launch {
             viewModel.loading.collectLatest { isLoading ->
-                binding.progressBar.visibility = if (isLoading)
-                    View.VISIBLE
-                else
-                    View.GONE
+                setupComponentsVisibility(isLoading)
             }
         }
     }
@@ -98,5 +95,13 @@ class SignUpFragment : Fragment() {
         signInLauncher.launch(AuthUI.getInstance().createSignInIntentBuilder().apply {
             if (google) setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
         }.build())
+    }
+
+    private fun setupComponentsVisibility(loading: Boolean) {
+        binding.run {
+            progressBar.visibility = if (loading) View.VISIBLE else View.GONE
+            google.isEnabled = !loading
+            email.isEnabled = !loading
+        }
     }
 }
