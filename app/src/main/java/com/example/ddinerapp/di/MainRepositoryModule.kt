@@ -6,13 +6,13 @@ import com.example.ddinerapp.featureMain.domain.repository.MainRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object MainRepositoryModule {
-    @Singleton
+    @ViewModelScoped
     @Provides
     fun provideMainRepository(service: MainService): MainRepository =
         MainRepositoryImpl(service = service)

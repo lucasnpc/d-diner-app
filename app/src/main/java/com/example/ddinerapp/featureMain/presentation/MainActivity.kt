@@ -16,27 +16,25 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.ddinerapp.common.theme.DDinerAppTheme
-import com.example.ddinerapp.common.util.AuthenticationState
+import com.example.ddinerapp.common.util.FirebaseUserLiveData
 import com.example.ddinerapp.featureAuthentication.AuthenticationActivity
 import com.example.ddinerapp.featureMain.presentation.home.HomeScreen
 import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
 import com.example.ddinerapp.featureMain.presentation.orderingDelivery.OrderingDeliveryScreen
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.OrderingDesksScreen
 import com.example.ddinerapp.featureMain.presentation.orderingType.OrderingTypeScreen
-import com.example.ddinerapp.featureAuthentication.presentation.signUp.SignUpViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val signUpViewModel: SignUpViewModel by viewModels()
     private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        observeAuthState()
         installSplashScreen()
+        observeAuthState()
         setContent {
             DDinerAppTheme {
                 Surface(
@@ -77,13 +75,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun observeAuthState() {
-        signUpViewModel.authenticationState.observe(this) {
-            when (it) {
-                AuthenticationState.UNAUTHENTICATED -> {
-                    startActivity(Intent(this@MainActivity, AuthenticationActivity::class.java))
-                    finish()
-                }
-                else -> println("Some Error Occured")
+        FirebaseUserLiveData().observe(this) {
+            if (it == null) {
+                startActivity(Intent(this@MainActivity, AuthenticationActivity::class.java))
+                finish()
             }
         }
     }

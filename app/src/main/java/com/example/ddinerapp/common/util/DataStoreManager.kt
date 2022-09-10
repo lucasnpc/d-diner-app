@@ -7,6 +7,7 @@ import com.example.ddinerapp.common.util.DataStoreKeys.USER_ROLE
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,7 +18,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
 
     private val settingsDataStore = appContext.dataStore
 
-    suspend fun setUserRole(role: String) {
+    fun setUserRole(role: String) = runBlocking {
         settingsDataStore.edit { settings ->
             settings[USER_ROLE] = role
         }
