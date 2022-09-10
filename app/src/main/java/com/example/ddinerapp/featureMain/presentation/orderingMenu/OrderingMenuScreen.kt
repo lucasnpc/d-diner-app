@@ -8,32 +8,19 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.ddinerapp.featureMain.domain.model.MenuItem
+import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
-val items: List<MenuItem> = listOf(
-    MenuItem(price = 10.0, description = "lanche banana", category = "Lanches"),
-    MenuItem(price = 10.0, description = "prato", category = "Pratos"),
-    MenuItem(price = 10.0, description = "coca", category = "Bebidas"),
-    MenuItem(price = 10.0, description = "lanche x-salada", category = "Lanches"),
-    MenuItem(price = 10.0, description = "bife", category = "Pratos"),
-    MenuItem(price = 10.0, description = "lanche x-bacon", category = "Lanches"),
-    MenuItem(price = 10.0, description = "fanta", category = "Bebidas"),
-    MenuItem(price = 10.0, description = "batata", category = "Porções"),
-    MenuItem(price = 10.0, description = "banana", category = "Porções"),
-    MenuItem(price = 10.0, description = "filé", category = "Pratos"),
-    MenuItem(price = 10.0, description = "guaraná", category = "Bebidas"),
-    MenuItem(price = 10.0, description = "bolo", category = "Sobremesas"),
-)
-
 @Composable
-fun OrderingMenuScreen(navController: NavController) {
-    val itemsCategory = items.distinctBy { it.category }
+fun OrderingMenuScreen(navController: NavController, viewModel: HomeViewModel) {
+    val itemsCategory = viewModel.items.collectAsState().value.distinctBy { it.category }
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -50,6 +37,7 @@ fun OrderingMenuScreen(navController: NavController) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
                         imageVector = when (item.category) {
+                            "Pizzas" -> Icons.Filled.LocalPizza
                             "Lanches" -> Icons.Filled.LunchDining
                             "Pratos" -> Icons.Filled.BrunchDining
                             "Bebidas" -> Icons.Filled.LocalDrink

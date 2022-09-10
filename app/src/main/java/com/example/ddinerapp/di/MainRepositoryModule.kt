@@ -5,6 +5,7 @@ import com.example.ddinerapp.featureMain.domain.remote.MainService
 import com.example.ddinerapp.featureMain.domain.repository.MainRepository
 import com.example.ddinerapp.featureMain.domain.useCases.AuthenticateUserUseCase
 import com.example.ddinerapp.featureMain.domain.useCases.GetDesksUseCase
+import com.example.ddinerapp.featureMain.domain.useCases.GetMenuItemsUseCase
 import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
 import dagger.Module
 import dagger.Provides
@@ -26,6 +27,7 @@ object MainRepositoryModule {
     fun provideMainUseCases(): MainUseCases =
         MainUseCases(
             authenticateUserUseCase = AuthenticateUserUseCase(),
-            getDesksUseCase = GetDesksUseCase()
+            getDesksUseCase = GetDesksUseCase(),
+            getMenuItemsUseCase = GetMenuItemsUseCase()
         )
 }

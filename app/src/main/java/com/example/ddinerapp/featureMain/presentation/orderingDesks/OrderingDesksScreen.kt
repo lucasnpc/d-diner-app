@@ -20,10 +20,11 @@ import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
-fun OrderingDesksScreen(navController: NavController, viewModel: HomeViewModel) {
+fun OrderingDesksScreen(
+    navController: NavController,
+    viewModel: HomeViewModel
+) {
     val desks = viewModel.desks.collectAsState().value
-
-    viewModel.getDesks()
 
     when {
         desks.isEmpty() -> {
@@ -31,7 +32,9 @@ fun OrderingDesksScreen(navController: NavController, viewModel: HomeViewModel) 
                 CircularProgressIndicator()
             }
         }
-        desks.isNotEmpty() -> DesksList(navController, desks.sortedBy { it.description })
+        desks.isNotEmpty() -> DesksList(
+            navController,
+            desks.sortedBy { it.description })
     }
 }
 

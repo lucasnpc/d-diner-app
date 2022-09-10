@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,13 +18,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.ddinerapp.featureMain.presentation.orderingMenu.items
+import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OrderingItemsScreen(navController: NavController, itemCategory: String?) {
-    val itemsByCategory = items.filter { it.category == itemCategory }
+fun OrderingItemsScreen(
+    navController: NavController,
+    itemCategory: String?,
+    viewModel: HomeViewModel
+) {
+    val itemsByCategory =
+        viewModel.items.collectAsState().value.filter { it.category == itemCategory }
 
     Box(modifier = Modifier.padding(PaddingValues(8.dp))) {
         LazyColumn(
@@ -114,7 +120,7 @@ fun OrderingItemsScreen(navController: NavController, itemCategory: String?) {
             modifier = Modifier.align(Alignment.BottomEnd),
             icon = {
                 Icon(
-                    imageVector = Icons.Filled.Create,
+                    imageVector = Icons.Filled.Done,
                     contentDescription = "Create Order Icon"
                 )
             },

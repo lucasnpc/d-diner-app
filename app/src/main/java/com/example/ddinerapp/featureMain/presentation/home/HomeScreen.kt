@@ -1,5 +1,6 @@
 package com.example.ddinerapp.featureMain.presentation.home
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -47,72 +49,12 @@ fun HomeScreen(
     )
     val navController = rememberNavController()
     val context = LocalContext.current
-    // viewModel.getUserRole().collectAsState(initial = "")
     Scaffold(
         topBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                OutlinedButton(
-                    onClick = { AuthUI.getInstance().signOut(context) },
-                    border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "User Image",
-                        tint = MaterialTheme.colors.primaryVariant,
-                        modifier = Modifier
-                            .width(32.dp)
-                            .height(32.dp)
-                    )
-                }
-                Text(text = desk.toString(), fontSize = 20.sp, color = Color.Black)
-                OutlinedButton(
-                    onClick = { /*TODO*/ },
-                    border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Notifications,
-                        contentDescription = "Notification",
-                        tint = MaterialTheme.colors.primaryVariant,
-                        modifier = Modifier
-                            .width(32.dp)
-                            .height(32.dp)
-                    )
-                }
-            }
+            TopAppBar(context, desk)
         },
         bottomBar = {
-            BottomNavigation(backgroundColor = MaterialTheme.colors.surface) {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                screens.forEach { screen ->
-                    BottomNavigationItem(
-                        icon = {
-                            Icon(
-                                screen.icon,
-                                contentDescription = screen.contentDescription,
-                                tint = MaterialTheme.colors.onSurface
-                            )
-                        },
-                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                        onClick = {
-                            navController.navigate(screen.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        })
-                }
-            }
+            BottomNavBar(navController, screens)
         }
     ) {
         NavHost(
@@ -131,7 +73,7 @@ fun HomeScreen(
                 )
         ) {
             composable(route = Screen.OrderingMenuScreen.route) {
-                OrderingMenuScreen(navController = navController)
+                OrderingMenuScreen(navController = navController, viewModel)
             }
             composable(
                 route = Screen.OrderingItemsScreen.route + "/{itemCategory}",
@@ -142,7 +84,8 @@ fun HomeScreen(
             ) { backStackEntry ->
                 OrderingItemsScreen(
                     navController = navController,
-                    backStackEntry.arguments?.getString("itemCategory")
+                    backStackEntry.arguments?.getString("itemCategory"),
+                    viewModel
                 )
             }
             composable(route = Screen.OrdersScreen.route) {
@@ -154,6 +97,78 @@ fun HomeScreen(
             composable(route = Screen.SettingsScreen.route) {
                 SettingsScreen(navController = navController)
             }
+        }
+    }
+}
+
+@Composable
+private fun BottomNavBar(
+    navController: NavHostController,
+    screens: List<BottomNavItem>
+) {
+    BottomNavigation(backgroundColor = MaterialTheme.colors.surface) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+        screens.forEach { screen ->
+            BottomNavigationItem(
+                icon = {
+                    Icon(
+                        screen.icon,
+                        contentDescription = screen.contentDescription,
+                        tint = MaterialTheme.colors.onSurface
+                    )
+                },
+                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                onClick = {
+                    navController.navigate(screen.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                })
+        }
+    }
+}
+
+@Composable
+private fun TopAppBar(context: Context, desk: String?) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        OutlinedButton(
+            onClick = { AuthUI.getInstance().signOut(context) },
+            border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "User Image",
+                tint = MaterialTheme.colors.primaryVariant,
+                modifier = Modifier
+                    .width(32.dp)
+                    .height(32.dp)
+            )
+        }
+        Text(text = desk.toString(), fontSize = 20.sp, color = Color.Black)
+        OutlinedButton(
+            onClick = { /*TODO*/ },
+            border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Notifications,
+                contentDescription = "Notification",
+                tint = MaterialTheme.colors.primaryVariant,
+                modifier = Modifier
+                    .width(32.dp)
+                    .height(32.dp)
+            )
         }
     }
 }
