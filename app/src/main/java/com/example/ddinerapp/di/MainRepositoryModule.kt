@@ -4,6 +4,7 @@ import com.example.ddinerapp.featureMain.data.repository.MainRepositoryImpl
 import com.example.ddinerapp.featureMain.domain.remote.MainService
 import com.example.ddinerapp.featureMain.domain.repository.MainRepository
 import com.example.ddinerapp.featureMain.domain.useCases.AuthenticateUserUseCase
+import com.example.ddinerapp.featureMain.domain.useCases.GetDesksUseCase
 import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
 import dagger.Module
 import dagger.Provides
@@ -23,5 +24,8 @@ object MainRepositoryModule {
     @ViewModelScoped
     @Provides
     fun provideMainUseCases(): MainUseCases =
-        MainUseCases(authenticateUserUseCase = AuthenticateUserUseCase())
+        MainUseCases(
+            authenticateUserUseCase = AuthenticateUserUseCase(),
+            getDesksUseCase = GetDesksUseCase()
+        )
 }

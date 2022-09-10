@@ -4,13 +4,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocalDining
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,22 +16,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.ddinerapp.featureMain.domain.model.Desk
+import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
-val desks: List<Desk> = listOf(
-    Desk(id = 1, name = "Mesa - 1", isOccupied = false),
-    Desk(id = 2, name = "Mesa - 2", isOccupied = false),
-    Desk(id = 3, name = "Mesa - 3", isOccupied = false),
-    Desk(id = 4, name = "Mesa - 4", isOccupied = false),
-    Desk(id = 5, name = "Mesa - 5", isOccupied = true),
-    Desk(id = 6, name = "Mesa - 6", isOccupied = false),
-    Desk(id = 7, name = "Mesa - 7", isOccupied = false),
-    Desk(id = 8, name = "Mesa - 8", isOccupied = true),
-    Desk(id = 9, name = "Mesa - 9", isOccupied = false),
-)
+@Composable
+fun OrderingDesksScreen(navController: NavController, viewModel: HomeViewModel) {
+    val desks = viewModel.desks.collectAsState().value
+
+    viewModel.getDesks()
+
+    when {
+        desks.isEmpty() -> {
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator()
+            }
+        }
+        desks.isNotEmpty() -> DesksList(navController, desks.sortedBy { it.description })
+    }
+}
 
 @Composable
-fun OrderingDesksScreen(navController: NavController) {
+private fun DesksList(navController: NavController, desks: List<Desk>) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -41,7 +44,7 @@ fun OrderingDesksScreen(navController: NavController) {
         items(desks) { desk ->
             OutlinedButton(
                 onClick = {
-                    navController.navigate(Screen.HomeScreen.route + "/${desk.name}") {
+                    navController.navigate(Screen.HomeScreen.route + "/${desk.description}") {
                         popUpTo(Screen.OrderingTypeScreen.route)
                     }
                 },
@@ -64,7 +67,7 @@ fun OrderingDesksScreen(navController: NavController) {
                             .height(30.dp)
                     )
                     Spacer(modifier = Modifier.height(5.dp))
-                    Text(text = desk.name, fontSize = 16.sp)
+                    Text(text = desk.description, fontSize = 16.sp)
                 }
             }
         }

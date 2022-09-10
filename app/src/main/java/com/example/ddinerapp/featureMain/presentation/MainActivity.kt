@@ -50,7 +50,10 @@ class MainActivity : ComponentActivity() {
                             OrderingTypeScreen(navController = navController)
                         }
                         composable(route = Screen.OrderingDesksScreen.route) {
-                            OrderingDesksScreen(navController = navController)
+                            OrderingDesksScreen(
+                                navController = navController,
+                                viewModel = homeViewModel
+                            )
                         }
                         composable(route = Screen.OrderingDeliveryScreen.route) {
                             OrderingDeliveryScreen(navController = navController)
