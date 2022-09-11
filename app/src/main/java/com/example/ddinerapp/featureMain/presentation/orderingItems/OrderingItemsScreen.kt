@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.runtime.*
@@ -29,7 +28,7 @@ fun OrderingItemsScreen(
     viewModel: HomeViewModel
 ) {
     val itemsByCategory =
-        viewModel.items.collectAsState().value.filter { it.category == itemCategory }
+        viewModel.items.filter { it.category == itemCategory }
 
     Box(modifier = Modifier.padding(PaddingValues(8.dp))) {
         LazyColumn(

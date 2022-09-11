@@ -1,15 +1,15 @@
 package com.example.ddinerapp.featureMain.presentation.home
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.common.util.DataStoreManager
 import com.example.ddinerapp.featureMain.domain.model.Desk
 import com.example.ddinerapp.featureMain.domain.model.MenuItem
 import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,11 +20,11 @@ class HomeViewModel @Inject constructor(
     private val mainUseCases: MainUseCases
 ) : ViewModel() {
 
-    private val _desks = MutableStateFlow(arrayListOf<Desk>())
-    val desks: StateFlow<List<Desk>> = _desks
+    private val _desks = mutableStateListOf<Desk>()
+    val desks: List<Desk> = _desks
 
-    private val _items = MutableStateFlow(arrayListOf<MenuItem>())
-    val items: StateFlow<List<MenuItem>> = _items
+    private val _items = mutableStateListOf<MenuItem>()
+    val items: List<MenuItem> = _items
 
     init {
         getDesks()
@@ -40,15 +40,39 @@ class HomeViewModel @Inject constructor(
     private fun getDesks() {
         viewModelScope.launch {
             mainUseCases.getDesksUseCase(store.businessCnpj.first())
-                .addOnSuccessListener { query ->
-                    val array = arrayListOf<Desk>()
-                    query.documents.map { doc ->
-                        doc.toObject<Desk>()?.let { array.add(it) }
+                .addSnapshotListener { snapshot, exception ->
+
+                    if (exception != null) {
+                        println(exception.message)
+                        return@addSnapshotListener
                     }
 
-                    _desks.value = array
-                }.addOnFailureListener {
-                    println(it.message)
+                    snapshot?.documentChanges?.map { doc ->
+                        when (doc.type) {
+                            DocumentChange.Type.ADDED -> doc.document.let {
+                                _desks.add(
+                                    Desk(
+                                        description = it["description"] as String,
+                                        isOccupied = it["isOccupied"] as Boolean
+                                    )
+                                )
+                            }
+                            DocumentChange.Type.MODIFIED -> doc.document.let {
+                                _desks.run {
+                                    val index =
+                                        find { desk -> it["description"] == desk.description }
+                                    remove(index)
+                                    add(
+                                        Desk(
+                                            description = it["description"] as String,
+                                            isOccupied = it["isOccupied"] as Boolean
+                                        )
+                                    )
+                                }
+                            }
+                            else -> Unit
+                        }
+                    }
                 }
         }
     }
@@ -57,16 +81,19 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             mainUseCases.getMenuItemsUseCase(store.businessCnpj.first())
                 .addOnSuccessListener { query ->
-                    val array = arrayListOf<MenuItem>()
                     query.documents.map { doc ->
-                        doc.toObject<MenuItem>()?.let { array.add(it) }
+                        doc.toObject<MenuItem>()?.let { _items.add(it) }
                     }
-
-                    _items.value = array
                 }
                 .addOnFailureListener {
                     println(it.message)
                 }
+        }
+    }
+
+    fun setOccupiedDesk(desk: Desk) {
+        viewModelScope.launch {
+            mainUseCases.setOccupiedDeskUseCase(desk, store.businessCnpj.first())
         }
     }
 }

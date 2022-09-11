@@ -19,7 +19,7 @@ import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
 fun OrderingMenuScreen(navController: NavController, viewModel: HomeViewModel) {
-    val itemsCategory = viewModel.items.collectAsState().value.distinctBy { it.category }
+    val itemsCategory = viewModel.items.distinctBy { it.category }
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),

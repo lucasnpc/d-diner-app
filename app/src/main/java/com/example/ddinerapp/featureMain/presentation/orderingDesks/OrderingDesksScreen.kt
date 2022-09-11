@@ -24,7 +24,7 @@ fun OrderingDesksScreen(
     navController: NavController,
     viewModel: HomeViewModel
 ) {
-    val desks = viewModel.desks.collectAsState().value
+    val desks = viewModel.desks
 
     when {
         desks.isEmpty() -> {
@@ -34,12 +34,19 @@ fun OrderingDesksScreen(
         }
         desks.isNotEmpty() -> DesksList(
             navController,
-            desks.sortedBy { it.description })
+            desks.sortedBy { it.description }
+        ) {
+            viewModel.setOccupiedDesk(it)
+        }
     }
 }
 
 @Composable
-private fun DesksList(navController: NavController, desks: List<Desk>) {
+private fun DesksList(
+    navController: NavController,
+    desks: List<Desk>,
+    setDeskOccupied: (Desk) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -50,6 +57,7 @@ private fun DesksList(navController: NavController, desks: List<Desk>) {
                     navController.navigate(Screen.HomeScreen.route + "/${desk.description}") {
                         popUpTo(Screen.OrderingTypeScreen.route)
                     }
+                    setDeskOccupied(desk)
                 },
                 modifier = Modifier
                     .width(120.dp)

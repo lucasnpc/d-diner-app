@@ -3,10 +3,7 @@ package com.example.ddinerapp.di
 import com.example.ddinerapp.featureMain.data.repository.MainRepositoryImpl
 import com.example.ddinerapp.featureMain.domain.remote.MainService
 import com.example.ddinerapp.featureMain.domain.repository.MainRepository
-import com.example.ddinerapp.featureMain.domain.useCases.AuthenticateUserUseCase
-import com.example.ddinerapp.featureMain.domain.useCases.GetDesksUseCase
-import com.example.ddinerapp.featureMain.domain.useCases.GetMenuItemsUseCase
-import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
+import com.example.ddinerapp.featureMain.domain.useCases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,6 +25,7 @@ object MainRepositoryModule {
         MainUseCases(
             authenticateUserUseCase = AuthenticateUserUseCase(),
             getDesksUseCase = GetDesksUseCase(),
-            getMenuItemsUseCase = GetMenuItemsUseCase()
+            getMenuItemsUseCase = GetMenuItemsUseCase(),
+            setOccupiedDeskUseCase = SetOccupiedDeskUseCase()
         )
 }
