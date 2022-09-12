@@ -10,15 +10,9 @@ class SetOccupiedDeskUseCase {
     private val db = Firebase.firestore
 
     operator fun invoke(desk: Desk, cnpj: String) {
-        db.collection(BUSINESS_COLLECTION).document(cnpj).collection(DESKS_COLLECTION)
-            .whereEqualTo("description", desk.description).addSnapshotListener { value, e ->
-                if (e != null) {
-                    println(e.message)
-                    return@addSnapshotListener
-                }
-                value?.forEach {
-                    it.reference.update("isOccupied", true)
-                }
-            }
+        val document =
+            db.collection(BUSINESS_COLLECTION).document(cnpj).collection(DESKS_COLLECTION)
+                .document(desk.id)
+        document.update("isOccupied", true)
     }
 }

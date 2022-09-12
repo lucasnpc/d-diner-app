@@ -8,7 +8,6 @@ import com.example.ddinerapp.featureMain.domain.model.Desk
 import com.example.ddinerapp.featureMain.domain.model.MenuItem
 import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
 import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -52,6 +51,7 @@ class HomeViewModel @Inject constructor(
                             DocumentChange.Type.ADDED -> doc.document.let {
                                 _desks.add(
                                     Desk(
+                                        id = it.id,
                                         description = it["description"] as String,
                                         isOccupied = it["isOccupied"] as Boolean
                                     )
@@ -64,7 +64,7 @@ class HomeViewModel @Inject constructor(
                                     remove(index)
                                     add(
                                         Desk(
-                                            description = it["description"] as String,
+                                            description = it["description"].toString(),
                                             isOccupied = it["isOccupied"] as Boolean
                                         )
                                     )
@@ -80,13 +80,27 @@ class HomeViewModel @Inject constructor(
     private fun getMenuItems() {
         viewModelScope.launch {
             mainUseCases.getMenuItemsUseCase(store.businessCnpj.first())
-                .addOnSuccessListener { query ->
-                    query.documents.map { doc ->
-                        doc.toObject<MenuItem>()?.let { _items.add(it) }
+                .addSnapshotListener { snapshot, exception ->
+                    if (exception != null) {
+                        println(exception.message)
+                        return@addSnapshotListener
                     }
-                }
-                .addOnFailureListener {
-                    println(it.message)
+
+                    snapshot?.documentChanges?.map { doc ->
+                        when (doc.type) {
+                            DocumentChange.Type.ADDED -> doc.document.let {
+                                _items.add(
+                                    MenuItem(
+                                        id = it.id,
+                                        price = it["price"].toString().toDouble(),
+                                        description = it["description"].toString(),
+                                        category = it["category"].toString()
+                                    )
+                                )
+                            }
+                            else -> Unit
+                        }
+                    }
                 }
         }
     }
@@ -95,5 +109,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             mainUseCases.setOccupiedDeskUseCase(desk, store.businessCnpj.first())
         }
+    }
+
+    fun createOrderItem() {
+        viewModelScope.launch { }
     }
 }

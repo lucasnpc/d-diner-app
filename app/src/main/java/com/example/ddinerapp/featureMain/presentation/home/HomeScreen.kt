@@ -39,7 +39,7 @@ import com.firebase.ui.auth.AuthUI
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    desk: String?
+    desk: String
 ) {
     val screens = listOf(
         BottomNavItem.MenuItem,
@@ -85,7 +85,8 @@ fun HomeScreen(
                 OrderingItemsScreen(
                     navController = navController,
                     backStackEntry.arguments?.getString("itemCategory"),
-                    viewModel
+                    viewModel,
+                    desk
                 )
             }
             composable(route = Screen.OrdersScreen.route) {

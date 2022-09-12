@@ -25,10 +25,13 @@ import com.example.ddinerapp.featureMain.presentation.utils.Screen
 fun OrderingItemsScreen(
     navController: NavController,
     itemCategory: String?,
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    desk: String
 ) {
-    val itemsByCategory =
-        viewModel.items.filter { it.category == itemCategory }
+    val list = viewModel.items.filter { it.category == itemCategory }
+    val desk = viewModel.desks.filter { it.description == desk }[0]
+
+    val orderedItems: MutableMap<String, Double> = mutableMapOf()
 
     Box(modifier = Modifier.padding(PaddingValues(8.dp))) {
         LazyColumn(
@@ -48,7 +51,7 @@ fun OrderingItemsScreen(
                     color = Color.White
                 )
             }
-            items(itemsByCategory) { item ->
+            items(list) { item ->
                 var itemQuantity by remember { mutableStateOf(0) }
                 Card(elevation = 8.dp) {
                     Row(
@@ -72,7 +75,12 @@ fun OrderingItemsScreen(
                         Column {
                             Row {
                                 OutlinedButton(
-                                    onClick = { if (itemQuantity > 0) itemQuantity-- },
+                                    onClick = {
+                                        if (itemQuantity > 0) {
+                                            itemQuantity--
+                                            orderedItems[item.id] = itemQuantity.toDouble()
+                                        }
+                                    },
                                     modifier = Modifier.width(40.dp),
                                     colors = ButtonDefaults.buttonColors(
                                         backgroundColor = MaterialTheme.colors.onBackground,
@@ -92,7 +100,11 @@ fun OrderingItemsScreen(
                                     Text(text = itemQuantity.toString())
                                 }
                                 OutlinedButton(
-                                    onClick = { itemQuantity++ },
+                                    onClick = {
+                                        itemQuantity++
+                                        orderedItems[item.id] =
+                                            itemQuantity.toDouble()
+                                    },
                                     modifier = Modifier.width(40.dp),
                                     colors = ButtonDefaults.buttonColors(
                                         backgroundColor = MaterialTheme.colors.onBackground,
@@ -111,8 +123,9 @@ fun OrderingItemsScreen(
         ExtendedFloatingActionButton(
             text = { Text(text = "Concluir") },
             onClick = {
+                viewModel.createOrderItem()
                 navController.popBackStack(
-                    Screen.OrderingTypeScreen.route,
+                    Screen.OrderingMenuScreen.route,
                     inclusive = false
                 )
             },

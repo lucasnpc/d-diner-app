@@ -8,7 +8,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocalDining
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -57,7 +56,8 @@ private fun DesksList(
                     navController.navigate(Screen.HomeScreen.route + "/${desk.description}") {
                         popUpTo(Screen.OrderingTypeScreen.route)
                     }
-                    setDeskOccupied(desk)
+                    if (!desk.isOccupied)
+                        setDeskOccupied(desk)
                 },
                 modifier = Modifier
                     .width(120.dp)
