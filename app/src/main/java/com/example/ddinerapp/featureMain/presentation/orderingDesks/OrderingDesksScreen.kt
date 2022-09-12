@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ddinerapp.featureMain.domain.model.Desk
 import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
@@ -33,10 +34,9 @@ fun OrderingDesksScreen(
         }
         desks.isNotEmpty() -> DesksList(
             navController,
-            desks.sortedBy { it.description }
-        ) {
-            viewModel.setOccupiedDesk(it)
-        }
+            desks.sortedBy { it.description },
+            viewModel
+        )
     }
 }
 
@@ -44,7 +44,7 @@ fun OrderingDesksScreen(
 private fun DesksList(
     navController: NavController,
     desks: List<Desk>,
-    setDeskOccupied: (Desk) -> Unit
+    viewModel: HomeViewModel
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -53,11 +53,12 @@ private fun DesksList(
         items(desks) { desk ->
             OutlinedButton(
                 onClick = {
+                    if (!desk.isOccupied)
+                        viewModel.setOccupiedDesk(desk)
+                    viewModel.selectedDesk.value = desk
                     navController.navigate(Screen.HomeScreen.route + "/${desk.description}") {
                         popUpTo(Screen.OrderingTypeScreen.route)
                     }
-                    if (!desk.isOccupied)
-                        setDeskOccupied(desk)
                 },
                 modifier = Modifier
                     .width(120.dp)

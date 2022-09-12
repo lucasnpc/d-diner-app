@@ -29,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private val mainViewModel: MainViewModel by viewModels()
     private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +53,7 @@ class MainActivity : ComponentActivity() {
                         composable(route = Screen.OrderingDesksScreen.route) {
                             OrderingDesksScreen(
                                 navController = navController,
-                                viewModel = homeViewModel
+                                homeViewModel
                             )
                         }
                         composable(route = Screen.OrderingDeliveryScreen.route) {
@@ -81,7 +82,7 @@ class MainActivity : ComponentActivity() {
         FirebaseUserLiveData().observe(this) {
             if (it == null) {
                 startActivity(Intent(this@MainActivity, AuthenticationActivity::class.java))
-                homeViewModel.clearPreferences()
+                mainViewModel.clearPreferences()
                 finish()
             }
         }

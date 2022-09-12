@@ -1,11 +1,13 @@
 package com.example.ddinerapp.featureMain.presentation.home
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.common.util.DataStoreManager
 import com.example.ddinerapp.featureMain.domain.model.Desk
 import com.example.ddinerapp.featureMain.domain.model.MenuItem
+import com.example.ddinerapp.featureMain.domain.model.Order
 import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
 import com.google.firebase.firestore.DocumentChange
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,20 +23,18 @@ class HomeViewModel @Inject constructor(
 
     private val _desks = mutableStateListOf<Desk>()
     val desks: List<Desk> = _desks
+    val selectedDesk = mutableStateOf(Desk())
 
     private val _items = mutableStateListOf<MenuItem>()
     val items: List<MenuItem> = _items
+
+    private val _orders = mutableStateListOf<Order>()
+    val orders: List<Order> = _orders
 
     init {
         getDesks()
         getMenuItems()
     }
-
-    fun getUserRole() = viewModelScope.launch {
-        store.userRole.first()
-    }
-
-    fun clearPreferences() = store.clearDataStore()
 
     private fun getDesks() {
         viewModelScope.launch {
@@ -60,7 +60,7 @@ class HomeViewModel @Inject constructor(
                             DocumentChange.Type.MODIFIED -> doc.document.let {
                                 _desks.run {
                                     val index =
-                                        find { desk -> it["description"] == desk.description }
+                                        find { desk -> it.id == desk.id }
                                     remove(index)
                                     add(
                                         Desk(
@@ -108,6 +108,49 @@ class HomeViewModel @Inject constructor(
     fun setOccupiedDesk(desk: Desk) {
         viewModelScope.launch {
             mainUseCases.setOccupiedDeskUseCase(desk, store.businessCnpj.first())
+        }
+    }
+
+    fun getDeskOrders() {
+        viewModelScope.launch {
+            mainUseCases.getDeskOrders(store.businessCnpj.first(), selectedDesk.value)
+                .addSnapshotListener { snapshot, exception ->
+                    if (exception != null) {
+                        println(exception.message)
+                        return@addSnapshotListener
+                    }
+
+                    snapshot?.documentChanges?.map { doc ->
+                        when (doc.type) {
+                            DocumentChange.Type.ADDED -> doc.document.let {
+                                _orders.add(
+                                    Order(
+                                        id = it.id,
+                                        concluded = it["concluded"] as Boolean,
+                                        startDate = it["startDate"].toString(),
+                                        endDate = it["endDate"].toString()
+                                    )
+                                )
+                            }
+                            DocumentChange.Type.MODIFIED -> doc.document.let {
+                                _orders.run {
+                                    val index =
+                                        find { order -> it.id == order.id }
+                                    remove(index)
+                                    add(
+                                        Order(
+                                            id = it.id,
+                                            concluded = it["concluded"] as Boolean,
+                                            startDate = it["startDate"].toString(),
+                                            endDate = it["endDate"].toString()
+                                        )
+                                    )
+                                }
+                            }
+                            else -> Unit
+                        }
+                    }
+                }
         }
     }
 

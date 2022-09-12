@@ -49,6 +49,7 @@ fun HomeScreen(
     )
     val navController = rememberNavController()
     val context = LocalContext.current
+    viewModel.getDeskOrders()
     Scaffold(
         topBar = {
             TopAppBar(context, desk)
@@ -90,7 +91,7 @@ fun HomeScreen(
                 )
             }
             composable(route = Screen.OrdersScreen.route) {
-                OrdersScreen(navController = navController)
+                OrdersScreen(viewModel)
             }
             composable(route = Screen.CartScreen.route) {
                 CartScreen(navController = navController)

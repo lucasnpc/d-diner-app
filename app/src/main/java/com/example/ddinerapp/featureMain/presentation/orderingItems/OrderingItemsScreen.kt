@@ -29,7 +29,7 @@ fun OrderingItemsScreen(
     desk: String
 ) {
     val list = viewModel.items.filter { it.category == itemCategory }
-    val desk = viewModel.desks.filter { it.description == desk }[0]
+    val desk = viewModel.desks.first { it.description == desk }
 
     val orderedItems: MutableMap<String, Double> = mutableMapOf()
 
