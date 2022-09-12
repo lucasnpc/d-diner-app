@@ -1,6 +1,8 @@
 package com.example.ddinerapp.featureMain.presentation.orderingDesks
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.common.util.DataStoreManager
@@ -17,6 +19,10 @@ class DesksViewModel @Inject constructor(
     private val storeManager: DataStoreManager,
     private val mainUseCases: MainUseCases
 ) : ViewModel() {
+
+    private val _loading = mutableStateOf(false)
+    val loading: State<Boolean> = _loading
+
     private val _desks = mutableStateListOf<Desk>()
     val desks: List<Desk> = _desks
 
@@ -25,6 +31,7 @@ class DesksViewModel @Inject constructor(
     }
 
     private fun getDesks() {
+        _loading.value = true
         viewModelScope.launch {
             mainUseCases.getDesksUseCase(storeManager.businessCnpj.first())
                 .addSnapshotListener { snapshot, exception ->
@@ -61,6 +68,7 @@ class DesksViewModel @Inject constructor(
                             else -> Unit
                         }
                     }
+                    _loading.value = false
                 }
         }
     }

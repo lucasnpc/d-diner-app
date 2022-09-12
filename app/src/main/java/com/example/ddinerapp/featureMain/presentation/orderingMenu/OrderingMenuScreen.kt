@@ -12,14 +12,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.ddinerapp.featureMain.domain.model.MenuItem
 import com.example.ddinerapp.featureMain.presentation.orderingItems.MenuItemViewModel
+import com.example.ddinerapp.featureMain.presentation.utils.LoadingScreen
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
-fun OrderingMenuScreen(navController: NavController, viewModel: MenuItemViewModel) {
+fun OrderingMenuScreen(navController: NavController, viewModel: MenuItemViewModel = hiltViewModel()) {
     val itemsCategory = viewModel.items.distinctBy { it.category }
 
+    when {
+        viewModel.loading.value -> {
+            LoadingScreen()
+        }
+        itemsCategory.isEmpty() -> {}
+        itemsCategory.isNotEmpty() -> {
+            MenuItemsCategoryList(itemsCategory, navController)
+        }
+    }
+
+}
+
+@Composable
+private fun MenuItemsCategoryList(
+    itemsCategory: List<MenuItem>,
+    navController: NavController
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.SpaceBetween

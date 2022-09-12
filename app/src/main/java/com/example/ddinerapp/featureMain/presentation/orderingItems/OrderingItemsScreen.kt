@@ -16,20 +16,42 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.ddinerapp.featureMain.domain.model.MenuItem
+import com.example.ddinerapp.featureMain.presentation.utils.LoadingScreen
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OrderingItemsScreen(
     navController: NavController,
     itemCategory: String?,
-    viewModel: MenuItemViewModel
+    viewModel: MenuItemViewModel = hiltViewModel()
 ) {
     val list = viewModel.items.filter { it.category == itemCategory }
 
     val orderedItems: MutableMap<String, Double> = mutableMapOf()
 
+    when {
+        viewModel.loading.value -> {
+            LoadingScreen()
+        }
+        list.isEmpty() -> {}
+        list.isNotEmpty() -> {
+            ItemsList(itemCategory, list, orderedItems, navController)
+        }
+    }
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun ItemsList(
+    itemCategory: String?,
+    list: List<MenuItem>,
+    orderedItems: MutableMap<String, Double>,
+    navController: NavController
+) {
     Box(modifier = Modifier.padding(PaddingValues(8.dp))) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),

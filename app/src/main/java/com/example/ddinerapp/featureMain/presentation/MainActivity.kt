@@ -67,7 +67,6 @@ class MainActivity : ComponentActivity() {
                                 })
                         ) { backStackEntry ->
                             HomeScreen(
-                                viewModel = homeViewModel,
                                 desk = backStackEntry.arguments?.getString("desk").toString()
                             )
                         }

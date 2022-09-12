@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.*
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocalDining
 import androidx.compose.runtime.Composable
@@ -16,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ddinerapp.featureMain.domain.model.Desk
+import com.example.ddinerapp.featureMain.presentation.utils.LoadingScreen
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
@@ -26,16 +30,18 @@ fun OrderingDesksScreen(
     val desks = viewModel.desks
 
     when {
+        viewModel.loading.value -> {
+            LoadingScreen()
+        }
         desks.isEmpty() -> {
-            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator()
-            }
+
         }
         desks.isNotEmpty() -> DesksList(
             navController,
             desks.sortedBy { it.description },
-            viewModel
-        )
+        ) {
+            viewModel.selectDesk(it)
+        }
     }
 }
 
@@ -43,7 +49,7 @@ fun OrderingDesksScreen(
 private fun DesksList(
     navController: NavController,
     desks: List<Desk>,
-    viewModel: DesksViewModel
+    selectDesk: (Desk) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -52,7 +58,7 @@ private fun DesksList(
         items(desks) { desk ->
             OutlinedButton(
                 onClick = {
-                    viewModel.selectDesk(desk)
+                    selectDesk(desk)
                     navController.navigate(Screen.HomeScreen.route + "/${desk.description}") {
                         popUpTo(Screen.OrderingTypeScreen.route)
                     }

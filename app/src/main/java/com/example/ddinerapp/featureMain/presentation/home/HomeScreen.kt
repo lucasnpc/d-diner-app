@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -29,7 +28,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.ddinerapp.featureMain.presentation.cart.CartScreen
-import com.example.ddinerapp.featureMain.presentation.orderingItems.MenuItemViewModel
 import com.example.ddinerapp.featureMain.presentation.orderingItems.OrderingItemsScreen
 import com.example.ddinerapp.featureMain.presentation.orderingMenu.OrderingMenuScreen
 import com.example.ddinerapp.featureMain.presentation.orders.OrdersScreen
@@ -40,8 +38,6 @@ import com.firebase.ui.auth.AuthUI
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel,
-    menuItemViewModel: MenuItemViewModel = hiltViewModel(),
     desk: String
 ) {
     val screens = listOf(
@@ -77,7 +73,7 @@ fun HomeScreen(
                 )
         ) {
             composable(route = Screen.OrderingMenuScreen.route) {
-                OrderingMenuScreen(navController = navController, menuItemViewModel)
+                OrderingMenuScreen(navController = navController)
             }
             composable(
                 route = Screen.OrderingItemsScreen.route + "/{itemCategory}",
@@ -89,7 +85,6 @@ fun HomeScreen(
                 OrderingItemsScreen(
                     navController = navController,
                     backStackEntry.arguments?.getString("itemCategory"),
-                    menuItemViewModel
                 )
             }
             composable(route = Screen.OrdersScreen.route) {

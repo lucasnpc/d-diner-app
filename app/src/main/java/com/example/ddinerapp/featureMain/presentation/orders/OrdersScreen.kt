@@ -16,12 +16,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.ddinerapp.featureMain.domain.model.Order
+import com.example.ddinerapp.featureMain.presentation.utils.LoadingScreen
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel()) {
     val orders = viewModel.orders
 
+    when {
+        viewModel.loading.value -> {
+            LoadingScreen()
+        }
+        orders.isEmpty() -> {}
+        orders.isNotEmpty() -> {
+            OrdersList(orders)
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun OrdersList(orders: List<Order>) {
     Box(modifier = Modifier.padding(PaddingValues(8.dp))) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
