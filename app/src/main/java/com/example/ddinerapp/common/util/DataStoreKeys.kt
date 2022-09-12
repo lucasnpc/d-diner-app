@@ -5,5 +5,5 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 object DataStoreKeys {
     val USER_ROLE = stringPreferencesKey("user_role")
     val BUSINESS_CNPJ = stringPreferencesKey("business_cnpj")
-    val DESK_CHOOSED = stringPreferencesKey("desk")
+    val SELECTED_DESK_ID = stringPreferencesKey("desk_id")
 }

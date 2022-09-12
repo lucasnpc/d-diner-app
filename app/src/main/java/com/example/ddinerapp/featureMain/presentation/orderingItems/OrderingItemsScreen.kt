@@ -17,7 +17,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -25,11 +24,9 @@ import com.example.ddinerapp.featureMain.presentation.utils.Screen
 fun OrderingItemsScreen(
     navController: NavController,
     itemCategory: String?,
-    viewModel: HomeViewModel,
-    desk: String
+    viewModel: MenuItemViewModel
 ) {
     val list = viewModel.items.filter { it.category == itemCategory }
-    val desk = viewModel.desks.first { it.description == desk }
 
     val orderedItems: MutableMap<String, Double> = mutableMapOf()
 
@@ -123,7 +120,6 @@ fun OrderingItemsScreen(
         ExtendedFloatingActionButton(
             text = { Text(text = "Concluir") },
             onClick = {
-                viewModel.createOrderItem()
                 navController.popBackStack(
                     Screen.OrderingMenuScreen.route,
                     inclusive = false

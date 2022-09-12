@@ -15,12 +15,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OrdersScreen(viewModel: HomeViewModel) {
-    println(viewModel.orders.toList())
+fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel()) {
     val orders = viewModel.orders
 
     Box(modifier = Modifier.padding(PaddingValues(8.dp))) {

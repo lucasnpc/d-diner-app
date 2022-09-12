@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.ddinerapp.common.util.DataStoreKeys.BUSINESS_CNPJ
+import com.example.ddinerapp.common.util.DataStoreKeys.SELECTED_DESK_ID
 import com.example.ddinerapp.common.util.DataStoreKeys.USER_ROLE
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -31,6 +32,12 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
+    fun setSelectedDesk(deskId: String) = runBlocking {
+        settingsDataStore.edit { settings ->
+            settings[SELECTED_DESK_ID] = deskId
+        }
+    }
+
     fun clearDataStore() = runBlocking {
         settingsDataStore.edit {
             it.clear()
@@ -43,7 +50,11 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
     }
 
     val businessCnpj: Flow<String> = settingsDataStore.data.map { prefs ->
-        prefs[BUSINESS_CNPJ] ?: ""
+        prefs[BUSINESS_CNPJ].toString()
+    }
+
+    val deskId: Flow<String> = settingsDataStore.data.map { prefs ->
+        prefs[SELECTED_DESK_ID].toString()
     }
 
 }

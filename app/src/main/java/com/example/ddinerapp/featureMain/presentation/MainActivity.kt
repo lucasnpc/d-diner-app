@@ -52,8 +52,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = Screen.OrderingDesksScreen.route) {
                             OrderingDesksScreen(
-                                navController = navController,
-                                homeViewModel
+                                navController = navController
                             )
                         }
                         composable(route = Screen.OrderingDeliveryScreen.route) {
@@ -68,7 +67,7 @@ class MainActivity : ComponentActivity() {
                                 })
                         ) { backStackEntry ->
                             HomeScreen(
-                                homeViewModel,
+                                viewModel = homeViewModel,
                                 desk = backStackEntry.arguments?.getString("desk").toString()
                             )
                         }

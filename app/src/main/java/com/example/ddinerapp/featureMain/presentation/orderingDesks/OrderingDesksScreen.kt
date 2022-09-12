@@ -16,13 +16,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ddinerapp.featureMain.domain.model.Desk
-import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
 fun OrderingDesksScreen(
     navController: NavController,
-    viewModel: HomeViewModel
+    viewModel: DesksViewModel = hiltViewModel()
 ) {
     val desks = viewModel.desks
 
@@ -44,7 +43,7 @@ fun OrderingDesksScreen(
 private fun DesksList(
     navController: NavController,
     desks: List<Desk>,
-    viewModel: HomeViewModel
+    viewModel: DesksViewModel
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -53,9 +52,7 @@ private fun DesksList(
         items(desks) { desk ->
             OutlinedButton(
                 onClick = {
-                    if (!desk.isOccupied)
-                        viewModel.setOccupiedDesk(desk)
-                    viewModel.selectedDesk.value = desk
+                    viewModel.selectDesk(desk)
                     navController.navigate(Screen.HomeScreen.route + "/${desk.description}") {
                         popUpTo(Screen.OrderingTypeScreen.route)
                     }

@@ -6,11 +6,8 @@ import com.example.ddinerapp.common.util.AuthenticationState
 import com.example.ddinerapp.common.util.CNPJ_FIELD
 import com.example.ddinerapp.common.util.DataStoreManager
 import com.example.ddinerapp.common.util.ROLE_FIELD
-import com.example.ddinerapp.featureMain.domain.repository.MainRepository
 import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +16,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val repository: MainRepository,
     private val storeManager: DataStoreManager,
     private val mainUseCases: MainUseCases
 ) : ViewModel() {

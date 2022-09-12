@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
+import com.example.ddinerapp.featureMain.presentation.orderingItems.MenuItemViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
 
 @Composable
-fun OrderingMenuScreen(navController: NavController, viewModel: HomeViewModel) {
+fun OrderingMenuScreen(navController: NavController, viewModel: MenuItemViewModel) {
     val itemsCategory = viewModel.items.distinctBy { it.category }
 
     LazyVerticalGrid(
