@@ -65,7 +65,6 @@ private fun DesksList(
                 },
                 modifier = Modifier
                     .width(120.dp)
-                    .height(120.dp)
                     .padding(8.dp),
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = if (desk.isOccupied) Color(0xFFEC4235) else Color(
@@ -74,6 +73,8 @@ private fun DesksList(
                 )
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = if (desk.isOccupied) "Ocupada" else "Disponível", fontSize = 20.sp)
+                    Spacer(modifier = Modifier.height(10.dp))
                     Icon(
                         imageVector = Icons.Rounded.LocalDining,
                         contentDescription = "Select Table",
@@ -82,7 +83,7 @@ private fun DesksList(
                             .height(30.dp)
                     )
                     Spacer(modifier = Modifier.height(5.dp))
-                    Text(text = desk.description, fontSize = 16.sp)
+                    Text(text = desk.description, fontSize = 18.sp)
                 }
             }
         }

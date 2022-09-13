@@ -1,17 +1,15 @@
 package com.example.ddinerapp.featureMain.presentation.home
 
-import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -51,7 +49,29 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(context, desk)
+            TopAppBar(
+                title = { Text(text = desk, fontSize = 20.sp) },
+                actions = {
+                    OutlinedButton(
+                        onClick = { AuthUI.getInstance().signOut(context) },
+                        border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text(text = "Logout")
+                    }
+                    OutlinedButton(
+                        onClick = { /*TODO*/ },
+                        border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Notifications,
+                            contentDescription = "Notification",
+                            tint = MaterialTheme.colors.primaryVariant,
+                        )
+                    }
+                }
+            )
         },
         bottomBar = {
             BottomNavBar(navController, screens)
@@ -127,47 +147,6 @@ private fun BottomNavBar(
                         restoreState = true
                     }
                 })
-        }
-    }
-}
-
-@Composable
-private fun TopAppBar(context: Context, desk: String?) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        OutlinedButton(
-            onClick = { AuthUI.getInstance().signOut(context) },
-            border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "User Image",
-                tint = MaterialTheme.colors.primaryVariant,
-                modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp)
-            )
-        }
-        Text(text = desk.toString(), fontSize = 20.sp, color = Color.Black)
-        OutlinedButton(
-            onClick = { /*TODO*/ },
-            border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Notifications,
-                contentDescription = "Notification",
-                tint = MaterialTheme.colors.primaryVariant,
-                modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp)
-            )
         }
     }
 }

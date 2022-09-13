@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +36,7 @@ fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel()) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 private fun OrdersList(orders: List<Order>) {
     Box(modifier = Modifier.padding(PaddingValues(8.dp))) {
@@ -56,10 +58,21 @@ private fun OrdersList(orders: List<Order>) {
                 )
             }
             items(orders) { order ->
-                Card(elevation = 8.dp) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = order.id)
-                        Text(text = "Concluido em ${order.endDate.toString()}")
+                Card(elevation = 8.dp, modifier = Modifier.fillMaxWidth(), onClick = {}) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(
+                            PaddingValues(8.dp)
+                        )
+                    ) {
+                        Text(
+                            text = if (order.concluded) "Pedido concluído em ${order.endDate}" else "Pedido em aberto",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(text = "Ver detalhes do pedido", fontSize = 17.sp)
                     }
                 }
             }

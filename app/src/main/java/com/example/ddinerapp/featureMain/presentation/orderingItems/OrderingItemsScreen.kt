@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,16 +79,8 @@ private fun ItemsList(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Icon(
-                            imageVector = Icons.Filled.Fastfood,
-                            contentDescription = "Item icon",
-                            modifier = Modifier
-                                .height(45.dp)
-                                .width(45.dp)
-                        )
                         Column {
                             Text(text = item.description, fontSize = 18.sp)
                             Text(text = "R$ ${item.price}", fontSize = 18.sp)
@@ -113,7 +104,7 @@ private fun ItemsList(
                                 }
                                 OutlinedButton(
                                     onClick = {},
-                                    modifier = Modifier.width(40.dp),
+                                    modifier = Modifier.width(60.dp),
                                     colors = ButtonDefaults.buttonColors(
                                         backgroundColor = MaterialTheme.colors.onBackground,
                                         contentColor = Color.White
