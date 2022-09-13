@@ -66,7 +66,7 @@ private fun OrdersList(orders: List<Order>) {
                         )
                     ) {
                         Text(
-                            text = if (order.concluded) "Pedido concluído em ${order.endDate}" else "Pedido em aberto",
+                            text = if (order.concluded) "Pedido concluído" else "Pedido em aberto",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.SemiBold,
                             textAlign = TextAlign.Center

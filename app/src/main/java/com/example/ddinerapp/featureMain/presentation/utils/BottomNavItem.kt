@@ -3,7 +3,6 @@ package com.example.ddinerapp.featureMain.presentation.utils
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.RestaurantMenu
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -31,12 +30,5 @@ sealed class BottomNavItem(
             icon = Icons.Filled.ShoppingCart,
             contentDescription = "Cart Icon",
             route = Screen.CartScreen.route
-        )
-
-    object SettingsItem :
-        BottomNavItem(
-            icon = Icons.Filled.Settings,
-            contentDescription = "Settings Icon",
-            route = Screen.SettingsScreen.route
         )
 }

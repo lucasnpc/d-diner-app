@@ -12,4 +12,10 @@
     <string name="sign_in_email">Sign in with email</string>
     <string name="error_happened">Alguma coisa deu errado!</string>
     <string name="invalid_authentication">Você ainda não pode acessar o App!</string>
+    <string name="pizzas_category">Pizzas</string>
+    <string name="lanches_category">Lanches</string>
+    <string name="pratos_category">Pratos</string>
+    <string name="bebidas_category">Bebidas</string>
+    <string name="sobremesas_category">Sobremesas</string>
+    <string name="make_your_pizza">Monte sua Pizza</string>
 </resources>

@@ -6,15 +6,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.ddinerapp.R
 import com.example.ddinerapp.common.theme.DDinerAppTheme
 import com.example.ddinerapp.common.util.FirebaseUserLiveData
 import com.example.ddinerapp.featureAuthentication.AuthenticationActivity
@@ -24,6 +30,7 @@ import com.example.ddinerapp.featureMain.presentation.orderingDelivery.OrderingD
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.OrderingDesksScreen
 import com.example.ddinerapp.featureMain.presentation.orderingType.OrderingTypeScreen
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
+import com.firebase.ui.auth.AuthUI
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,14 +45,45 @@ class MainActivity : ComponentActivity() {
         observeAuthState()
         setContent {
             DDinerAppTheme {
-                Surface(
+                Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    backgroundColor = MaterialTheme.colors.background,
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(
+                                    text = stringResource(id = R.string.app_name),
+                                    fontSize = 20.sp
+                                )
+                            },
+                            actions = {
+                                IconButton(
+                                    onClick = { /*TODO*/ }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Notifications,
+                                        contentDescription = "Notification",
+                                        tint = MaterialTheme.colors.onPrimary,
+                                    )
+                                }
+                                IconButton(
+                                    onClick = { AuthUI.getInstance().signOut(this@MainActivity) },
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Logout,
+                                        contentDescription = "Logout",
+                                        tint = MaterialTheme.colors.onPrimary,
+                                    )
+                                }
+                            }
+                        )
+                    }
                 ) {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.OrderingTypeScreen.route
+                        startDestination = Screen.OrderingTypeScreen.route,
+                        modifier = Modifier.padding(it)
                     ) {
                         composable(route = Screen.OrderingTypeScreen.route) {
                             OrderingTypeScreen(navController = navController)
@@ -65,10 +103,8 @@ class MainActivity : ComponentActivity() {
                                     type = NavType.StringType
                                     defaultValue = ""
                                 })
-                        ) { backStackEntry ->
-                            HomeScreen(
-                                desk = backStackEntry.arguments?.getString("desk").toString()
-                            )
+                        ) {
+                            HomeScreen()
                         }
                     }
                 }
