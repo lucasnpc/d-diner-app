@@ -28,6 +28,7 @@ class MenuItemViewModel @Inject constructor(
 
     init {
         getMenuItems()
+        getCurrentOrder()
     }
 
     private fun getMenuItems() {
@@ -57,6 +58,22 @@ class MenuItemViewModel @Inject constructor(
                     }
                     _loading.value = false
                 }
+        }
+    }
+
+    private fun getCurrentOrder() {
+        viewModelScope.launch {
+            storeManager.run {
+                mainUseCases.getDeskOrders(businessCnpj.first(), deskId.first())
+                    .addSnapshotListener { snapshot, exception ->
+                        if (exception != null) {
+                            println(exception.message)
+                            return@addSnapshotListener
+                        }
+
+                        println(snapshot?.documents?.first()?.id.toString())
+                    }
+            }
         }
     }
 }

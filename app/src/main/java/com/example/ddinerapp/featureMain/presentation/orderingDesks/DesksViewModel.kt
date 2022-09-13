@@ -76,8 +76,13 @@ class DesksViewModel @Inject constructor(
     fun selectDesk(desk: Desk) {
         viewModelScope.launch {
             storeManager.run {
-                if (!desk.isOccupied)
-                    mainUseCases.setOccupiedDeskUseCase(desk, businessCnpj.first())
+                val cnpj = businessCnpj.first()
+                if (!desk.isOccupied) {
+                    mainUseCases.setOccupiedDeskUseCase(desk.id, cnpj)
+                        .addOnSuccessListener {
+                            mainUseCases.addOrderUseCase(desk.id, cnpj)
+                        }
+                }
                 setSelectedDesk(desk.id)
             }
         }

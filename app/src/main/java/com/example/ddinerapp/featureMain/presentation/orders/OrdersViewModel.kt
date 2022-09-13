@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.common.util.DataStoreManager
+import com.example.ddinerapp.common.util.OrderKeys
 import com.example.ddinerapp.featureMain.domain.model.Order
 import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
 import com.google.firebase.firestore.DocumentChange
@@ -47,9 +48,9 @@ class OrdersViewModel @Inject constructor(
                                     _orders.add(
                                         Order(
                                             id = it.id,
-                                            concluded = it["concluded"] as Boolean,
-                                            startDate = it["startDate"].toString(),
-                                            endDate = it["endDate"].toString()
+                                            concluded = it[OrderKeys.CONCLUDED] as Boolean,
+                                            startDate = it[OrderKeys.START_DATE].toString(),
+                                            endDate = it[OrderKeys.END_DATE].toString()
                                         )
                                     )
                                 }
@@ -61,9 +62,9 @@ class OrdersViewModel @Inject constructor(
                                         add(
                                             Order(
                                                 id = it.id,
-                                                concluded = it["concluded"] as Boolean,
-                                                startDate = it["startDate"].toString(),
-                                                endDate = it["endDate"].toString()
+                                                concluded = it[OrderKeys.CONCLUDED] as Boolean,
+                                                startDate = it[OrderKeys.START_DATE].toString(),
+                                                endDate = it[OrderKeys.END_DATE].toString()
                                             )
                                         )
                                     }
