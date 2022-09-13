@@ -38,7 +38,9 @@ fun OrderingItemsScreen(
         }
         list.isEmpty() -> {}
         list.isNotEmpty() -> {
-            ItemsList(itemCategory, list, orderedItems, navController)
+            ItemsList(itemCategory, list, orderedItems, navController) {
+                viewModel.placeOrder(it)
+            }
         }
     }
 
@@ -50,7 +52,8 @@ private fun ItemsList(
     itemCategory: String?,
     list: List<MenuItem>,
     orderedItems: MutableMap<String, Double>,
-    navController: NavController
+    navController: NavController,
+    placeOrder: (Map<String, Double>) -> Unit
 ) {
     Box(modifier = Modifier.padding(PaddingValues(8.dp))) {
         LazyColumn(
@@ -142,6 +145,7 @@ private fun ItemsList(
         ExtendedFloatingActionButton(
             text = { Text(text = "Concluir") },
             onClick = {
+                placeOrder(orderedItems.filter { it.value > 0 })
                 navController.popBackStack(
                     Screen.OrderingMenuScreen.route,
                     inclusive = false

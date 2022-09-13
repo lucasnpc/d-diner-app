@@ -71,8 +71,21 @@ class MenuItemViewModel @Inject constructor(
                             return@addSnapshotListener
                         }
 
-                        println(snapshot?.documents?.first()?.id.toString())
+                        storeManager.setCurrentOrder(snapshot?.documents?.first()?.id.toString())
                     }
+            }
+        }
+    }
+
+    fun placeOrder(placedOrders: Map<String, Double>) {
+        viewModelScope.launch {
+            storeManager.run {
+                mainUseCases.placeOrdersUseCase(
+                    businessCnpj.first(),
+                    deskId.first(),
+                    orderId.first(),
+                    placedOrders
+                )
             }
         }
     }
