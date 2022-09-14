@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.ddinerapp.featureMain.presentation.cart.CartScreen
+import com.example.ddinerapp.featureMain.presentation.makeYourPizza.MakeYourPizzaScreen
 import com.example.ddinerapp.featureMain.presentation.orderingItems.OrderingItemsScreen
 import com.example.ddinerapp.featureMain.presentation.orderingMenu.OrderingMenuScreen
 import com.example.ddinerapp.featureMain.presentation.orders.OrdersScreen
@@ -74,6 +75,9 @@ fun HomeScreen() {
             }
             composable(route = Screen.OrdersScreen.route) {
                 OrdersScreen()
+            }
+            composable(route = Screen.MakeYourPizzaScreen.route){
+                MakeYourPizzaScreen()
             }
         }
     }

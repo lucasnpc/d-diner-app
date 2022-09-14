@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,6 +47,7 @@ private fun MenuItemsCategoryList(
     itemsCategory: List<MenuItem>,
     navController: NavController
 ) {
+    val context = LocalContext.current
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -64,24 +66,27 @@ private fun MenuItemsCategoryList(
                 stringResource(R.string.sobremesas_category) -> icon = Icons.Filled.Cake
             }
             MenuItemButton(
-                navController = navController,
-                itemsCategory = item.category,
                 itemLabel = itemLabel,
                 icon = icon
-            )
+            ) { label ->
+                if (label == context.getString(R.string.make_your_pizza)) {
+                    navController.navigate(Screen.MakeYourPizzaScreen.route)
+                    return@MenuItemButton
+                }
+                navController.navigate(Screen.OrderingItemsScreen.route + "/${label}")
+            }
         }
     }
 }
 
 @Composable
 private fun MenuItemButton(
-    navController: NavController,
-    itemsCategory: String,
     itemLabel: String,
-    icon: ImageVector
+    icon: ImageVector,
+    navigate: (category: String) -> Unit
 ) {
     OutlinedButton(
-        onClick = { navController.navigate(Screen.OrderingItemsScreen.route + "/${itemsCategory}") },
+        onClick = { navigate(itemLabel) },
         modifier = Modifier
             .width(120.dp)
             .height(120.dp)
