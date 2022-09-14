@@ -50,28 +50,25 @@ private fun MenuItemsCategoryList(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        item {
+        items(itemsCategory) { item ->
+            var itemLabel = item.category
+            var icon = Icons.Filled.DinnerDining
+            when (item.category) {
+                stringResource(R.string.pizzas_category) -> {
+                    itemLabel = stringResource(id = R.string.make_your_pizza)
+                    icon = Icons.Filled.LocalPizza
+                }
+                stringResource(R.string.lanches_category) -> icon = Icons.Filled.LunchDining
+                stringResource(R.string.pratos_category) -> icon = Icons.Filled.BrunchDining
+                stringResource(R.string.bebidas_category) -> icon = Icons.Filled.LocalDrink
+                stringResource(R.string.sobremesas_category) -> icon = Icons.Filled.Cake
+            }
             MenuItemButton(
                 navController = navController,
-                itemsCategory = stringResource(id = R.string.pizzas_category),
-                itemLabel = stringResource(id = R.string.make_your_pizza),
-                icon = Icons.Filled.LocalPizza
+                itemsCategory = item.category,
+                itemLabel = itemLabel,
+                icon = icon
             )
-        }
-        items(itemsCategory) { item ->
-            if (item.category != stringResource(id = R.string.pizzas_category))
-                MenuItemButton(
-                    navController = navController,
-                    itemsCategory = item.category,
-                    itemLabel = item.category,
-                    icon = when (item.category) {
-                        stringResource(R.string.lanches_category) -> Icons.Filled.LunchDining
-                        stringResource(R.string.pratos_category) -> Icons.Filled.BrunchDining
-                        stringResource(R.string.bebidas_category) -> Icons.Filled.LocalDrink
-                        stringResource(R.string.sobremesas_category) -> Icons.Filled.Cake
-                        else -> Icons.Filled.DinnerDining
-                    }
-                )
         }
     }
 }

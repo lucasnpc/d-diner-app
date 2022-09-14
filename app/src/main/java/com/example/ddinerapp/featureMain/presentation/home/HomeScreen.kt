@@ -9,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -67,14 +66,14 @@ fun HomeScreen() {
             ) { backStackEntry ->
                 OrderingItemsScreen(
                     navController = navController,
-                    backStackEntry.arguments?.getString("itemCategory"),
+                    backStackEntry.arguments?.getString("itemCategory").toString(),
                 )
             }
             composable(route = Screen.OrdersScreen.route) {
                 OrdersScreen()
             }
             composable(route = Screen.CartScreen.route) {
-                CartScreen(navController = navController)
+                CartScreen()
             }
         }
     }

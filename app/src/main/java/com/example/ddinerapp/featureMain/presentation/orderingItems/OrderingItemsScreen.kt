@@ -5,18 +5,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.ddinerapp.R
 import com.example.ddinerapp.featureMain.domain.model.MenuItem
 import com.example.ddinerapp.featureMain.presentation.utils.LoadingScreen
 import com.example.ddinerapp.featureMain.presentation.utils.Screen
@@ -24,7 +29,7 @@ import com.example.ddinerapp.featureMain.presentation.utils.Screen
 @Composable
 fun OrderingItemsScreen(
     navController: NavController,
-    itemCategory: String?,
+    itemCategory: String,
     viewModel: MenuItemViewModel = hiltViewModel()
 ) {
     val list = viewModel.items.filter { it.category == itemCategory }
@@ -54,6 +59,10 @@ private fun ItemsList(
     navController: NavController,
     placeOrder: (Map<String, Double>) -> Unit
 ) {
+    val radioOptions = listOf("Completa", "Brotinho")
+    val (selectedOption, onOptionSelect) = remember {
+        mutableStateOf(radioOptions[0])
+    }
     Box(modifier = Modifier.padding(PaddingValues(8.dp))) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -71,6 +80,9 @@ private fun ItemsList(
                     fontSize = 20.sp,
                     color = Color.White
                 )
+                if (itemCategory == stringResource(id = R.string.pizzas_category)) {
+                    SetPizzaCharacteristics(radioOptions, selectedOption, onOptionSelect)
+                }
             }
             items(list) { item ->
                 var itemQuantity by remember { mutableStateOf(0) }
@@ -153,4 +165,27 @@ private fun ItemsList(
             contentColor = Color.White
         )
     }
+}
+
+@Composable
+private fun SetPizzaCharacteristics(
+    radioOptions: List<String>,
+    selectedOption: String,
+    onOptionSelect: (String) -> Unit
+) {
+    Row {
+        radioOptions.forEach {
+            Row(
+                Modifier.selectable(
+                    selected = (it == selectedOption),
+                    onClick = { onOptionSelect(it) },
+                    role = Role.RadioButton
+                ),
+            ) {
+                RadioButton(selected = it == selectedOption, onClick = null)
+                Text(text = it, modifier = Modifier.align(CenterVertically))
+            }
+        }
+    }
+
 }
