@@ -69,11 +69,11 @@ fun HomeScreen() {
                     backStackEntry.arguments?.getString("itemCategory").toString(),
                 )
             }
-            composable(route = Screen.OrdersScreen.route) {
-                OrdersScreen()
-            }
             composable(route = Screen.CartScreen.route) {
                 CartScreen()
+            }
+            composable(route = Screen.OrdersScreen.route) {
+                OrdersScreen()
             }
         }
     }

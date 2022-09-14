@@ -23,7 +23,7 @@ import com.example.ddinerapp.featureMain.presentation.utils.LoadingScreen
 
 @Composable
 fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel()) {
-    val orders = viewModel.orders
+    val orders = viewModel.orders.filter { it.concluded }
 
     when {
         viewModel.loading.value -> {

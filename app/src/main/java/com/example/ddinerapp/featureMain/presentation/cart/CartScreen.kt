@@ -10,10 +10,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun CartScreen() {
-
+    val viewModel: CartViewModel = hiltViewModel()
+    println(viewModel.orderedItems)
     Column(
         modifier = Modifier
             .fillMaxSize()

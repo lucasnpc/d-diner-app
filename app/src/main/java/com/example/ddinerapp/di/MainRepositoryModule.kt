@@ -29,6 +29,7 @@ object MainRepositoryModule {
             setOccupiedDeskUseCase = SetOccupiedDeskUseCase(),
             getDeskOrders = GetDeskOrders(),
             addOrderUseCase = AddOrderUseCase(),
-            placeOrdersUseCase = PlaceOrdersUseCase()
+            placeOrdersUseCase = PlaceOrdersUseCase(),
+            getOrderedItemsUseCase = GetOrderedItemsUseCase()
         )
 }

@@ -7,5 +7,6 @@ data class MainUseCases(
     val setOccupiedDeskUseCase: SetOccupiedDeskUseCase,
     val getDeskOrders: GetDeskOrders,
     val addOrderUseCase: AddOrderUseCase,
-    val placeOrdersUseCase: PlaceOrdersUseCase
+    val placeOrdersUseCase: PlaceOrdersUseCase,
+    val getOrderedItemsUseCase: GetOrderedItemsUseCase
 )
