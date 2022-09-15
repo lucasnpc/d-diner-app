@@ -1,5 +1,6 @@
 package com.example.ddinerapp.featureMain.presentation.orderingDelivery
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,9 +14,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.ddinerapp.featureMain.presentation.utils.*
+import com.example.ddinerapp.featureHome.presentation.HomeActivity
+import com.example.ddinerapp.featureMain.presentation.utils.Form
+import com.example.ddinerapp.featureMain.presentation.utils.FormField
+import com.example.ddinerapp.featureMain.presentation.utils.FormState
+import com.example.ddinerapp.featureMain.presentation.utils.TextValidator
 
 private val formFields = listOf(
     FormField(
@@ -41,6 +47,7 @@ private val formFields = listOf(
 @Composable
 fun OrderingDeliveryScreen(navController: NavController) {
     val state by remember { mutableStateOf(FormState()) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -56,9 +63,7 @@ fun OrderingDeliveryScreen(navController: NavController) {
                     deliveryData.add(it.text)
                 }
                 if (state.validate())
-                    navController.navigate(Screen.HomeScreen.route + "/Delivery") {
-                        popUpTo(Screen.OrderingTypeScreen.route)
-                    }
+                    context.startActivity(Intent(context, HomeActivity::class.java))
             },
             modifier = Modifier.align(Alignment.End),
             colors = ButtonDefaults.buttonColors(

@@ -1,5 +1,6 @@
 package com.example.ddinerapp.featureMain.presentation.orderingDesks
 
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -14,13 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.ddinerapp.featureMain.domain.model.Desk
-import com.example.ddinerapp.featureMain.presentation.utils.LoadingScreen
-import com.example.ddinerapp.featureMain.presentation.utils.Screen
+import com.example.ddinerapp.featureHome.presentation.HomeActivity
+import com.example.ddinerapp.featureHome.domain.model.Desk
+import com.example.ddinerapp.common.util.LoadingScreen
 
 @Composable
 fun OrderingDesksScreen(
@@ -37,7 +39,6 @@ fun OrderingDesksScreen(
 
         }
         desks.isNotEmpty() -> DesksList(
-            navController,
             desks.sortedBy { it.description },
         ) {
             viewModel.selectDesk(it)
@@ -47,10 +48,12 @@ fun OrderingDesksScreen(
 
 @Composable
 private fun DesksList(
-    navController: NavController,
     desks: List<Desk>,
     selectDesk: (Desk) -> Unit
 ) {
+
+    val context = LocalContext.current
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -59,9 +62,7 @@ private fun DesksList(
             OutlinedButton(
                 onClick = {
                     selectDesk(desk)
-                    navController.navigate(Screen.HomeScreen.route + "/${desk.description}") {
-                        popUpTo(Screen.OrderingTypeScreen.route)
-                    }
+                    context.startActivity(Intent(context, HomeActivity::class.java))
                 },
                 modifier = Modifier
                     .width(120.dp)

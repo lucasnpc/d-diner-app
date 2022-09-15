@@ -4,7 +4,7 @@ import com.example.ddinerapp.common.util.BUSINESS_COLLECTION
 import com.example.ddinerapp.common.util.DESKS_COLLECTION
 import com.example.ddinerapp.common.util.ORDERS_COLLECTION
 import com.example.ddinerapp.common.util.OrderKeys
-import com.example.ddinerapp.featureMain.domain.model.Order
+import com.example.ddinerapp.featureHome.domain.model.Order
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore

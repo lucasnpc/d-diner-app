@@ -6,7 +6,7 @@ import com.example.ddinerapp.common.util.AuthenticationState
 import com.example.ddinerapp.common.util.CNPJ_FIELD
 import com.example.ddinerapp.common.util.DataStoreManager
 import com.example.ddinerapp.common.util.ROLE_FIELD
-import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
+import com.example.ddinerapp.featureAuthentication.domain.useCases.AuthenticationUseCases
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val storeManager: DataStoreManager,
-    private val mainUseCases: MainUseCases
+    private val authenticationUseCases: AuthenticationUseCases
 ) : ViewModel() {
 
     private val _loading = MutableStateFlow(false)
@@ -29,7 +29,7 @@ class SignUpViewModel @Inject constructor(
     fun validateUser(firebaseUser: FirebaseUser) {
         _loading.value = true
         viewModelScope.launch {
-            mainUseCases.authenticateUserUseCase(firebaseUser)
+            authenticationUseCases.authenticateUserUseCase(firebaseUser)
                 .addOnSuccessListener { document ->
                     storeManager.run {
                         setUserRole(document.getString(ROLE_FIELD).toString())

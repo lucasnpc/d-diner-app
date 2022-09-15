@@ -15,17 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.ddinerapp.R
 import com.example.ddinerapp.common.theme.DDinerAppTheme
 import com.example.ddinerapp.common.util.FirebaseUserLiveData
 import com.example.ddinerapp.featureAuthentication.AuthenticationActivity
-import com.example.ddinerapp.featureMain.presentation.home.HomeScreen
-import com.example.ddinerapp.featureMain.presentation.home.HomeViewModel
 import com.example.ddinerapp.featureMain.presentation.orderingDelivery.OrderingDeliveryScreen
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.OrderingDesksScreen
 import com.example.ddinerapp.featureMain.presentation.orderingType.OrderingTypeScreen
@@ -37,7 +33,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
-    private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,16 +90,6 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = Screen.OrderingDeliveryScreen.route) {
                             OrderingDeliveryScreen(navController = navController)
-                        }
-                        composable(
-                            route = Screen.HomeScreen.route + "/{desk}",
-                            arguments = listOf(
-                                navArgument("desk") {
-                                    type = NavType.StringType
-                                    defaultValue = ""
-                                })
-                        ) {
-                            HomeScreen()
                         }
                     }
                 }

@@ -1,9 +1,9 @@
 package com.example.ddinerapp.di
 
-import com.example.ddinerapp.featureMain.data.repository.MainRepositoryImpl
-import com.example.ddinerapp.featureMain.domain.remote.MainService
-import com.example.ddinerapp.featureMain.domain.repository.MainRepository
-import com.example.ddinerapp.featureMain.domain.useCases.*
+import com.example.ddinerapp.featureMain.domain.useCases.AddOrderUseCase
+import com.example.ddinerapp.featureMain.domain.useCases.GetDesksUseCase
+import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
+import com.example.ddinerapp.featureMain.domain.useCases.SetOccupiedDeskUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,20 +16,10 @@ object MainRepositoryModule {
 
     @ViewModelScoped
     @Provides
-    fun provideMainRepository(service: MainService): MainRepository =
-        MainRepositoryImpl(service = service)
-
-    @ViewModelScoped
-    @Provides
     fun provideMainUseCases(): MainUseCases =
         MainUseCases(
-            authenticateUserUseCase = AuthenticateUserUseCase(),
             getDesksUseCase = GetDesksUseCase(),
-            getMenuItemsUseCase = GetMenuItemsUseCase(),
             setOccupiedDeskUseCase = SetOccupiedDeskUseCase(),
-            getDeskOrders = GetDeskOrders(),
             addOrderUseCase = AddOrderUseCase(),
-            placeOrdersUseCase = PlaceOrdersUseCase(),
-            getOrderedItemsUseCase = GetOrderedItemsUseCase()
         )
 }

@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.common.util.DataStoreManager
-import com.example.ddinerapp.featureMain.domain.model.Desk
+import com.example.ddinerapp.featureHome.domain.model.Desk
 import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
 import com.google.firebase.firestore.DocumentChange
 import dagger.hilt.android.lifecycle.HiltViewModel
