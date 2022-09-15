@@ -1,5 +1,7 @@
 package com.example.ddinerapp.featureMain.presentation.cart
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.common.util.DataStoreManager
@@ -18,6 +20,9 @@ class CartViewModel @Inject constructor(
     private val storeManager: DataStoreManager
 ) : ViewModel() {
 
+    private val _loading = mutableStateOf(false)
+    val loading: State<Boolean> = _loading
+
     private val _orderedItems = mutableListOf<OrderedItems>()
     val orderedItems: List<OrderedItems> = _orderedItems
 
@@ -26,6 +31,7 @@ class CartViewModel @Inject constructor(
     }
 
     private fun getOrderedItems() {
+        _loading.value = true
         viewModelScope.launch {
             storeManager.run {
                 mainUseCases.getOrderedItemsUseCase(
@@ -57,6 +63,7 @@ class CartViewModel @Inject constructor(
                             else -> Unit
                         }
                     }
+                    _loading.value = false
                 }
             }
         }
