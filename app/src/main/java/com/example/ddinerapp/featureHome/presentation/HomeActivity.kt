@@ -6,11 +6,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -20,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.ddinerapp.R
 import com.example.ddinerapp.common.theme.DDinerAppTheme
 import com.example.ddinerapp.databinding.ActivityHomeBinding
 import com.example.ddinerapp.featureHome.presentation.cart.CartScreen
@@ -27,8 +33,8 @@ import com.example.ddinerapp.featureHome.presentation.makeYourPizza.MakeYourPizz
 import com.example.ddinerapp.featureHome.presentation.orderingItems.OrderingItemsScreen
 import com.example.ddinerapp.featureHome.presentation.orderingMenu.OrderingMenuScreen
 import com.example.ddinerapp.featureHome.presentation.orders.OrdersScreen
-import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
 import com.example.ddinerapp.featureHome.presentation.util.BottomNavItem
+import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,6 +58,9 @@ class HomeActivity : AppCompatActivity() {
 
             DDinerAppTheme {
                 Scaffold(
+                    topBar = {
+                        TopActionBar()
+                    },
                     bottomBar = {
                         BottomNavBar(navController, screens)
                     }
@@ -99,6 +108,38 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    @Composable
+    private fun TopActionBar() {
+        TopAppBar(
+            title = {
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    fontSize = 20.sp
+                )
+            },
+            actions = {
+                IconButton(
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "Search",
+                        tint = MaterialTheme.colors.onPrimary,
+                    )
+                }
+                IconButton(
+                    onClick = { /*TODO*/ },
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Notifications,
+                        contentDescription = "Notifications",
+                        tint = MaterialTheme.colors.onPrimary,
+                    )
+                }
+            }
+        )
     }
 }
 
