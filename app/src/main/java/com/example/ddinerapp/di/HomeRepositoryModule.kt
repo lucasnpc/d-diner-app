@@ -18,6 +18,7 @@ object HomeRepositoryModule {
             getMenuItemsUseCase = GetMenuItemsUseCase(),
             getDeskOrders = GetDeskOrders(),
             placeOrdersUseCase = PlaceOrdersUseCase(),
-            getOrderedItemsUseCase = GetOrderedItemsUseCase()
+            getOrderedItemsUseCase = GetOrderedItemsUseCase(),
+            concludeOrderUseCase = ConcludeOrderUseCase()
         )
 }

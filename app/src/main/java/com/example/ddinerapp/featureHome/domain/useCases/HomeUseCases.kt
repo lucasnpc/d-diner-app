@@ -5,4 +5,5 @@ data class HomeUseCases(
     val placeOrdersUseCase: PlaceOrdersUseCase,
     val getDeskOrders: GetDeskOrders,
     val getMenuItemsUseCase: GetMenuItemsUseCase,
+    val concludeOrderUseCase: ConcludeOrderUseCase
 )

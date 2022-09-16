@@ -1,5 +1,6 @@
 package com.example.ddinerapp.featureHome.presentation.cart
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -22,11 +24,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.ddinerapp.common.util.LoadingScreen
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.domain.model.OrderedItems
 import com.example.ddinerapp.featureHome.presentation.orderingItems.MenuItemViewModel
 import com.example.ddinerapp.featureHome.presentation.orders.OrdersViewModel
-import com.example.ddinerapp.common.util.LoadingScreen
+import com.example.ddinerapp.featureMain.presentation.orderingDesks.DesksViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -35,9 +38,11 @@ fun CartScreen() {
     val cartViewModel: CartViewModel = hiltViewModel()
     val menuItemViewModel: MenuItemViewModel = hiltViewModel()
     val ordersViewModel: OrdersViewModel = hiltViewModel()
+    val desksViewModel: DesksViewModel = hiltViewModel()
     val list = cartViewModel.orderedItems
     val itemsList = menuItemViewModel.items
     val orderedItems = mutableListOf<MenuItem>()
+    val context = (LocalContext.current as? Activity)
 
     var total = 0.0
 
@@ -48,7 +53,6 @@ fun CartScreen() {
     val (selectedOption, onOptionSelect) = remember {
         mutableStateOf(radioOptions[0])
     }
-
 
     cartViewModel.orderedItems.forEach { orderedItem ->
         itemsList.find { it.id == orderedItem.itemId }?.let { find ->
@@ -61,7 +65,7 @@ fun CartScreen() {
     }
 
     when {
-        cartViewModel.loading.value || menuItemViewModel.loading.value || ordersViewModel.loading.value -> {
+        cartViewModel.loading.value || menuItemViewModel.loading.value || ordersViewModel.loading.value || desksViewModel.loading.value -> {
             LoadingScreen()
         }
         else -> {
@@ -101,7 +105,14 @@ fun CartScreen() {
                 if (selectedOption == "Dinheiro")
                     MoneyField(total = total)
                 Spacer(modifier = Modifier.height(5.dp))
-                Button(onClick = { /*TODO*/ }, modifier = Modifier.align(CenterHorizontally)) {
+                Button(
+                    onClick = {
+                        ordersViewModel.concludeOrder()
+                        desksViewModel.disoccupyDesk()
+                        context?.finish()
+                    },
+                    modifier = Modifier.align(CenterHorizontally)
+                ) {
                     Text(text = "Efetuar pagamento")
                 }
                 Spacer(modifier = Modifier.height(8.dp))

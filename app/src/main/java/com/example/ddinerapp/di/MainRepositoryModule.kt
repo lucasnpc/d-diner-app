@@ -1,9 +1,6 @@
 package com.example.ddinerapp.di
 
-import com.example.ddinerapp.featureMain.domain.useCases.AddOrderUseCase
-import com.example.ddinerapp.featureMain.domain.useCases.GetDesksUseCase
-import com.example.ddinerapp.featureMain.domain.useCases.MainUseCases
-import com.example.ddinerapp.featureMain.domain.useCases.SetOccupiedDeskUseCase
+import com.example.ddinerapp.featureMain.domain.useCases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +18,6 @@ object MainRepositoryModule {
             getDesksUseCase = GetDesksUseCase(),
             setOccupiedDeskUseCase = SetOccupiedDeskUseCase(),
             addOrderUseCase = AddOrderUseCase(),
+            disoccupyDeskUseCase = DisoccupyDeskUseCase()
         )
 }

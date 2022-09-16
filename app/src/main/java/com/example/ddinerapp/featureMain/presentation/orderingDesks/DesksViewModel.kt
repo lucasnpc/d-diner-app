@@ -54,11 +54,9 @@ class DesksViewModel @Inject constructor(
                             }
                             DocumentChange.Type.MODIFIED -> doc.document.let {
                                 _desks.run {
-                                    val index =
-                                        find { desk -> it.id == desk.id }
-                                    remove(index)
-                                    add(
-                                        Desk(
+                                    val find = find { desk -> desk.id == it.id }
+                                    set(
+                                        indexOf(find), Desk(
                                             description = it["description"].toString(),
                                             isOccupied = it["isOccupied"] as Boolean
                                         )
@@ -84,6 +82,14 @@ class DesksViewModel @Inject constructor(
                         }
                 }
                 setSelectedDesk(desk.id)
+            }
+        }
+    }
+
+    fun disoccupyDesk() {
+        viewModelScope.launch {
+            storeManager.run {
+                mainUseCases.disoccupyDeskUseCase(businessCnpj.first(), deskId.first())
             }
         }
     }

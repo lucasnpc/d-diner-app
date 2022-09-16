@@ -56,11 +56,9 @@ class OrdersViewModel @Inject constructor(
                                 }
                                 DocumentChange.Type.MODIFIED -> doc.document.let {
                                     _orders.run {
-                                        val index =
-                                            find { order -> it.id == order.id }
-                                        remove(index)
-                                        add(
-                                            Order(
+                                        val find = find { order -> it.id == order.id }
+                                        set(
+                                            indexOf(find), Order(
                                                 id = it.id,
                                                 concluded = it[OrderKeys.CONCLUDED] as Boolean,
                                                 startDate = it[OrderKeys.START_DATE].toString(),
@@ -74,6 +72,18 @@ class OrdersViewModel @Inject constructor(
                         }
                         _loading.value = false
                     }
+            }
+        }
+    }
+
+    fun concludeOrder() {
+        viewModelScope.launch {
+            storeManager.run {
+                homeUseCases.concludeOrderUseCase(
+                    businessCnpj.first(),
+                    deskId.first(),
+                    orderId.first()
+                )
             }
         }
     }
