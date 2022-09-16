@@ -26,7 +26,6 @@ import com.example.ddinerapp.common.util.LoadingScreen
 
 @Composable
 fun OrderingDesksScreen(
-    navController: NavController,
     viewModel: DesksViewModel = hiltViewModel()
 ) {
     val desks = viewModel.desks

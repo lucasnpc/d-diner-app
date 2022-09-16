@@ -102,9 +102,7 @@ class MainActivity : AppCompatActivity() {
                             OrderingTypeScreen(navController = navController)
                         }
                         composable(route = Screen.OrderingDesksScreen.route) {
-                            OrderingDesksScreen(
-                                navController = navController
-                            )
+                            OrderingDesksScreen()
                         }
                         composable(route = Screen.OrderingDeliveryScreen.route) {
                             OrderingDeliveryScreen(navController = navController)

@@ -57,6 +57,7 @@ class DesksViewModel @Inject constructor(
                                     val find = find { desk -> desk.id == it.id }
                                     set(
                                         indexOf(find), Desk(
+                                            id = it.id,
                                             description = it["description"].toString(),
                                             isOccupied = it["isOccupied"] as Boolean
                                         )
@@ -77,9 +78,7 @@ class DesksViewModel @Inject constructor(
                 val cnpj = businessCnpj.first()
                 if (!desk.isOccupied) {
                     mainUseCases.setOccupiedDeskUseCase(desk.id, cnpj)
-                        .addOnSuccessListener {
-                            mainUseCases.addOrderUseCase(desk.id, cnpj)
-                        }
+                    mainUseCases.addOrderUseCase(desk.id, cnpj)
                 }
                 setSelectedDesk(desk.id)
             }
