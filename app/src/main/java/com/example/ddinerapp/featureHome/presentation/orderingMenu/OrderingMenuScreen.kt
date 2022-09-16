@@ -99,7 +99,8 @@ private fun MenuItemButton(
                 contentDescription = "Select Menu Item Category",
                 modifier = Modifier
                     .width(30.dp)
-                    .height(30.dp)
+                    .height(30.dp),
+                tint = MaterialTheme.colors.primary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = itemLabel, fontSize = 16.sp)

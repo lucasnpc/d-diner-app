@@ -18,7 +18,10 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.presentation.orderingItems.MenuItemViewModel
+import com.example.ddinerapp.featureHome.presentation.util.OptionalsDrawerContent
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MakeYourPizzaScreen() {
     val viewmodel: MenuItemViewModel = hiltViewModel()
@@ -28,11 +31,37 @@ fun MakeYourPizzaScreen() {
     val (selectedOption, onOptionSelect) = remember {
         mutableStateOf(radioOptions[0])
     }
+    val drawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
     selectedPizzas.forEach {
         pizzas.toMutableList().remove(it)
     }
 
+    BottomDrawer(drawerContent = {
+        OptionalsDrawerContent(
+            listOf("Batata", "Catupiry", "Cheddar"),
+            listOf("Cebola", "Maionese")
+        ) {
+        }
+    }, drawerState = drawerState) {
+        MakeYourPizzaContent(radioOptions, selectedOption, onOptionSelect, selectedPizzas, pizzas) {
+            scope.launch {
+                drawerState.open()
+            }
+        }
+    }
+}
+
+@Composable
+private fun MakeYourPizzaContent(
+    radioOptions: List<String>,
+    selectedOption: String,
+    onOptionSelect: (String) -> Unit,
+    selectedPizzas: MutableList<MenuItem>,
+    pizzas: List<MenuItem>,
+    openDrawer: (List<MenuItem>) -> Unit
+) {
     Box(
         modifier = Modifier
             .padding(PaddingValues(8.dp))
@@ -102,8 +131,8 @@ fun MakeYourPizzaScreen() {
         }
 
         ExtendedFloatingActionButton(
-            text = { Text(text = "Concluir") },
-            onClick = { println(selectedPizzas.toList()) },
+            text = { Text(text = "Adicionais") },
+            onClick = { openDrawer(selectedPizzas.toList()) },
             modifier = Modifier.align(Alignment.BottomEnd),
             icon = {
                 Icon(

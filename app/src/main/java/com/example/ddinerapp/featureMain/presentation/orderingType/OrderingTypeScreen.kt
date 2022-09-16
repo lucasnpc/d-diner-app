@@ -34,7 +34,8 @@ fun OrderingTypeScreen(navController: NavController) {
                     contentDescription = "Local Dining",
                     modifier = Modifier
                         .width(30.dp)
-                        .height(30.dp)
+                        .height(30.dp),
+                    tint = MaterialTheme.colors.primary
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(text = "Mesa", fontSize = 16.sp)
@@ -53,7 +54,8 @@ fun OrderingTypeScreen(navController: NavController) {
                     contentDescription = "Delivery Dining",
                     modifier = Modifier
                         .width(30.dp)
-                        .height(30.dp)
+                        .height(30.dp),
+                    tint = MaterialTheme.colors.primary
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(text = "Delivery", fontSize = 16.sp)

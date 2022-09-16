@@ -17,12 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
-import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.common.util.LoadingScreen
+import com.example.ddinerapp.featureHome.domain.model.MenuItem
+import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
+import com.example.ddinerapp.featureHome.presentation.util.OptionalsDrawerContent
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun OrderingItemsScreen(
+fun MenuItemsScreen(
     navController: NavController,
     itemCategory: String,
     viewModel: MenuItemViewModel = hiltViewModel()
@@ -30,6 +32,7 @@ fun OrderingItemsScreen(
     val list = viewModel.items.filter { it.category == itemCategory }
 
     val orderedItems: MutableMap<String, Double> = mutableMapOf()
+    val drawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
 
     when {
         viewModel.loading.value -> {
@@ -37,8 +40,14 @@ fun OrderingItemsScreen(
         }
         list.isEmpty() -> {}
         list.isNotEmpty() -> {
-            ItemsList(itemCategory, list, orderedItems, navController) {
-                viewModel.placeOrder(it)
+            BottomDrawer(drawerContent = {
+                OptionalsDrawerContent {
+
+                }
+            }, drawerState = drawerState) {
+                ItemsList(itemCategory, list, orderedItems, navController) {
+                    viewModel.placeOrder(it)
+                }
             }
         }
     }
