@@ -30,7 +30,7 @@ import com.example.ddinerapp.common.theme.DDinerAppTheme
 import com.example.ddinerapp.databinding.ActivityHomeBinding
 import com.example.ddinerapp.featureHome.presentation.cart.CartScreen
 import com.example.ddinerapp.featureHome.presentation.makeYourPizza.MakeYourPizzaScreen
-import com.example.ddinerapp.featureHome.presentation.orderingItems.MenuItemsScreen
+import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemsScreen
 import com.example.ddinerapp.featureHome.presentation.orderingMenu.OrderingMenuScreen
 import com.example.ddinerapp.featureHome.presentation.orders.OrdersScreen
 import com.example.ddinerapp.featureHome.presentation.util.BottomNavItem
@@ -102,7 +102,7 @@ class HomeActivity : AppCompatActivity() {
                             OrdersScreen()
                         }
                         composable(route = HomeScreen.MakeYourPizzaScreen.route) {
-                            MakeYourPizzaScreen()
+                            MakeYourPizzaScreen(navController = navController)
                         }
                     }
                 }

@@ -1,4 +1,4 @@
-package com.example.ddinerapp.featureHome.presentation.orderingItems
+package com.example.ddinerapp.featureHome.presentation.menuItems
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.ListAlt
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.ddinerapp.common.util.LoadingScreen
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
 import com.example.ddinerapp.featureHome.presentation.util.OptionalsDrawerContent
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -33,21 +33,20 @@ fun MenuItemsScreen(
 
     val orderedItems: MutableMap<String, Double> = mutableMapOf()
     val drawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-    when {
-        viewModel.loading.value -> {
-            LoadingScreen()
+    BottomDrawer(drawerContent = {
+        OptionalsDrawerContent { observations ->
+            viewModel.placeOrder(orderedItems.filter { it.value > 0 }, observations)
+            navController.popBackStack(
+                HomeScreen.OrderingMenuScreen.route,
+                inclusive = false
+            )
         }
-        list.isEmpty() -> {}
-        list.isNotEmpty() -> {
-            BottomDrawer(drawerContent = {
-                OptionalsDrawerContent {
-
-                }
-            }, drawerState = drawerState) {
-                ItemsList(itemCategory, list, orderedItems, navController) {
-                    viewModel.placeOrder(it)
-                }
+    }, drawerState = drawerState) {
+        ItemsList(itemCategory, list, orderedItems) {
+            scope.launch {
+                drawerState.expand()
             }
         }
     }
@@ -60,8 +59,7 @@ private fun ItemsList(
     itemCategory: String?,
     list: List<MenuItem>,
     orderedItems: MutableMap<String, Double>,
-    navController: NavController,
-    placeOrder: (Map<String, Double>) -> Unit
+    openDrawer: () -> Unit
 ) {
     Box(modifier = Modifier.padding(PaddingValues(8.dp))) {
         LazyColumn(
@@ -143,18 +141,14 @@ private fun ItemsList(
             }
         }
         ExtendedFloatingActionButton(
-            text = { Text(text = "Concluir") },
+            text = { Text(text = "Adicionais") },
             onClick = {
-                placeOrder(orderedItems.filter { it.value > 0 })
-                navController.popBackStack(
-                    HomeScreen.OrderingMenuScreen.route,
-                    inclusive = false
-                )
+                openDrawer()
             },
             modifier = Modifier.align(Alignment.BottomEnd),
             icon = {
                 Icon(
-                    imageVector = Icons.Filled.Done,
+                    imageVector = Icons.Filled.ListAlt,
                     contentDescription = "Create Order Icon"
                 )
             },

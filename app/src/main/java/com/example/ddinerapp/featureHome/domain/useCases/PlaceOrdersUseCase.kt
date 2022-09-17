@@ -14,18 +14,15 @@ class PlaceOrdersUseCase {
         placedOrders: Map<String, Double>,
         observations: String = ""
     ) {
-        placedOrders.forEach {
-            db.collection(BUSINESS_COLLECTION).document(cnpj).collection(DESKS_COLLECTION)
-                .document(deskId).collection(ORDERS_COLLECTION).document(orderId)
-                .collection(ORDERED_ITEMS_COLLECTION).add(
-                    hashMapOf(
-                        OrderedItemsKeys.ITEM_ID to it.key,
-                        OrderedItemsKeys.OBSERVATIONS to observations,
-                        OrderedItemsKeys.QUANTITY to it.value,
-                        OrderedItemsKeys.STATUS to "enviado"
-                    )
+        db.collection(BUSINESS_COLLECTION).document(cnpj).collection(DESKS_COLLECTION)
+            .document(deskId).collection(ORDERS_COLLECTION).document(orderId)
+            .collection(ORDERED_ITEMS_COLLECTION).add(
+                hashMapOf(
+                    OrderedItemsKeys.PLACED_ITEMS to placedOrders,
+                    OrderedItemsKeys.OBSERVATIONS to observations,
+                    OrderedItemsKeys.STATUS to "enviado"
                 )
-        }
+            )
 
     }
 }

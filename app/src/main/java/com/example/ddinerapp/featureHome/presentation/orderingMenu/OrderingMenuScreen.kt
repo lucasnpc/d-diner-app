@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import com.example.ddinerapp.R
 import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
-import com.example.ddinerapp.featureHome.presentation.orderingItems.MenuItemViewModel
+import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewModel
 import com.example.ddinerapp.common.util.LoadingScreen
 
 @Composable

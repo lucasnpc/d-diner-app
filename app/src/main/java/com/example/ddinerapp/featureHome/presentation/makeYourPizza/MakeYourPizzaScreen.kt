@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.ListAlt
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,17 +16,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
-import com.example.ddinerapp.featureHome.presentation.orderingItems.MenuItemViewModel
+import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewModel
+import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
 import com.example.ddinerapp.featureHome.presentation.util.OptionalsDrawerContent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MakeYourPizzaScreen() {
+fun MakeYourPizzaScreen(
+    navController: NavController,
+) {
     val viewmodel: MenuItemViewModel = hiltViewModel()
     val pizzas = viewmodel.items.filter { it.category == "Pizzas" }
-    val selectedPizzas = remember { mutableListOf<MenuItem>() }
+    val selectedPizzas = mutableMapOf<String, Double>()
     val radioOptions = listOf("Completa", "Brotinho")
     val (selectedOption, onOptionSelect) = remember {
         mutableStateOf(radioOptions[0])
@@ -34,15 +38,13 @@ fun MakeYourPizzaScreen() {
     val drawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    selectedPizzas.forEach {
-        pizzas.toMutableList().remove(it)
-    }
-
     BottomDrawer(drawerContent = {
-        OptionalsDrawerContent(
-            listOf("Batata", "Catupiry", "Cheddar"),
-            listOf("Cebola", "Maionese")
-        ) {
+        OptionalsDrawerContent { observations ->
+            viewmodel.placeOrder(selectedPizzas, observations)
+            navController.popBackStack(
+                HomeScreen.OrderingMenuScreen.route,
+                inclusive = false
+            )
         }
     }, drawerState = drawerState) {
         MakeYourPizzaContent(radioOptions, selectedOption, onOptionSelect, selectedPizzas, pizzas) {
@@ -58,9 +60,9 @@ private fun MakeYourPizzaContent(
     radioOptions: List<String>,
     selectedOption: String,
     onOptionSelect: (String) -> Unit,
-    selectedPizzas: MutableList<MenuItem>,
+    selectedPizzas: MutableMap<String, Double>,
     pizzas: List<MenuItem>,
-    openDrawer: (List<MenuItem>) -> Unit
+    openDrawer: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -116,7 +118,7 @@ private fun MakeYourPizzaContent(
             when (selectedOption) {
                 "Completa" -> {
                     CompletePizza(pizzas) {
-                        selectedPizzas.add(it)
+                        selectedPizzas[it.first.id] = (1 / it.second)
                     }
                 }
                 "Brotinho" -> {
@@ -124,7 +126,7 @@ private fun MakeYourPizzaContent(
                         pizzas = pizzas,
                         showMultipleFlavors = false
                     ) {
-                        selectedPizzas.add(it)
+                        selectedPizzas[it.first.id] = it.second
                     }
                 }
             }
@@ -132,11 +134,11 @@ private fun MakeYourPizzaContent(
 
         ExtendedFloatingActionButton(
             text = { Text(text = "Adicionais") },
-            onClick = { openDrawer(selectedPizzas.toList()) },
+            onClick = { openDrawer() },
             modifier = Modifier.align(Alignment.BottomEnd),
             icon = {
                 Icon(
-                    imageVector = Icons.Filled.Done,
+                    imageVector = Icons.Filled.ListAlt,
                     contentDescription = "Create Order Icon"
                 )
             },
@@ -151,7 +153,7 @@ private fun MakeYourPizzaContent(
 private fun CompletePizza(
     pizzas: List<MenuItem>,
     showMultipleFlavors: Boolean = true,
-    selectPizza: (MenuItem) -> Unit
+    selectPizza: (Pair<MenuItem, Double>) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedPizzaFlavorQuantity by remember { mutableStateOf(1) }
@@ -219,7 +221,7 @@ private fun CompletePizza(
                     DropdownMenuItem(onClick = {
                         selectedPizza = it.description
                         expanded1 = false
-                        selectPizza(it)
+                        selectPizza(it to selectedPizzaFlavorQuantity.toDouble())
                     }) {
                         Text(text = it.description)
                     }

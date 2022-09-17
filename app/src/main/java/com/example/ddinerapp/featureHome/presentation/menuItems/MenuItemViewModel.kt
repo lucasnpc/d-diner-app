@@ -1,4 +1,4 @@
-package com.example.ddinerapp.featureHome.presentation.orderingItems
+package com.example.ddinerapp.featureHome.presentation.menuItems
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
@@ -77,14 +77,15 @@ class MenuItemViewModel @Inject constructor(
         }
     }
 
-    fun placeOrder(placedOrders: Map<String, Double>) {
+    fun placeOrder(placedOrders: Map<String, Double>, observations: String) {
         viewModelScope.launch {
             storeManager.run {
                 homeUseCases.placeOrdersUseCase(
                     businessCnpj.first(),
                     deskId.first(),
                     orderId.first(),
-                    placedOrders
+                    placedOrders,
+                    observations
                 )
             }
         }

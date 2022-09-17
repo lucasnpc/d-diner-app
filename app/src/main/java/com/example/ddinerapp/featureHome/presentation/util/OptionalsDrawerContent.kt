@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun OptionalsDrawerContent(
-    additionalList: List<String> = listOf(),
-    optionalsList: List<String> = listOf(),
-    callback: () -> Unit
+    additionalList: List<String> = listOf("Batata", "Catupiry", "Cheddar"),
+    optionalsList: List<String> = listOf("Cebola", "Maionese"),
+    callback: (String) -> Unit
 ) {
     var observations by remember { mutableStateOf("") }
 
@@ -82,7 +82,7 @@ fun OptionalsDrawerContent(
                 .align(CenterHorizontally)
                 .width(300.dp)
         )
-        Button(onClick = { callback() }, Modifier.align(CenterHorizontally)) {
+        Button(onClick = { callback(observations) }, Modifier.align(CenterHorizontally)) {
             Text(text = "Enviar pedido")
         }
     }

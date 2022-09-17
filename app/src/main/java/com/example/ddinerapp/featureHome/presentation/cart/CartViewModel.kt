@@ -51,10 +51,8 @@ class CartViewModel @Inject constructor(
                                     _orderedItems.add(
                                         OrderedItems(
                                             id = it.id,
-                                            itemId = it[OrderedItemsKeys.ITEM_ID].toString(),
+                                            placedItems = it[OrderedItemsKeys.PLACED_ITEMS] as Map<String, Double>,
                                             observations = it[OrderedItemsKeys.OBSERVATIONS].toString(),
-                                            quantity = it[OrderedItemsKeys.QUANTITY].toString()
-                                                .toDouble(),
                                             status = it[OrderedItemsKeys.STATUS].toString()
                                         )
                                     )

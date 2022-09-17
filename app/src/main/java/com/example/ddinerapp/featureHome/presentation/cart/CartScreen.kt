@@ -27,7 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ddinerapp.common.util.LoadingScreen
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.domain.model.OrderedItems
-import com.example.ddinerapp.featureHome.presentation.orderingItems.MenuItemViewModel
+import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewModel
 import com.example.ddinerapp.featureHome.presentation.orders.OrdersViewModel
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.DesksViewModel
 import kotlinx.coroutines.launch
@@ -55,9 +55,9 @@ fun CartScreen() {
     }
 
     cartViewModel.orderedItems.forEach { orderedItem ->
-        itemsList.find { it.id == orderedItem.itemId }?.let { find ->
-            orderedItems.add(find)
-        }
+//        itemsList.find { it.id == orderedItem.itemId }?.let { find ->
+//            orderedItems.add(find)
+//        }
     }
 
     orderedItems.forEach {
