@@ -6,7 +6,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.ddinerapp.common.util.DataStoreKeys.BUSINESS_CNPJ
 import com.example.ddinerapp.common.util.DataStoreKeys.CURRENT_ORDER_ID
 import com.example.ddinerapp.common.util.DataStoreKeys.SELECTED_DESK_ID
-import com.example.ddinerapp.common.util.DataStoreKeys.USER_ROLE
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -20,12 +19,6 @@ private val Context.dataStore by preferencesDataStore("settings")
 class DataStoreManager @Inject constructor(@ApplicationContext appContext: Context) {
 
     private val settingsDataStore = appContext.dataStore
-
-    fun setUserRole(role: String) = runBlocking {
-        settingsDataStore.edit { settings ->
-            settings[USER_ROLE] = role
-        }
-    }
 
     fun setBusinessCnpj(cnpj: String) = runBlocking {
         settingsDataStore.edit { settings ->
@@ -52,10 +45,6 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
     }
 
 
-    val userRole: Flow<String> = settingsDataStore.data.map { prefs ->
-        prefs[USER_ROLE] ?: ""
-    }
-
     val businessCnpj: Flow<String> = settingsDataStore.data.map { prefs ->
         prefs[BUSINESS_CNPJ].toString()
     }
@@ -64,7 +53,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         prefs[SELECTED_DESK_ID].toString()
     }
 
-    val orderId : Flow<String> = settingsDataStore.data.map { prefs ->
+    val orderId: Flow<String> = settingsDataStore.data.map { prefs ->
         prefs[CURRENT_ORDER_ID].toString()
     }
 

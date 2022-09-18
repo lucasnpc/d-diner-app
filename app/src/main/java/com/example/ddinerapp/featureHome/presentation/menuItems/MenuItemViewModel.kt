@@ -71,7 +71,10 @@ class MenuItemViewModel @Inject constructor(
                             return@addSnapshotListener
                         }
 
-                        storeManager.setCurrentOrder(snapshot?.documents?.first()?.id.toString())
+                        snapshot?.documents?.let {
+                            if (it.isNotEmpty())
+                                storeManager.setCurrentOrder(it.first().id)
+                        }
                     }
             }
         }

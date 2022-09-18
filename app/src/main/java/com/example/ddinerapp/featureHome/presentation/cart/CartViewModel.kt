@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.common.util.DataStoreManager
 import com.example.ddinerapp.common.util.OrderedItemsKeys
-import com.example.ddinerapp.featureHome.domain.model.OrderedItems
+import com.example.ddinerapp.featureHome.domain.model.PlacedItems
 import com.example.ddinerapp.featureHome.domain.useCases.HomeUseCases
 import com.google.firebase.firestore.DocumentChange
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,14 +23,14 @@ class CartViewModel @Inject constructor(
     private val _loading = mutableStateOf(false)
     val loading: State<Boolean> = _loading
 
-    private val _orderedItems = mutableListOf<OrderedItems>()
-    val orderedItems: List<OrderedItems> = _orderedItems
+    private val _placedItems = mutableStateOf(PlacedItems())
+    val placedItems: State<PlacedItems> = _placedItems
 
     init {
-        getOrderedItems()
+        getPlacedItems()
     }
 
-    private fun getOrderedItems() {
+    private fun getPlacedItems() {
         _loading.value = true
         viewModelScope.launch {
             storeManager.run {
@@ -48,13 +48,11 @@ class CartViewModel @Inject constructor(
                         when (doc.type) {
                             DocumentChange.Type.ADDED -> {
                                 doc.document.let {
-                                    _orderedItems.add(
-                                        OrderedItems(
-                                            id = it.id,
-                                            placedItems = it[OrderedItemsKeys.PLACED_ITEMS] as Map<String, Double>,
-                                            observations = it[OrderedItemsKeys.OBSERVATIONS].toString(),
-                                            status = it[OrderedItemsKeys.STATUS].toString()
-                                        )
+                                    _placedItems.value = PlacedItems(
+                                        id = it.id,
+                                        placedItems = it[OrderedItemsKeys.PLACED_ITEMS] as Map<String, Double>,
+                                        observations = it[OrderedItemsKeys.OBSERVATIONS].toString(),
+                                        status = it[OrderedItemsKeys.STATUS].toString()
                                     )
                                 }
                             }

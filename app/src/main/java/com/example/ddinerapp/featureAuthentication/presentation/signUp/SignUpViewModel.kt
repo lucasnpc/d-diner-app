@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.common.util.AuthenticationState
 import com.example.ddinerapp.common.util.CNPJ_FIELD
 import com.example.ddinerapp.common.util.DataStoreManager
-import com.example.ddinerapp.common.util.ROLE_FIELD
 import com.example.ddinerapp.featureAuthentication.domain.useCases.AuthenticationUseCases
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,7 +31,6 @@ class SignUpViewModel @Inject constructor(
             authenticationUseCases.authenticateUserUseCase(firebaseUser)
                 .addOnSuccessListener { document ->
                     storeManager.run {
-                        setUserRole(document.getString(ROLE_FIELD).toString())
                         setBusinessCnpj(document.getString(CNPJ_FIELD).toString())
                     }
 

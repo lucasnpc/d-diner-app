@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ddinerapp.common.util.LoadingScreen
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
-import com.example.ddinerapp.featureHome.domain.model.OrderedItems
 import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewModel
 import com.example.ddinerapp.featureHome.presentation.orders.OrdersViewModel
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.DesksViewModel
@@ -39,9 +38,9 @@ fun CartScreen() {
     val menuItemViewModel: MenuItemViewModel = hiltViewModel()
     val ordersViewModel: OrdersViewModel = hiltViewModel()
     val desksViewModel: DesksViewModel = hiltViewModel()
-    val list = cartViewModel.orderedItems
+    val placedItems = cartViewModel.placedItems.value.placedItems
     val itemsList = menuItemViewModel.items
-    val orderedItems = mutableListOf<MenuItem>()
+    val orderedItems = mutableMapOf<MenuItem, Double>()
     val context = (LocalContext.current as? Activity)
 
     var total = 0.0
@@ -54,14 +53,14 @@ fun CartScreen() {
         mutableStateOf(radioOptions[0])
     }
 
-    cartViewModel.orderedItems.forEach { orderedItem ->
-//        itemsList.find { it.id == orderedItem.itemId }?.let { find ->
-//            orderedItems.add(find)
-//        }
+    placedItems.forEach { placedItem ->
+        itemsList.find { item -> item.id == placedItem.key }?.let { find ->
+            orderedItems[find] = placedItem.value
+        }
     }
 
     orderedItems.forEach {
-        total += it.price
+        total += it.key.price * it.value
     }
 
     when {
@@ -117,7 +116,7 @@ fun CartScreen() {
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }) {
-                CartCard(list, total) {
+                CartCard(placedItems, total) {
                     scope.launch {
                         drawerState.open()
                     }
@@ -128,7 +127,7 @@ fun CartScreen() {
 }
 
 @Composable
-private fun CartCard(list: List<OrderedItems>, total: Double, changeState: () -> Unit) {
+private fun CartCard(list: Map<String, Double>, total: Double, changeState: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()

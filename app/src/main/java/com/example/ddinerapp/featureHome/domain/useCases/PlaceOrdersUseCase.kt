@@ -2,8 +2,6 @@ package com.example.ddinerapp.featureHome.domain.useCases
 
 import com.example.ddinerapp.common.util.*
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 class PlaceOrdersUseCase(private val db: FirebaseFirestore) {
 
