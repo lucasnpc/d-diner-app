@@ -18,8 +18,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.ddinerapp.featureHome.domain.model.Order
 import com.example.ddinerapp.common.util.LoadingScreen
+import com.example.ddinerapp.featureHome.domain.model.Order
 
 @Composable
 fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel()) {
@@ -29,8 +29,7 @@ fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel()) {
         viewModel.loading.value -> {
             LoadingScreen()
         }
-        orders.isEmpty() -> {}
-        orders.isNotEmpty() -> {
+        else -> {
             OrdersList(orders)
         }
     }

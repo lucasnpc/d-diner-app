@@ -35,7 +35,7 @@ class OrdersViewModel @Inject constructor(
         _loading.value = true
         viewModelScope.launch {
             storeManager.run {
-                homeUseCases.getDeskOrders(businessCnpj.first(), deskId.first())
+                homeUseCases.getConcludedDeskOrders(businessCnpj.first(), deskId.first())
                     .addSnapshotListener { snapshot, exception ->
                         if (exception != null) {
                             println(exception.message)

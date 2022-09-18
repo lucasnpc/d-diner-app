@@ -60,9 +60,10 @@ object UseCasesModule {
     @Provides
     fun provideHomeUseCases(db: FirebaseFirestore): HomeUseCases = HomeUseCases(
         getMenuItemsUseCase = GetMenuItemsUseCase(db),
-        getDeskOrders = GetDeskOrders(db),
+        getConcludedDeskOrders = GetConcludedDeskOrders(db),
         placeOrdersUseCase = PlaceOrdersUseCase(db),
         getOrderedItemsUseCase = GetOrderedItemsUseCase(db),
-        concludeOrderUseCase = ConcludeOrderUseCase(db)
+        concludeOrderUseCase = ConcludeOrderUseCase(db),
+        getCurrentDeskOrder = GetCurrentDeskOrder(db)
     )
 }

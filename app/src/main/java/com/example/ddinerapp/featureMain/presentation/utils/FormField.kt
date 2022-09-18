@@ -43,10 +43,11 @@ class FormField(val name: String, val label: String = "", val validators: List<T
             label = { Text(text = lbl) },
             modifier = Modifier.fillMaxWidth(),
             colors = textFieldColor,
-            keyboardOptions = if (name == "number") KeyboardOptions(keyboardType = KeyboardType.Number)
-            else KeyboardOptions(
-                keyboardType = KeyboardType.Text
-            )
+            keyboardOptions = when (name) {
+                "number" -> KeyboardOptions(keyboardType = KeyboardType.Number)
+                "phone" -> KeyboardOptions(keyboardType = KeyboardType.Phone)
+                else -> KeyboardOptions(keyboardType = KeyboardType.Text)
+            }
         )
     }
 

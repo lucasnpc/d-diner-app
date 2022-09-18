@@ -19,28 +19,26 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.example.ddinerapp.featureHome.presentation.HomeActivity
-import com.example.ddinerapp.featureHome.domain.model.Desk
 import com.example.ddinerapp.common.util.LoadingScreen
+import com.example.ddinerapp.featureHome.domain.model.Desk
+import com.example.ddinerapp.featureHome.presentation.HomeActivity
 
 @Composable
 fun OrderingDesksScreen(
     viewModel: DesksViewModel = hiltViewModel()
 ) {
-    val desks = viewModel.desks
+    val desks = viewModel.desks.filter { it.description != "Delivery" }
 
     when {
         viewModel.loading.value -> {
             LoadingScreen()
         }
-        desks.isEmpty() -> {
-
-        }
-        desks.isNotEmpty() -> DesksList(
-            desks.sortedBy { it.description },
-        ) {
-            viewModel.selectDesk(it)
+        else -> {
+            DesksList(
+                desks.sortedBy { it.description },
+            ) {
+                viewModel.selectDesk(it)
+            }
         }
     }
 }

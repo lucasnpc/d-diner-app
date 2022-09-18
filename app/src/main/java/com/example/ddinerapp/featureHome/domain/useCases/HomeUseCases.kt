@@ -3,7 +3,8 @@ package com.example.ddinerapp.featureHome.domain.useCases
 data class HomeUseCases(
     val getOrderedItemsUseCase: GetOrderedItemsUseCase,
     val placeOrdersUseCase: PlaceOrdersUseCase,
-    val getDeskOrders: GetDeskOrders,
+    val getConcludedDeskOrders: GetConcludedDeskOrders,
     val getMenuItemsUseCase: GetMenuItemsUseCase,
-    val concludeOrderUseCase: ConcludeOrderUseCase
+    val concludeOrderUseCase: ConcludeOrderUseCase,
+    val getCurrentDeskOrder: GetCurrentDeskOrder
 )

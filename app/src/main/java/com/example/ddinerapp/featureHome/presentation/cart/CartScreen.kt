@@ -30,6 +30,7 @@ import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewMode
 import com.example.ddinerapp.featureHome.presentation.orders.OrdersViewModel
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.DesksViewModel
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -38,9 +39,9 @@ fun CartScreen() {
     val menuItemViewModel: MenuItemViewModel = hiltViewModel()
     val ordersViewModel: OrdersViewModel = hiltViewModel()
     val desksViewModel: DesksViewModel = hiltViewModel()
-    val placedItems = cartViewModel.placedItems.value.placedItems
+    val orderedItems = cartViewModel.orderedItems
     val itemsList = menuItemViewModel.items
-    val orderedItems = mutableMapOf<MenuItem, Double>()
+    val placedMenuItems = mutableListOf<Pair<MenuItem, Double>>()
     val context = (LocalContext.current as? Activity)
 
     var total = 0.0
@@ -53,15 +54,18 @@ fun CartScreen() {
         mutableStateOf(radioOptions[0])
     }
 
-    placedItems.forEach { placedItem ->
-        itemsList.find { item -> item.id == placedItem.key }?.let { find ->
-            orderedItems[find] = placedItem.value
+    orderedItems.forEach { orderedItem ->
+        orderedItem.placedItems.forEach { placedItem ->
+            itemsList.find { item -> item.id == placedItem.key }?.let { find ->
+                placedMenuItems.add(find to placedItem.value)
+            }
         }
     }
 
-    orderedItems.forEach {
-        total += it.key.price * it.value
+    placedMenuItems.forEach {
+        total += (it.first.price * it.second)
     }
+    total.roundToInt()
 
     when {
         cartViewModel.loading.value || menuItemViewModel.loading.value || ordersViewModel.loading.value || desksViewModel.loading.value -> {
@@ -116,7 +120,7 @@ fun CartScreen() {
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }) {
-                CartCard(placedItems, total) {
+                CartCard(placedMenuItems.toList(), total) {
                     scope.launch {
                         drawerState.open()
                     }
@@ -127,7 +131,7 @@ fun CartScreen() {
 }
 
 @Composable
-private fun CartCard(list: Map<String, Double>, total: Double, changeState: () -> Unit) {
+private fun CartCard(list: List<Pair<MenuItem, Double>>, total: Double, changeState: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -171,7 +175,7 @@ private fun CartCard(list: Map<String, Double>, total: Double, changeState: () -
                     verticalAlignment = CenterVertically
                 ) {
                     Text(
-                        text = "Items: ${list.size}",
+                        text = "Items: ${list.sumOf { it.second }.toInt()}",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold
                     )

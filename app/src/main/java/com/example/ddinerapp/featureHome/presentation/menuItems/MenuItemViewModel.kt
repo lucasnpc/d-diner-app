@@ -64,17 +64,14 @@ class MenuItemViewModel @Inject constructor(
     private fun getCurrentOrder() {
         viewModelScope.launch {
             storeManager.run {
-                homeUseCases.getDeskOrders(businessCnpj.first(), deskId.first())
-                    .addSnapshotListener { snapshot, exception ->
-                        if (exception != null) {
-                            println(exception.message)
-                            return@addSnapshotListener
-                        }
-
-                        snapshot?.documents?.let {
+                homeUseCases.getCurrentDeskOrder(businessCnpj.first(), deskId.first())
+                    .addOnSuccessListener { query ->
+                        query?.documents?.let {
                             if (it.isNotEmpty())
                                 storeManager.setCurrentOrder(it.first().id)
                         }
+                    }.addOnFailureListener {
+                        println(it.message)
                     }
             }
         }

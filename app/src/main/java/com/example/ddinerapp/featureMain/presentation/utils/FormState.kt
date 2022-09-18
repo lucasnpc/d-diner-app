@@ -2,9 +2,6 @@ package com.example.ddinerapp.featureMain.presentation.utils
 
 class FormState {
     var fields: List<FormField> = listOf()
-        set(value) {
-            field = value
-        }
 
     fun validate(): Boolean {
         var valid = true

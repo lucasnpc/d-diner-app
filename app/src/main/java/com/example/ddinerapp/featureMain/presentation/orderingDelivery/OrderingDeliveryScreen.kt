@@ -16,8 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.ddinerapp.common.util.LoadingScreen
 import com.example.ddinerapp.featureHome.presentation.HomeActivity
+import com.example.ddinerapp.featureMain.presentation.orderingDesks.DesksViewModel
 import com.example.ddinerapp.featureMain.presentation.utils.Form
 import com.example.ddinerapp.featureMain.presentation.utils.FormField
 import com.example.ddinerapp.featureMain.presentation.utils.FormState
@@ -45,8 +47,29 @@ private val formFields = listOf(
 )
 
 @Composable
-fun OrderingDeliveryScreen(navController: NavController) {
+fun OrderingDeliveryScreen(
+    viewModel: DesksViewModel = hiltViewModel()
+) {
+    val deliveryDesk = viewModel.desks.find { it.description == "Delivery" }
+
+    when {
+        viewModel.loading.value -> {
+            LoadingScreen()
+        }
+        else -> {
+            deliveryDesk?.let {
+                DeliveryAdressForm {
+                    viewModel.selectDesk(it)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DeliveryAdressForm(selectDesk: () -> Unit) {
     val state by remember { mutableStateOf(FormState()) }
+    state.fields = formFields
     val context = LocalContext.current
 
     Column(
@@ -55,15 +78,18 @@ fun OrderingDeliveryScreen(navController: NavController) {
             .padding(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Form(state = state, fields = formFields)
+        Form(state = state)
         OutlinedButton(
             onClick = {
-                val deliveryData: ArrayList<String> = ArrayList()
-                state.fields.forEach {
-                    deliveryData.add(it.text)
-                }
-                if (state.validate())
+                if (state.validate()) {
+                    val deliveryData = arrayListOf<String>()
+                    state.fields.forEach {
+                        deliveryData.add(it.text)
+                        it.text = ""
+                    }
+                    selectDesk()
                     context.startActivity(Intent(context, HomeActivity::class.java))
+                }
             },
             modifier = Modifier.align(Alignment.End),
             colors = ButtonDefaults.buttonColors(

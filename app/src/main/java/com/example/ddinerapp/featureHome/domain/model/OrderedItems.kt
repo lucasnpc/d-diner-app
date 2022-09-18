@@ -1,6 +1,6 @@
 package com.example.ddinerapp.featureHome.domain.model
 
-data class PlacedItems(
+data class OrderedItems(
     val id: String = "",
     val placedItems: Map<String, Double> = mapOf(),
     val observations: String = "",
