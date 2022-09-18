@@ -7,13 +7,13 @@ import com.example.ddinerapp.common.util.OrderKeys
 import com.example.ddinerapp.featureHome.domain.model.Order
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddOrderUseCase {
-    private val db = Firebase.firestore
+class AddOrderUseCase(private val db: FirebaseFirestore) {
 
     operator fun invoke(id: String, cnpj: String): Task<DocumentReference> {
         val document =

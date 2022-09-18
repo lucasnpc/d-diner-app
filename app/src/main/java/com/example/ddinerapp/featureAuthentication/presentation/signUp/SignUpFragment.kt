@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.ddinerapp.R
 import com.example.ddinerapp.common.util.AuthenticationState
 import com.example.ddinerapp.common.util.FirebaseUserLiveData
+import com.example.ddinerapp.common.util.isFirebaseLocal
 import com.example.ddinerapp.databinding.FragmentSignupBinding
 import com.example.ddinerapp.featureMain.presentation.MainActivity
 import com.firebase.ui.auth.AuthUI
@@ -92,7 +93,10 @@ class SignUpFragment : Fragment() {
     }
 
     private fun openSignInTools(google: Boolean = false) {
-        signInLauncher.launch(AuthUI.getInstance().createSignInIntentBuilder().apply {
+        val instance = AuthUI.getInstance()
+        if (isFirebaseLocal)
+            instance.useEmulator("10.0.2.2", 9099)
+        signInLauncher.launch(instance.createSignInIntentBuilder().apply {
             if (google) setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
         }.build())
     }

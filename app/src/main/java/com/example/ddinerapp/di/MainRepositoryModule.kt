@@ -10,14 +10,4 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Module
 @InstallIn(ViewModelComponent::class)
 object MainRepositoryModule {
-
-    @ViewModelScoped
-    @Provides
-    fun provideMainUseCases(): MainUseCases =
-        MainUseCases(
-            getDesksUseCase = GetDesksUseCase(),
-            setOccupiedDeskUseCase = SetOccupiedDeskUseCase(),
-            addOrderUseCase = AddOrderUseCase(),
-            disoccupyDeskUseCase = DisoccupyDeskUseCase()
-        )
 }

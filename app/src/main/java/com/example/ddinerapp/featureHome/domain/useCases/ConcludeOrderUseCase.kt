@@ -4,13 +4,11 @@ import com.example.ddinerapp.common.util.BUSINESS_COLLECTION
 import com.example.ddinerapp.common.util.DESKS_COLLECTION
 import com.example.ddinerapp.common.util.ORDERS_COLLECTION
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ConcludeOrderUseCase {
-    private val db = Firebase.firestore
+class ConcludeOrderUseCase(private val db: FirebaseFirestore) {
 
     operator fun invoke(cnpj: String, deskId: String, orderId: String): Task<Void> {
         val simpleDateFormat =

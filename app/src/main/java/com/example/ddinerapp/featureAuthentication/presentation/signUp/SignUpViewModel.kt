@@ -40,6 +40,7 @@ class SignUpViewModel @Inject constructor(
                     _loading.value = false
                 }
                 .addOnFailureListener {
+                    println(it.message)
                     _authenticationState.value = AuthenticationState.INVALID_AUTHENTICATION
                     _loading.value = false
                 }
