@@ -52,6 +52,9 @@ fun CartScreen() {
     val (selectedOption, onOptionSelect) = remember {
         mutableStateOf(radioOptions[0])
     }
+    var changeValue by remember {
+        mutableStateOf(0.0)
+    }
 
     orderedItems.forEach { orderedItem ->
         orderedItem.placedItems.forEach { placedItem ->
@@ -104,7 +107,9 @@ fun CartScreen() {
                     }
                 }
                 if (selectedOption == "Dinheiro")
-                    MoneyField(total = total)
+                    MoneyField(total = total) { change ->
+                        changeValue = change
+                    }
                 Spacer(modifier = Modifier.height(5.dp))
                 Button(
                     onClick = {
@@ -112,6 +117,7 @@ fun CartScreen() {
                         desksViewModel.disoccupyDesk()
                         context?.finish()
                     },
+                    enabled = changeValue >= total || selectedOption != "Dinheiro",
                     modifier = Modifier.align(CenterHorizontally)
                 ) {
                     Text(text = "Efetuar pagamento")
@@ -212,7 +218,7 @@ private fun CartCard(list: List<Pair<MenuItem, Double>>, total: Double, changeSt
 }
 
 @Composable
-private fun MoneyField(total: Double) {
+private fun MoneyField(total: Double, disableButton: (Double) -> Unit) {
     var cashChange by remember { mutableStateOf("") }
     val sum = if (cashChange.isNotEmpty()) cashChange.replace(",", ".").toDouble() - total else 0.0
 
@@ -222,13 +228,15 @@ private fun MoneyField(total: Double) {
             value = cashChange,
             onValueChange = {
                 cashChange = it
+                if (cashChange.isNotEmpty())
+                    disableButton(cashChange.replace(",", ".").toDouble())
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             modifier = Modifier.width(130.dp)
         )
         Spacer(modifier = Modifier.width(5.dp))
         Text(
-            text = "Troco R$ ${String.format("%.2f", sum).replace(".", ",")}",
+            text = "Troco R$ ${if (sum > 0) String.format("%.2f", sum).replace(".", ",") else 0.0}",
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.align(CenterVertically)
         )
