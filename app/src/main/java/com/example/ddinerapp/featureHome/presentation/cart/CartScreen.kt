@@ -30,7 +30,6 @@ import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewMode
 import com.example.ddinerapp.featureHome.presentation.orders.OrdersViewModel
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.DesksViewModel
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -65,7 +64,6 @@ fun CartScreen() {
     placedMenuItems.forEach {
         total += (it.first.price * it.second)
     }
-    total.roundToInt()
 
     when {
         cartViewModel.loading.value || menuItemViewModel.loading.value || ordersViewModel.loading.value || desksViewModel.loading.value -> {
@@ -180,7 +178,7 @@ private fun CartCard(list: List<Pair<MenuItem, Double>>, total: Double, changeSt
                         fontWeight = FontWeight.SemiBold
                     )
                     Text(
-                        text = "Total: R$ ${total.toString().replace(".", ",")}",
+                        text = "Total: R$ ${String.format("%.2f", total).replace(".", ",")}",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -216,7 +214,7 @@ private fun CartCard(list: List<Pair<MenuItem, Double>>, total: Double, changeSt
 @Composable
 private fun MoneyField(total: Double) {
     var cashChange by remember { mutableStateOf("") }
-    val sum = if (cashChange.isNotEmpty()) cashChange.replace(",", ".").toDouble() - total else 0
+    val sum = if (cashChange.isNotEmpty()) cashChange.replace(",", ".").toDouble() - total else 0.0
 
     Spacer(modifier = Modifier.height(8.dp))
     Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
@@ -230,7 +228,7 @@ private fun MoneyField(total: Double) {
         )
         Spacer(modifier = Modifier.width(5.dp))
         Text(
-            text = "Troco R$ ${sum.toString().replace(".", ",")}",
+            text = "Troco R$ ${String.format("%.2f", sum).replace(".", ",")}",
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.align(CenterVertically)
         )

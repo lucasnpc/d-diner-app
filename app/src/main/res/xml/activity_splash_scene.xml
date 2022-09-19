@@ -23,7 +23,7 @@
             android:layout_height="1dp" />
         <Constraint
             android:id="@id/diner_text"
-            android:layout_width="1dp" />
+            android:layout_width="-1dp" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end_restaurant_icon_and_text">
