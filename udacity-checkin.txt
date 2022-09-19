@@ -1,0 +1,38 @@
+Topic 1 - Build a navegable app:
+	My app has many screens and I'm using navhost with Jetpack compose to build my
+app screens.
+
+Topic 2 - Construct interface using android Resources:
+	I'm using constraint layout at activity_authentication.xml file and mnay other
+resources. Also I'm using jetpack compose these to buiild the composable part of my
+app.
+
+Topic 3 - Animate UI:
+	I'm using animated UI to create my Splash Screen, I'm doing it through Motion
+Layout
+
+Topic 4 - Remote data Source:
+	I'm using firebase authentication and Firestore to store my app data, to do it
+I'm using reactive programming to get the data and also exceptions handling
+
+Topic 5 - Load network resources:
+	I'm doing it to get my own data at the useCases package. With this data I insert
+at my lists and use it into the app
+
+Topic 6 - Store data locally
+	I'm using Data Store Api to store less complex data. It's at commom.util.DataStore
+Manager.kt
+
+Topic 7 - Use architectural pattern
+	I'm using MVVM with Clean Architecture because I need the useCases to get and mani
+pulate data
+
+Topic 8 - Handle hardware Changes
+	I'm using viewModel and also State API to store correctly the app's state. My
+app doesn't ask for permissions at this point
+
+
+Topic 9 - Use hardware functionallity
+	I'm using gesture functionalities at MakeYourPizza screen for example. I have a 
+drawer content that appears when the use drag up the screen. It's holding the user 
+action and shows the drawer content
