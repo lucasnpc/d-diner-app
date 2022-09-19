@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/start_logo_d">
+        <Constraint
+            android:id="@+id/logo_d"
+            android:layout_width="1dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toTopOf="@id/diner_text"
+            app:layout_constraintStart_toStartOf="@id/diner_text" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end_logo_d">
+        <Constraint
+            android:id="@id/logo_d"
+            android:layout_width="wrap_content" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/start_restaurant_icon_and_text">
+        <Constraint
+            android:id="@id/restaurant_icon"
+            android:layout_height="1dp" />
+        <Constraint
+            android:id="@id/diner_text"
+            android:layout_width="1dp" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end_restaurant_icon_and_text">
+        <Constraint
+            android:id="@id/restaurant_icon"
+            android:layout_height="wrap_content" />
+        <Constraint
+            android:id="@id/diner_text"
+            android:layout_width="wrap_content" />
+    </ConstraintSet>
+
+    <Transition
+        android:id="@+id/logo_d_transition"
+        app:autoTransition="animateToEnd"
+        app:constraintSetEnd="@id/end_logo_d"
+        app:constraintSetStart="@+id/start_logo_d"
+        app:duration="600" />
+
+    <Transition
+        android:id="@+id/restaurant_icon_transition"
+        app:autoTransition="animateToEnd"
+        app:constraintSetEnd="@id/end_restaurant_icon_and_text"
+        app:constraintSetStart="@id/start_restaurant_icon_and_text"
+        app:duration="900" />
+
+</MotionScene>

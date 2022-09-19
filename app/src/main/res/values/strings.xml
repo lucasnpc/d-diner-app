@@ -19,4 +19,9 @@
     <string name="bebidas_category">Bebidas</string>
     <string name="sobremesas_category">Sobremesas</string>
     <string name="make_your_pizza">Monte sua Pizza</string>
+    <string name="logo_light_part">Logo Light Part</string>
+    <string name="logo_shadow">Logo Shadow</string>
+    <string name="restaurant_icon">Restaurant Icon</string>
+    <string name="d_text">D Text</string>
+    <string name="iner_text">Iner text</string>
 </resources>

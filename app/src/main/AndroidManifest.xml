@@ -14,9 +14,22 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App.Starting"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".featureSplash.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.DDinerApp">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".featureAuthentication.AuthenticationActivity"
             android:exported="false"
@@ -25,12 +38,7 @@
         <activity
             android:name=".featureMain.presentation.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.DDinerApp">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.DDinerApp" />
         <activity
             android:name=".featureHome.presentation.HomeActivity"
             android:exported="false"

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/motion_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    app:layoutDescription="@xml/activity_splash_scene"
+    tools:context=".featureSplash.SplashActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/logo_d"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/dark_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dark_logo_d"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/light_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/light_logo_d"
+            app:layout_constraintBottom_toBottomOf="@id/dark_logo"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="@id/dark_logo"
+            app:layout_constraintStart_toStartOf="@id/dark_logo"
+            app:layout_constraintTop_toTopOf="@id/dark_logo" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

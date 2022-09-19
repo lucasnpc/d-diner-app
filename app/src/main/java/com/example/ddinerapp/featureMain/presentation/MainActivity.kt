@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        installSplashScreen()
         observeAuthState { logout ->
             if (logout)
                 mainViewModel.clearPreferences()
