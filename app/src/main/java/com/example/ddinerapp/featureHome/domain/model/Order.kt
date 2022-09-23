@@ -5,5 +5,7 @@ data class Order(
     val concluded: Boolean = false,
     val employeeCpf: String = "",
     val startDate: String = "",
-    val endDate: String? = null
+    val startHour: String = "",
+    val endDate: String? = null,
+    val endHour: String? = null
 )

@@ -50,7 +50,9 @@ class OrdersViewModel @Inject constructor(
                                             id = it.id,
                                             concluded = it[OrderKeys.CONCLUDED] as Boolean,
                                             startDate = it[OrderKeys.START_DATE].toString(),
-                                            endDate = it[OrderKeys.END_DATE].toString()
+                                            startHour = it[OrderKeys.START_HOUR].toString(),
+                                            endDate = it[OrderKeys.END_DATE].toString(),
+                                            endHour = it[OrderKeys.END_HOUR].toString()
                                         )
                                     )
                                 }
@@ -62,7 +64,9 @@ class OrdersViewModel @Inject constructor(
                                                 id = it.id,
                                                 concluded = it[OrderKeys.CONCLUDED] as Boolean,
                                                 startDate = it[OrderKeys.START_DATE].toString(),
-                                                endDate = it[OrderKeys.END_DATE].toString()
+                                                startHour = it[OrderKeys.START_HOUR].toString(),
+                                                endDate = it[OrderKeys.END_DATE].toString(),
+                                                endHour = it[OrderKeys.END_HOUR].toString()
                                             )
                                         )
                                     }

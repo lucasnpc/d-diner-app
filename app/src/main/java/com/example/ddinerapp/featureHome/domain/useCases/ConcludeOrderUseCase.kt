@@ -12,14 +12,18 @@ class ConcludeOrderUseCase(private val db: FirebaseFirestore) {
 
     operator fun invoke(cnpj: String, deskId: String, orderId: String): Task<Void> {
         val simpleDateFormat =
-            SimpleDateFormat("dd 'de' MMMM 'de' yyyy HH:mm:ss", Locale.getDefault())
+            SimpleDateFormat("dd 'de' MMMM 'de' yyyy", Locale.getDefault())
+        val simpleHourFormat =
+            SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 
         return db.collection(BUSINESS_COLLECTION).document(cnpj).collection(DESKS_COLLECTION)
             .document(deskId).collection(ORDERS_COLLECTION).document(orderId).update(
                 "concluded",
                 true,
                 "endDate",
-                simpleDateFormat.format(System.currentTimeMillis())
+                simpleDateFormat.format(System.currentTimeMillis()),
+                "endHour",
+                simpleHourFormat.format(System.currentTimeMillis())
             )
     }
 }

@@ -8,8 +8,6 @@ import com.example.ddinerapp.featureHome.domain.model.Order
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,18 +19,27 @@ class AddOrderUseCase(private val db: FirebaseFirestore) {
                 .document(id)
 
         val simpleDateFormat =
-            SimpleDateFormat("dd 'de' MMMM 'de' yyyy HH:mm:ss", Locale.getDefault())
+            SimpleDateFormat("dd 'de' MMMM 'de' yyyy", Locale.getDefault())
+        val simpleHourFormat =
+            SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 
-        Order(startDate = simpleDateFormat.format(System.currentTimeMillis())).let {
-            return document.collection(ORDERS_COLLECTION)
-                .add(
-                    hashMapOf(
-                        OrderKeys.CONCLUDED to it.concluded,
-                        OrderKeys.EMPLOYEE_CPF to it.employeeCpf,
-                        OrderKeys.START_DATE to it.startDate,
-                        OrderKeys.END_DATE to it.endDate
+        System.currentTimeMillis().let { time ->
+            Order(
+                startDate = simpleDateFormat.format(time),
+                startHour = simpleHourFormat.format(time)
+            ).let {
+                return document.collection(ORDERS_COLLECTION)
+                    .add(
+                        hashMapOf(
+                            OrderKeys.CONCLUDED to it.concluded,
+                            OrderKeys.EMPLOYEE_CPF to it.employeeCpf,
+                            OrderKeys.START_DATE to it.startDate,
+                            OrderKeys.START_HOUR to it.startHour,
+                            OrderKeys.END_DATE to it.endDate,
+                            OrderKeys.END_HOUR to it.endHour
+                        )
                     )
-                )
+            }
         }
     }
 }
