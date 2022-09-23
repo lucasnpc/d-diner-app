@@ -22,24 +22,24 @@ class AddOrderUseCase(private val db: FirebaseFirestore) {
             SimpleDateFormat("dd 'de' MMMM 'de' yyyy", Locale.getDefault())
         val simpleHourFormat =
             SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        val date = simpleDateFormat.format(System.currentTimeMillis())
+        val hour = simpleHourFormat.format(System.currentTimeMillis())
 
-        System.currentTimeMillis().let { time ->
-            Order(
-                startDate = simpleDateFormat.format(time),
-                startHour = simpleHourFormat.format(time)
-            ).let {
-                return document.collection(ORDERS_COLLECTION)
-                    .add(
-                        hashMapOf(
-                            OrderKeys.CONCLUDED to it.concluded,
-                            OrderKeys.EMPLOYEE_CPF to it.employeeCpf,
-                            OrderKeys.START_DATE to it.startDate,
-                            OrderKeys.START_HOUR to it.startHour,
-                            OrderKeys.END_DATE to it.endDate,
-                            OrderKeys.END_HOUR to it.endHour
-                        )
+        Order(
+            startDate = date,
+            startHour = hour
+        ).let {
+            return document.collection(ORDERS_COLLECTION)
+                .add(
+                    hashMapOf(
+                        OrderKeys.CONCLUDED to it.concluded,
+                        OrderKeys.EMPLOYEE_CPF to it.employeeCpf,
+                        OrderKeys.START_DATE to it.startDate,
+                        OrderKeys.START_HOUR to it.startHour,
+                        OrderKeys.END_DATE to it.endDate,
+                        OrderKeys.END_HOUR to it.endHour
                     )
-            }
+                )
         }
     }
 }
