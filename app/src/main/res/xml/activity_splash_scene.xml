@@ -7,7 +7,7 @@
             android:id="@+id/logo_d"
             android:layout_width="1dp"
             app:layout_constraintBottom_toTopOf="@id/diner_text"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="14dp"
             app:layout_constraintEnd_toEndOf="@id/mid_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"/>
     </ConstraintSet>
