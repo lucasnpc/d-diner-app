@@ -1,6 +1,6 @@
 package com.example.ddinerapp.di
 
-import com.example.ddinerapp.common.util.isFirebaseLocal
+import com.example.ddinerapp.BuildConfig
 import com.example.ddinerapp.featureAuthentication.domain.useCases.AuthenticateUserUseCase
 import com.example.ddinerapp.featureAuthentication.domain.useCases.AuthenticationUseCases
 import com.example.ddinerapp.featureHome.domain.useCases.*
@@ -26,7 +26,7 @@ object DBModule {
     @Provides
     fun provideFirestore(): FirebaseFirestore {
         val db = Firebase.firestore
-        if (isFirebaseLocal) {
+        if (BuildConfig.isFirebaseLocal) {
             db.useEmulator("10.0.2.2", 8080)
             val settings = FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(false)
