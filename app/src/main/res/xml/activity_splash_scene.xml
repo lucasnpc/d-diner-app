@@ -48,6 +48,6 @@
         app:autoTransition="animateToEnd"
         app:constraintSetEnd="@id/end_restaurant_icon_and_text"
         app:constraintSetStart="@id/start_restaurant_icon_and_text"
-        app:duration="2000" />
+        app:duration="900" />
 
 </MotionScene>
