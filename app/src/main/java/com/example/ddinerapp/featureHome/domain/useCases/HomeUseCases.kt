@@ -6,5 +6,6 @@ data class HomeUseCases(
     val getConcludedDeskOrders: GetConcludedDeskOrders,
     val getMenuItemsUseCase: GetMenuItemsUseCase,
     val concludeOrderUseCase: ConcludeOrderUseCase,
-    val getCurrentDeskOrder: GetCurrentDeskOrder
+    val getCurrentDeskOrder: GetCurrentDeskOrder,
+    val registerGainUseCase: RegisterGainUseCase
 )

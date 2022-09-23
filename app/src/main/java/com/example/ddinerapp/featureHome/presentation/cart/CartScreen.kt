@@ -115,6 +115,7 @@ fun CartScreen() {
                     onClick = {
                         ordersViewModel.concludeOrder()
                         desksViewModel.disoccupyDesk()
+                        cartViewModel.registerGain(selectedOption, total)
                         context?.finish()
                     },
                     enabled = changeValue >= total || selectedOption != "Dinheiro",

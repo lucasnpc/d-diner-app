@@ -67,4 +67,13 @@ class CartViewModel @Inject constructor(
         }
     }
 
+    fun registerGain(selectedOption: String, total: Double) {
+        viewModelScope.launch {
+            homeUseCases.registerGainUseCase(
+                storeManager.businessCnpj.first(),
+                selectedOption,
+                total
+            )
+        }
+    }
 }

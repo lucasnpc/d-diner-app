@@ -28,7 +28,7 @@ class SplashActivity : AppCompatActivity() {
             binding.motionLayout.setTransition(R.id.logo_d_transition)
             delay(600)
             binding.motionLayout.setTransition(R.id.restaurant_icon_transition)
-            delay(1000)
+            delay(20000)
             FirebaseUserLiveData().observe(this@SplashActivity) {
                 it?.let {
                     startActivity(Intent(this@SplashActivity, MainActivity::class.java))

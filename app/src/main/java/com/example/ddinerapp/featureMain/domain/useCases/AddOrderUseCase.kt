@@ -1,15 +1,10 @@
 package com.example.ddinerapp.featureMain.domain.useCases
 
-import com.example.ddinerapp.common.util.BUSINESS_COLLECTION
-import com.example.ddinerapp.common.util.DESKS_COLLECTION
-import com.example.ddinerapp.common.util.ORDERS_COLLECTION
-import com.example.ddinerapp.common.util.OrderKeys
+import com.example.ddinerapp.common.util.*
 import com.example.ddinerapp.featureHome.domain.model.Order
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import java.text.SimpleDateFormat
-import java.util.*
 
 class AddOrderUseCase(private val db: FirebaseFirestore) {
 
@@ -18,16 +13,9 @@ class AddOrderUseCase(private val db: FirebaseFirestore) {
             db.collection(BUSINESS_COLLECTION).document(cnpj).collection(DESKS_COLLECTION)
                 .document(id)
 
-        val simpleDateFormat =
-            SimpleDateFormat("dd 'de' MMMM 'de' yyyy", Locale.getDefault())
-        val simpleHourFormat =
-            SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-        val date = simpleDateFormat.format(System.currentTimeMillis())
-        val hour = simpleHourFormat.format(System.currentTimeMillis())
-
         Order(
-            startDate = date,
-            startHour = hour
+            startDate = System.currentTimeMillis().toDateFormat(),
+            startHour = System.currentTimeMillis().toHourFormat()
         ).let {
             return document.collection(ORDERS_COLLECTION)
                 .add(

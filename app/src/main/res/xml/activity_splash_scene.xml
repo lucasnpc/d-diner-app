@@ -6,9 +6,10 @@
         <Constraint
             android:id="@+id/logo_d"
             android:layout_width="1dp"
-            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toTopOf="@id/diner_text"
-            app:layout_constraintStart_toStartOf="@id/diner_text" />
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="@id/mid_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"/>
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end_logo_d">
@@ -47,6 +48,6 @@
         app:autoTransition="animateToEnd"
         app:constraintSetEnd="@id/end_restaurant_icon_and_text"
         app:constraintSetStart="@id/start_restaurant_icon_and_text"
-        app:duration="900" />
+        app:duration="2000" />
 
 </MotionScene>

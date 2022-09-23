@@ -9,6 +9,27 @@
     app:layoutDescription="@xml/activity_splash_scene"
     tools:context=".featureSplash.SplashActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".35"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mid_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".40"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/logo_d"
         android:layout_width="wrap_content"
@@ -44,20 +65,18 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
         android:contentDescription="@string/restaurant_icon"
         android:src="@drawable/restaurant_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintTop_toTopOf="@id/logo_d" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/diner_text"
         android:layout_width="1dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
