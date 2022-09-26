@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 fun Long.toDateFormat(): String {
-    return SimpleDateFormat("dd 'de' MMMM 'de' yyyy", Locale.getDefault()).format(this).toString()
+    return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this).toString()
 }
 
 fun Long.toHourFormat(): String {
