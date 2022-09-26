@@ -11,15 +11,16 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ddinerapp.R
 
 @Composable
-fun OptionalsDrawerContent(
+fun AditionalsDrawerContent(
     additionalList: List<String> = listOf("Batata", "Catupiry", "Cheddar"),
-    optionalsList: List<String> = listOf("Cebola", "Maionese"),
     callback: (String) -> Unit
 ) {
     var observations by remember { mutableStateOf("") }
@@ -49,7 +50,7 @@ fun OptionalsDrawerContent(
             }
         }
         Text(
-            text = "Opcionais",
+            text = stringResource(R.string.observations_warn),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
@@ -58,32 +59,22 @@ fun OptionalsDrawerContent(
             fontSize = 16.sp,
             color = Color.White
         )
-        LazyRow(contentPadding = PaddingValues(start = 5.dp, end = 8.dp)) {
-            items(optionalsList) {
-                val checkedState = remember { mutableStateOf(false) }
-                Row {
-                    Checkbox(
-                        checked = checkedState.value,
-                        onCheckedChange = { checkedState.value = it },
-                        colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
-                    )
-                    Text(text = it, modifier = Modifier.align(CenterVertically))
-                }
-            }
-        }
+        Spacer(modifier = Modifier.height(8.dp))
         TextField(
             value = observations,
             onValueChange = {
                 observations = it
             },
-            label = { Text(text = "Observações") },
+            label = { Text(text = stringResource(R.string.observations)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             modifier = Modifier
                 .align(CenterHorizontally)
                 .width(300.dp)
         )
+        Spacer(modifier = Modifier.height(4.dp))
         Button(onClick = { callback(observations) }, Modifier.align(CenterHorizontally)) {
-            Text(text = "Enviar pedido")
+            Text(text = stringResource(R.string.send_order))
         }
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }

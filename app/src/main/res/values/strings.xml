@@ -24,4 +24,7 @@
     <string name="restaurant_icon">Restaurant Icon</string>
     <string name="d_text">D Text</string>
     <string name="iner_text">Iner text</string>
+    <string name="observations_warn">Observações (Somente retirada)</string>
+    <string name="observations">Observações (Retirada)</string>
+    <string name="send_order">Enviar pedido</string>
 </resources>

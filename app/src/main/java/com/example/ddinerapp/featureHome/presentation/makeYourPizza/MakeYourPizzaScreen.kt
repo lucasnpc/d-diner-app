@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewModel
 import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
-import com.example.ddinerapp.featureHome.presentation.util.OptionalsDrawerContent
+import com.example.ddinerapp.featureHome.presentation.util.AditionalsDrawerContent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -39,7 +39,9 @@ fun MakeYourPizzaScreen(
     val scope = rememberCoroutineScope()
 
     BottomDrawer(drawerContent = {
-        OptionalsDrawerContent { observations ->
+        AditionalsDrawerContent { observations ->
+            if (selectedPizzas.isEmpty())
+                return@AditionalsDrawerContent
             viewmodel.placeOrder(selectedPizzas, observations)
             navController.popBackStack(
                 HomeScreen.OrderingMenuScreen.route,

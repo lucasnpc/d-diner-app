@@ -19,7 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
-import com.example.ddinerapp.featureHome.presentation.util.OptionalsDrawerContent
+import com.example.ddinerapp.featureHome.presentation.util.AditionalsDrawerContent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -36,7 +36,7 @@ fun MenuItemsScreen(
     val scope = rememberCoroutineScope()
 
     BottomDrawer(drawerContent = {
-        OptionalsDrawerContent { observations ->
+        AditionalsDrawerContent { observations ->
             viewModel.placeOrder(orderedItems.filter { it.value > 0 }, observations)
             navController.popBackStack(
                 HomeScreen.OrderingMenuScreen.route,
