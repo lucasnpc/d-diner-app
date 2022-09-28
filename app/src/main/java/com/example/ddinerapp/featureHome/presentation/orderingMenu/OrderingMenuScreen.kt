@@ -23,7 +23,9 @@ fun OrderingMenuScreen(
     viewModel: MenuItemViewModel = hiltViewModel()
 ) {
     val itemsCategory =
-        viewModel.items.distinctBy { it.category }
+        viewModel.items.filter { !it.category.contains("Pizzas") }
+
+    println(itemsCategory)
 
     when {
         viewModel.loading.value -> {
