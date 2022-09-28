@@ -65,6 +65,7 @@ object UseCasesModule {
         getOrderedItemsUseCase = GetOrderedItemsUseCase(db),
         concludeOrderUseCase = ConcludeOrderUseCase(db),
         getCurrentDeskOrder = GetCurrentDeskOrder(db),
-        registerGainUseCase = RegisterGainUseCase(db)
+        registerGainUseCase = RegisterGainUseCase(db),
+        getItemProducts = GetItemProducts(db)
     )
 }

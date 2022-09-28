@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.common.util.DataStoreManager
+import com.example.ddinerapp.featureHome.domain.model.ItemProducts
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.domain.useCases.HomeUseCases
 import com.google.firebase.firestore.DocumentChange
@@ -25,6 +26,9 @@ class MenuItemViewModel @Inject constructor(
 
     private val _items = mutableStateListOf<MenuItem>()
     val items: List<MenuItem> = _items
+
+    private val _itemProducts = mutableStateListOf<ItemProducts>()
+    val itemProducts: List<ItemProducts> = _itemProducts
 
     init {
         getMenuItems()
@@ -87,6 +91,25 @@ class MenuItemViewModel @Inject constructor(
                     placedOrders,
                     observations
                 )
+            }
+        }
+    }
+
+    fun getItemProducts(id: String) {
+        _itemProducts.clear()
+        viewModelScope.launch {
+            storeManager.run {
+                homeUseCases.getItemProducts(businessCnpj.first(), id)
+                    .addOnSuccessListener { snapshot ->
+                        snapshot.documents.forEach {
+                            _itemProducts.add(
+                                ItemProducts(
+                                    description = it["description"].toString(),
+                                    quantity = it["quantity"].toString().toDouble(),
+                                )
+                            )
+                        }
+                    }
             }
         }
     }
