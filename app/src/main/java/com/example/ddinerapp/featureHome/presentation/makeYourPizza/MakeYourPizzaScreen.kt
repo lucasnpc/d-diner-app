@@ -2,23 +2,24 @@ package com.example.ddinerapp.featureHome.presentation.makeYourPizza
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ListAlt
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.ddinerapp.R
+import com.example.ddinerapp.common.theme.redOpaque
+import com.example.ddinerapp.common.util.PIZZAS_CATEGORY
+import com.example.ddinerapp.common.util.SWEET_PIZZAS
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.presentation.makeYourPizza.components.CompletePizza
 import com.example.ddinerapp.featureHome.presentation.makeYourPizza.components.PizzaAlertDialog
@@ -33,15 +34,25 @@ fun MakeYourPizzaScreen(
     navController: NavController,
 ) {
     val viewmodel: MenuItemViewModel = hiltViewModel()
-    val pizzas = viewmodel.items.filter { it.category == "Pizzas" }
+    var pizzasFilter by remember { mutableStateOf(PIZZAS_CATEGORY) }
+    val pizzas = viewmodel.items.filter { it.category == pizzasFilter }
     val selectedPizzas = mutableMapOf<String, Double>()
-    val radioOptions = listOf("Completa", "Brotinho")
-    val (selectedOption, onOptionSelect) = remember {
-        mutableStateOf(radioOptions[0])
+
+    val brotinhoSelected = remember {
+        mutableStateOf(false)
     }
+    val sweetPizzasSelected = remember {
+        mutableStateOf(false)
+    }
+
     val drawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
     val openDialog = remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+
+    pizzasFilter = if (sweetPizzasSelected.value)
+        SWEET_PIZZAS
+    else
+        PIZZAS_CATEGORY
 
     BottomDrawer(drawerContent = {
         AditionalsDrawerContent { observations ->
@@ -55,32 +66,30 @@ fun MakeYourPizzaScreen(
         }
     }, drawerState = drawerState) {
         MakeYourPizzaContent(
-            radioOptions = radioOptions,
-            selectedOption = selectedOption,
-            onOptionSelect = onOptionSelect,
+            brotinhoSelected = brotinhoSelected,
+            sweetPizzasSelected = sweetPizzasSelected,
             selectedPizzas = selectedPizzas,
             pizzas = pizzas,
             openDrawer = {
                 scope.launch {
                     drawerState.open()
                 }
-            },
-            openDialog = {
-                viewmodel.getItemProducts(it)
-                openDialog.value = true
             }
-        )
+        ) {
+            viewmodel.getItemProducts(it)
+            openDialog.value = true
+        }
         if (openDialog.value) {
             PizzaAlertDialog(list = viewmodel.itemProducts, dialog = openDialog)
         }
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun MakeYourPizzaContent(
-    radioOptions: List<String>,
-    selectedOption: String,
-    onOptionSelect: (String) -> Unit,
+    brotinhoSelected: MutableState<Boolean>,
+    sweetPizzasSelected: MutableState<Boolean>,
     selectedPizzas: MutableMap<String, Double>,
     pizzas: List<MenuItem>,
     openDrawer: () -> Unit,
@@ -97,7 +106,7 @@ private fun MakeYourPizzaContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Monte sua pizza",
+                text = stringResource(id = R.string.make_your_pizza),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -108,60 +117,64 @@ private fun MakeYourPizzaContent(
             )
             Spacer(modifier = Modifier.height(10.dp))
 
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                radioOptions.forEach {
-                    Row(
-                        Modifier
-                            .selectable(
-                                selected = (it == selectedOption),
-                                onClick = {
-                                    onOptionSelect(it)
-                                    selectedPizzas.clear()
-                                },
-                                role = Role.RadioButton
-                            ),
-                    ) {
-                        RadioButton(
-                            selected = it == selectedOption,
-                            onClick = null,
-                            colors = RadioButtonDefaults.colors(
-                                unselectedColor = MaterialTheme.colors.onBackground,
-                                selectedColor = MaterialTheme.colors.primary
-                            )
-                        )
-                        Text(text = it, modifier = Modifier.align(Alignment.CenterVertically))
-                        Spacer(modifier = Modifier.width(15.dp))
-                    }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
+                FilterChip(
+                    selected = brotinhoSelected.value,
+                    onClick = { brotinhoSelected.value = !brotinhoSelected.value },
+                    colors = ChipDefaults.outlinedFilterChipColors(
+                        backgroundColor = redOpaque,
+                        selectedBackgroundColor = MaterialTheme.colors.primary
+                    )
+                ) {
+                    Text(
+                        text = "Brotinho",
+                        fontSize = 18.sp,
+                        color = if (brotinhoSelected.value) Color.White else Color.Black,
+                        fontWeight = SemiBold
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                FilterChip(
+                    selected = sweetPizzasSelected.value,
+                    onClick = { sweetPizzasSelected.value = !sweetPizzasSelected.value },
+                    colors = ChipDefaults.outlinedFilterChipColors(
+                        backgroundColor = redOpaque,
+                        selectedBackgroundColor = MaterialTheme.colors.primary
+                    )
+                ) {
+                    Text(
+                        text = "Pizzas Doces",
+                        fontSize = 18.sp,
+                        color = if (sweetPizzasSelected.value) Color.White else Color.Black,
+                        fontWeight = SemiBold
+                    )
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            when (selectedOption) {
-                "Completa" -> {
-                    CompletePizza(
-                        pizzas = pizzas,
-                        selectPizza = {
-                            selectedPizzas[it.first.id] = (1 / it.second)
-                        },
-                        showPizzaInfo = { id ->
-                            if (id.isNotEmpty())
-                                openDialog(id)
-                        })
-                }
-                "Brotinho" -> {
-                    CompletePizza(
-                        pizzas = pizzas,
-                        showMultipleFlavors = false,
-                        selectPizza = {
-                            selectedPizzas[it.first.id] = it.second
-                        },
-                        showPizzaInfo = { id ->
-                            if (id.isNotEmpty())
-                                openDialog(id)
-                        }
-                    )
-                }
+            if (brotinhoSelected.value) {
+                CompletePizza(
+                    pizzas = pizzas,
+                    showMultipleFlavors = false,
+                    selectPizza = {
+                        selectedPizzas[it.first.id] = it.second
+                    },
+                    showPizzaInfo = { id ->
+                        if (id.isNotEmpty())
+                            openDialog(id)
+                    }
+                )
+            } else {
+                CompletePizza(
+                    pizzas = pizzas,
+                    selectPizza = {
+                        selectedPizzas[it.first.id] = (1 / it.second)
+                    },
+                    showPizzaInfo = { id ->
+                        if (id.isNotEmpty())
+                            openDialog(id)
+                    })
             }
         }
 
