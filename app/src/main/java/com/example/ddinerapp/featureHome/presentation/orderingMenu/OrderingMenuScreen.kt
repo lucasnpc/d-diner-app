@@ -12,7 +12,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ddinerapp.R
 import com.example.ddinerapp.common.util.LoadingScreen
-import com.example.ddinerapp.common.util.SWEET_PIZZAS
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewModel
 import com.example.ddinerapp.featureHome.presentation.orderingMenu.components.MenuItemButton
@@ -24,7 +23,7 @@ fun OrderingMenuScreen(
     viewModel: MenuItemViewModel = hiltViewModel()
 ) {
     val itemsCategory =
-        viewModel.items.distinctBy { !it.category.contains("Pizzas") }
+        viewModel.items.distinctBy { it.category }
 
     when {
         viewModel.loading.value -> {
@@ -55,7 +54,7 @@ private fun MenuItemsCategoryList(
             }
         }
         items(itemsCategory) { item ->
-            if (item.category != SWEET_PIZZAS) {
+            if (!item.category.contains("Pizzas")) {
                 var icon = Icons.Filled.DinnerDining
                 when (item.category) {
                     stringResource(R.string.lanches_category) -> icon = Icons.Filled.LunchDining
