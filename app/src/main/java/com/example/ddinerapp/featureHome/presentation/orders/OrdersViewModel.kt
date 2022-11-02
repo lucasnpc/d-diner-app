@@ -79,13 +79,14 @@ class OrdersViewModel @Inject constructor(
         }
     }
 
-    fun concludeOrder() {
+    fun concludeOrder(time: Long) {
         viewModelScope.launch {
             storeManager.run {
                 homeUseCases.concludeOrderUseCase(
                     businessCnpj.first(),
                     deskId.first(),
-                    orderId.first()
+                    orderId.first(),
+                    time
                 )
             }
         }

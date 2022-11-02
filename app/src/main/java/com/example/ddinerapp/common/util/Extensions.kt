@@ -10,3 +10,11 @@ fun Long.toDateFormat(): String {
 fun Long.toHourFormat(): String {
     return SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(this).toString()
 }
+
+fun Long.toShowDateFormat(): String {
+    return SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()).format(this).toString()
+}
+
+fun Double.currencyFormat(): String {
+    return "R$ ${String.format("%.2f", this).replace(".", ",")}"
+}

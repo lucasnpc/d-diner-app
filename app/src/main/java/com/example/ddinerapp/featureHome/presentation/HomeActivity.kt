@@ -1,7 +1,6 @@
 package com.example.ddinerapp.featureHome.presentation
 
 import android.os.Bundle
-import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -101,8 +100,28 @@ class HomeActivity : AppCompatActivity() {
                         composable(route = HomeScreen.MakeYourPizzaScreen.route) {
                             MakeYourPizzaScreen(navController = navController)
                         }
-                        composable(route = HomeScreen.PaymentVoucherScreen.route) {
-                            PaymentVoucherScreen()
+                        composable(route = HomeScreen.PaymentVoucherScreen.route + "/{endOrderTime}/{paymentWay}/{total}",
+                            arguments = listOf(
+                                navArgument("endOrderTime") {
+                                    type = NavType.LongType
+                                    defaultValue = 0L
+                                },
+                                navArgument("paymentWay") {
+                                    type = NavType.StringType
+                                    defaultValue = ""
+                                },
+                                navArgument("total") {
+                                    type = NavType.FloatType
+                                    defaultValue = 0f
+                                }
+                            )) { backStackEntry ->
+                            backStackEntry.arguments?.run {
+                                PaymentVoucherScreen(
+                                    getLong("endOrderTime"),
+                                    getString("paymentWay").toString(),
+                                    getFloat("total").toDouble()
+                                )
+                            }
                         }
                     }
                 }

@@ -1,6 +1,5 @@
 package com.example.ddinerapp.featureHome.presentation.cart
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -16,7 +15,6 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -26,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.ddinerapp.common.util.LoadingScreen
+import com.example.ddinerapp.common.util.currencyFormat
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewModel
 import com.example.ddinerapp.featureHome.presentation.orders.OrdersViewModel
@@ -114,10 +113,11 @@ fun CartScreen(navController: NavHostController) {
                 Spacer(modifier = Modifier.height(5.dp))
                 Button(
                     onClick = {
-//                        ordersViewModel.concludeOrder()
+                        val time = System.currentTimeMillis()
+//                        ordersViewModel.concludeOrder(time)
 //                        desksViewModel.disoccupyDesk()
 //                        cartViewModel.registerGain(selectedOption, total)
-                        navController.navigate(HomeScreen.PaymentVoucherScreen.route)
+                        navController.navigate(HomeScreen.PaymentVoucherScreen.route + "/${time}/${selectedOption}/${total.toFloat()}")
                     },
                     enabled = changeValue >= total || selectedOption != "Dinheiro",
                     modifier = Modifier.align(CenterHorizontally)
@@ -186,7 +186,7 @@ private fun CartCard(list: List<Pair<MenuItem, Double>>, total: Double, changeSt
                         fontWeight = FontWeight.SemiBold
                     )
                     Text(
-                        text = "Total: R$ ${String.format("%.2f", total).replace(".", ",")}",
+                        text = "Total: ${total.currencyFormat()}",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -238,7 +238,7 @@ private fun MoneyField(total: Double, disableButton: (Double) -> Unit) {
         )
         Spacer(modifier = Modifier.width(5.dp))
         Text(
-            text = "Troco R$ ${if (sum > 0) String.format("%.2f", sum).replace(".", ",") else 0.0}",
+            text = "Troco ${if (sum > 0) sum.currencyFormat() else 0.0}",
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.align(CenterVertically)
         )

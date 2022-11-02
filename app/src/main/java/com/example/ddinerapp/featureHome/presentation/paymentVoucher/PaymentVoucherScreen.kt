@@ -3,28 +3,45 @@ package com.example.ddinerapp.featureHome.presentation.paymentVoucher
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import com.example.ddinerapp.featureHome.presentation.paymentVoucher.components.RealizedPaymentInfo
+import com.example.ddinerapp.featureHome.presentation.paymentVoucher.components.RedRealizedPayment
+import com.example.ddinerapp.featureHome.presentation.paymentVoucher.components.SeeVoucherBt
 
 @Composable
-fun PaymentVoucherScreen() {
+fun PaymentVoucherScreen(time: Long, paymentWay: String, total: Double) {
     val context = (LocalContext.current as? Activity)
 
     BackHandler {
         context?.finish()
     }
     Box(
-        contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Blue)
+            .padding(16.dp)
     ) {
-        Text(text = "FUCK")
+        Card(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+        ) {
+            Column {
+                RedRealizedPayment()
+                Spacer(modifier = Modifier.height(32.dp))
+                RealizedPaymentInfo(time, paymentWay, total)
+                Spacer(modifier = Modifier.height(32.dp))
+                Divider(modifier = Modifier.height(2.dp))
+                SeeVoucherBt {
+
+                }
+            }
+        }
     }
 }
