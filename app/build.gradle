@@ -27,7 +27,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            buildConfigField "boolean", "isFirebaseLocal", "true"
+            buildConfigField "boolean", "isFirebaseLocal", "false"
         }
         release {
             minifyEnabled false

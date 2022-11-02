@@ -40,7 +40,6 @@ class CartViewModel @Inject constructor(
                     orderId.first()
                 ).addSnapshotListener { snapshot, exception ->
                     if (exception != null) {
-                        println(exception.message)
                         return@addSnapshotListener
                     }
 

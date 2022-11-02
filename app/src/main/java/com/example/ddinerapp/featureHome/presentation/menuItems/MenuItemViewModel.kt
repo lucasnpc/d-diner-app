@@ -41,7 +41,6 @@ class MenuItemViewModel @Inject constructor(
             homeUseCases.getMenuItemsUseCase(storeManager.businessCnpj.first())
                 .addSnapshotListener { snapshot, exception ->
                     if (exception != null) {
-                        println(exception.message)
                         return@addSnapshotListener
                     }
 
@@ -75,7 +74,6 @@ class MenuItemViewModel @Inject constructor(
                                 storeManager.setCurrentOrder(it.first().id)
                         }
                     }.addOnFailureListener {
-                        println(it.message)
                     }
             }
         }

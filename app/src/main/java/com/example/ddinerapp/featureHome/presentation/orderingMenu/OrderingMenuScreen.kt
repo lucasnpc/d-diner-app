@@ -25,8 +25,6 @@ fun OrderingMenuScreen(
     val itemsCategory =
         viewModel.items.filter { !it.category.contains("Pizzas") }
 
-    println(itemsCategory)
-
     when {
         viewModel.loading.value -> {
             LoadingScreen()

@@ -1,6 +1,7 @@
 package com.example.ddinerapp.featureHome.presentation
 
 import android.os.Bundle
+import androidx.activity.compose.BackHandler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +34,7 @@ import com.example.ddinerapp.featureHome.presentation.makeYourPizza.MakeYourPizz
 import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemsScreen
 import com.example.ddinerapp.featureHome.presentation.orderingMenu.OrderingMenuScreen
 import com.example.ddinerapp.featureHome.presentation.orders.OrdersScreen
+import com.example.ddinerapp.featureHome.presentation.paymentVoucher.PaymentVoucherScreen
 import com.example.ddinerapp.featureHome.presentation.util.BottomNavItem
 import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,11 +50,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val screens = listOf(
-            BottomNavItem.MenuItem,
-            BottomNavItem.CartItem,
-            BottomNavItem.OrdersItem,
-        )
         binding.homeScreen.setContent {
             val navController = rememberNavController()
 
@@ -62,8 +59,8 @@ class HomeActivity : AppCompatActivity() {
                         TopActionBar()
                     },
                     bottomBar = {
-                        BottomNavBar(navController, screens)
-                    }
+                        BottomNavBar(navController)
+                    },
                 ) {
                     NavHost(
                         navController = navController,
@@ -96,13 +93,16 @@ class HomeActivity : AppCompatActivity() {
                             )
                         }
                         composable(route = HomeScreen.CartScreen.route) {
-                            CartScreen()
+                            CartScreen(navController = navController)
                         }
                         composable(route = HomeScreen.OrdersScreen.route) {
                             OrdersScreen()
                         }
                         composable(route = HomeScreen.MakeYourPizzaScreen.route) {
                             MakeYourPizzaScreen(navController = navController)
+                        }
+                        composable(route = HomeScreen.PaymentVoucherScreen.route) {
+                            PaymentVoucherScreen()
                         }
                     }
                 }
@@ -145,13 +145,16 @@ class HomeActivity : AppCompatActivity() {
 
 @Composable
 private fun BottomNavBar(
-    navController: NavHostController,
-    screens: List<BottomNavItem>
+    navController: NavHostController
 ) {
     BottomNavigation(backgroundColor = MaterialTheme.colors.surface) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
-        screens.forEach { screen ->
+        listOf(
+            BottomNavItem.MenuItem,
+            BottomNavItem.CartItem,
+            BottomNavItem.OrdersItem,
+        ).forEach { screen ->
             BottomNavigationItem(
                 icon = {
                     Icon(

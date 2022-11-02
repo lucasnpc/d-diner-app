@@ -2,9 +2,7 @@ package com.example.ddinerapp.featureAuthentication.presentation.signUp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ddinerapp.common.util.AuthenticationState
-import com.example.ddinerapp.common.util.CNPJ_FIELD
-import com.example.ddinerapp.common.util.DataStoreManager
+import com.example.ddinerapp.common.util.*
 import com.example.ddinerapp.featureAuthentication.domain.useCases.AuthenticationUseCases
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,13 +30,17 @@ class SignUpViewModel @Inject constructor(
                 .addOnSuccessListener { document ->
                     storeManager.run {
                         setBusinessCnpj(document.getString(CNPJ_FIELD).toString())
+                        setUserInstance(
+                            document.getString(USERNAME_FIELD).toString(), document.getString(
+                                USERCPF_FIELD
+                            ).toString()
+                        )
                     }
 
                     _authenticationState.value = AuthenticationState.AUTHENTICATED
                     _loading.value = false
                 }
                 .addOnFailureListener {
-                    println(it.message)
                     _authenticationState.value = AuthenticationState.INVALID_AUTHENTICATION
                     _loading.value = false
                 }

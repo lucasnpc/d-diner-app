@@ -37,7 +37,6 @@ class DesksViewModel @Inject constructor(
                 .addSnapshotListener { snapshot, exception ->
 
                     if (exception != null) {
-                        println(exception.message)
                         return@addSnapshotListener
                     }
 
@@ -76,14 +75,15 @@ class DesksViewModel @Inject constructor(
         viewModelScope.launch {
             storeManager.run {
                 val cnpj = businessCnpj.first()
+                val cpf = userCpf.first()
                 when (desk.description) {
                     "Delivery" -> {
-                        mainUseCases.addOrderUseCase(desk.id, cnpj)
+                        mainUseCases.addOrderUseCase(desk.id, cnpj, cpf)
                     }
                     else -> {
                         if (!desk.isOccupied) {
                             mainUseCases.setOccupiedDeskUseCase(desk.id, cnpj)
-                            mainUseCases.addOrderUseCase(desk.id, cnpj)
+                            mainUseCases.addOrderUseCase(desk.id, cnpj, cpf)
                         }
                     }
                 }

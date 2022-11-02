@@ -8,12 +8,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class AddOrderUseCase(private val db: FirebaseFirestore) {
 
-    operator fun invoke(id: String, cnpj: String): Task<DocumentReference> {
+    operator fun invoke(id: String, cnpj: String, cpf: String): Task<DocumentReference> {
         val document =
             db.collection(BUSINESS_COLLECTION).document(cnpj).collection(DESKS_COLLECTION)
                 .document(id)
 
         Order(
+            employeeCpf = cpf,
             startDate = System.currentTimeMillis().toDateFormat(),
             startHour = System.currentTimeMillis().toHourFormat()
         ).let {

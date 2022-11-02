@@ -38,7 +38,6 @@ class OrdersViewModel @Inject constructor(
                 homeUseCases.getConcludedDeskOrders(businessCnpj.first(), deskId.first())
                     .addSnapshotListener { snapshot, exception ->
                         if (exception != null) {
-                            println(exception.message)
                             return@addSnapshotListener
                         }
 

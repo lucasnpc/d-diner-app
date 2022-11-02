@@ -24,16 +24,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.ddinerapp.common.util.LoadingScreen
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewModel
 import com.example.ddinerapp.featureHome.presentation.orders.OrdersViewModel
+import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
 import com.example.ddinerapp.featureMain.presentation.orderingDesks.DesksViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CartScreen() {
+fun CartScreen(navController: NavHostController) {
     val cartViewModel: CartViewModel = hiltViewModel()
     val menuItemViewModel: MenuItemViewModel = hiltViewModel()
     val ordersViewModel: OrdersViewModel = hiltViewModel()
@@ -41,7 +43,6 @@ fun CartScreen() {
     val orderedItems = cartViewModel.orderedItems
     val itemsList = menuItemViewModel.items
     val placedMenuItems = mutableListOf<Pair<MenuItem, Double>>()
-    val context = (LocalContext.current as? Activity)
 
     var total = 0.0
 
@@ -113,10 +114,10 @@ fun CartScreen() {
                 Spacer(modifier = Modifier.height(5.dp))
                 Button(
                     onClick = {
-                        ordersViewModel.concludeOrder()
-                        desksViewModel.disoccupyDesk()
-                        cartViewModel.registerGain(selectedOption, total)
-                        context?.finish()
+//                        ordersViewModel.concludeOrder()
+//                        desksViewModel.disoccupyDesk()
+//                        cartViewModel.registerGain(selectedOption, total)
+                        navController.navigate(HomeScreen.PaymentVoucherScreen.route)
                     },
                     enabled = changeValue >= total || selectedOption != "Dinheiro",
                     modifier = Modifier.align(CenterHorizontally)
