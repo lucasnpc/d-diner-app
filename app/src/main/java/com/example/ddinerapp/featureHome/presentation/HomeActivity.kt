@@ -100,7 +100,7 @@ class HomeActivity : AppCompatActivity() {
                         composable(route = HomeScreen.MakeYourPizzaScreen.route) {
                             MakeYourPizzaScreen(navController = navController)
                         }
-                        composable(route = HomeScreen.PaymentVoucherScreen.route + "/{endOrderTime}/{paymentWay}/{total}",
+                        composable(route = HomeScreen.PaymentVoucherScreen.route + "/{endOrderTime}/{paymentWay}/{total}/{placedItems}",
                             arguments = listOf(
                                 navArgument("endOrderTime") {
                                     type = NavType.LongType
@@ -113,13 +113,18 @@ class HomeActivity : AppCompatActivity() {
                                 navArgument("total") {
                                     type = NavType.FloatType
                                     defaultValue = 0f
+                                },
+                                navArgument("placedItems") {
+                                    type = NavType.StringType
+                                    defaultValue = ""
                                 }
                             )) { backStackEntry ->
                             backStackEntry.arguments?.run {
                                 PaymentVoucherScreen(
                                     getLong("endOrderTime"),
                                     getString("paymentWay").toString(),
-                                    getFloat("total").toDouble()
+                                    getFloat("total").toDouble(),
+                                    getString("placedItems").toString()
                                 )
                             }
                         }

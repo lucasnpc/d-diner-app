@@ -18,3 +18,7 @@ fun Long.toShowDateFormat(): String {
 fun Double.currencyFormat(): String {
     return "R$ ${String.format("%.2f", this).replace(".", ",")}"
 }
+
+fun String.cleanPlacedItemsString(): List<String> {
+    return this.replace("{", "").replace("}", "").split(",")
+}

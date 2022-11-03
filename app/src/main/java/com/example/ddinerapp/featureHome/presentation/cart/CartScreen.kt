@@ -42,7 +42,6 @@ fun CartScreen(navController: NavHostController) {
     val orderedItems = cartViewModel.orderedItems
     val itemsList = menuItemViewModel.items
     val placedMenuItems = mutableListOf<Pair<MenuItem, Double>>()
-
     var total = 0.0
 
     val scope = rememberCoroutineScope()
@@ -58,7 +57,10 @@ fun CartScreen(navController: NavHostController) {
 
     orderedItems.forEach { orderedItem ->
         orderedItem.placedItems.forEach { placedItem ->
-            itemsList.find { item -> item.id == placedItem.key }?.let { find ->
+            placedMenuItems.find { item -> item.first.id == placedItem.key }?.let { find ->
+                val index = placedMenuItems.indexOf(find)
+                placedMenuItems[index] = find.first to find.second + placedItem.value
+            } ?: itemsList.find { item -> item.id == placedItem.key }?.let { find ->
                 placedMenuItems.add(find to placedItem.value)
             }
         }
@@ -114,10 +116,14 @@ fun CartScreen(navController: NavHostController) {
                 Button(
                     onClick = {
                         val time = System.currentTimeMillis()
+                        val cleanedItems = mutableMapOf<String, Double>()
+                        cleanedItems.putAll(placedMenuItems.map {
+                            it.first.description to it.second
+                        })
 //                        ordersViewModel.concludeOrder(time)
 //                        desksViewModel.disoccupyDesk()
 //                        cartViewModel.registerGain(selectedOption, total)
-                        navController.navigate(HomeScreen.PaymentVoucherScreen.route + "/${time}/${selectedOption}/${total.toFloat()}")
+                        navController.navigate(HomeScreen.PaymentVoucherScreen.route + "/${time}/$selectedOption/${total.toFloat()}/$cleanedItems")
                     },
                     enabled = changeValue >= total || selectedOption != "Dinheiro",
                     modifier = Modifier.align(CenterHorizontally)
@@ -243,5 +249,4 @@ private fun MoneyField(total: Double, disableButton: (Double) -> Unit) {
             modifier = Modifier.align(CenterVertically)
         )
     }
-
 }

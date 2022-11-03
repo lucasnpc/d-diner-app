@@ -26,4 +26,7 @@
     <string name="observations_warn">Observações (Somente retirada)</string>
     <string name="observations">Observações (Retirada)</string>
     <string name="send_order">Enviar pedido</string>
+    <string name="payment_voucher">COMPROVANTE DE PAGAMENTO</string>
+    <string name="payment_finished">Pagamento Realizado</string>
+    <string name="see_voucher">VER COMPROVANTE</string>
 </resources>
