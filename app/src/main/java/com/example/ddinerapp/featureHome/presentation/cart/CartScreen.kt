@@ -120,9 +120,9 @@ fun CartScreen(navController: NavHostController) {
                         cleanedItems.putAll(placedMenuItems.map {
                             it.first.description to it.second
                         })
-//                        ordersViewModel.concludeOrder(time)
-//                        desksViewModel.disoccupyDesk()
-//                        cartViewModel.registerGain(selectedOption, total)
+                        ordersViewModel.concludeOrder(time)
+                        desksViewModel.disoccupyDesk()
+                        cartViewModel.registerGain(selectedOption, total)
                         navController.navigate(HomeScreen.PaymentVoucherScreen.route + "/${time}/$selectedOption/${total.toFloat()}/$cleanedItems")
                     },
                     enabled = changeValue >= total || selectedOption != "Dinheiro",
