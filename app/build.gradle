@@ -15,8 +15,8 @@ android {
         applicationId "com.example.ddinerapp"
         minSdk 21
         targetSdk 32
-        versionCode 122
-        versionName "1.22"
+        versionCode 130
+        versionName "1.30"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
