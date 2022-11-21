@@ -29,4 +29,6 @@
     <string name="payment_voucher">COMPROVANTE DE PAGAMENTO</string>
     <string name="payment_finished">Pagamento Realizado</string>
     <string name="see_voucher">VER COMPROVANTE</string>
+    <string name="voucher_saved">Comprovante salvo com sucesso.</string>
+    <string name="documents_path">/Documents/%s.pdf</string>
 </resources>

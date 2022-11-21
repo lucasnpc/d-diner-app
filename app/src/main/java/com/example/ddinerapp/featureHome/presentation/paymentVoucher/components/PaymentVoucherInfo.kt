@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ddinerapp.R
 import com.example.ddinerapp.common.util.currencyFormat
+import com.example.ddinerapp.common.util.quantityFormat
 
 @Composable
 fun PaymentVoucherInfo(
@@ -42,7 +43,7 @@ fun PaymentVoucherInfo(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = item.first, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                Text(text = "Qtd. ${item.second}", fontSize = 18.sp)
+                Text(text = "Qtd. ${item.second.quantityFormat()}", fontSize = 18.sp)
             }
         }
         item {

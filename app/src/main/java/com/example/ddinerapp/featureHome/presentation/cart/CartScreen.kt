@@ -1,7 +1,13 @@
 package com.example.ddinerapp.featureHome.presentation.cart
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
+import android.graphics.pdf.PdfDocument
+import android.graphics.pdf.PdfDocument.PageInfo
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -19,7 +25,11 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.ddinerapp.R
 import com.example.ddinerapp.common.util.LoadingScreen
+import com.example.ddinerapp.common.util.currencyFormat
+import com.example.ddinerapp.common.util.quantityFormat
+import com.example.ddinerapp.common.util.toShowDateFormat
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.presentation.cart.components.CartCard
 import com.example.ddinerapp.featureHome.presentation.cart.components.MoneyField
@@ -56,20 +66,17 @@ fun CartScreen(navController: NavHostController) {
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
-        when {
-            permissions[Manifest.permission.READ_EXTERNAL_STORAGE] == true && permissions[Manifest.permission.READ_EXTERNAL_STORAGE] == true -> {
-                finishOrder(
-                    placedMenuItems,
-                    ordersViewModel,
-                    desksViewModel,
-                    cartViewModel,
-                    selectedOption,
-                    total,
-                    navController
-                )
-            }
-            else -> Unit
-        }
+        finishOrder(
+            placedMenuItems = placedMenuItems,
+            ordersViewModel = ordersViewModel,
+            desksViewModel = desksViewModel,
+            cartViewModel = cartViewModel,
+            selectedOption = selectedOption,
+            total = total,
+            navController = navController,
+            context = context,
+            hasStoragePermission = (permissions[Manifest.permission.READ_EXTERNAL_STORAGE] == true && permissions[Manifest.permission.READ_EXTERNAL_STORAGE] == true)
+        )
     }
 
     orderedItems.forEach { orderedItem ->
@@ -141,13 +148,15 @@ fun CartScreen(navController: NavHostController) {
                             ) == PackageManager.PERMISSION_GRANTED
                         ) {
                             finishOrder(
-                                placedMenuItems,
-                                ordersViewModel,
-                                desksViewModel,
-                                cartViewModel,
-                                selectedOption,
-                                total,
-                                navController
+                                placedMenuItems = placedMenuItems,
+                                ordersViewModel = ordersViewModel,
+                                desksViewModel = desksViewModel,
+                                cartViewModel = cartViewModel,
+                                selectedOption = selectedOption,
+                                total = total,
+                                navController = navController,
+                                context = context,
+                                hasStoragePermission = true
                             )
                             return@Button
                         }
@@ -182,16 +191,75 @@ private fun finishOrder(
     cartViewModel: CartViewModel,
     selectedOption: String,
     total: Double,
-    navController: NavHostController
+    navController: NavHostController,
+    context: Context,
+    hasStoragePermission: Boolean,
 ) {
     val time = System.currentTimeMillis()
     val cleanedItems = mutableMapOf<String, Double>()
     cleanedItems.putAll(placedMenuItems.map {
         it.first.description to it.second
     })
+    if (hasStoragePermission)
+        createPdfDocument(context, time, cleanedItems, total, selectedOption, ordersViewModel)
+
     ordersViewModel.concludeOrder(time)
     desksViewModel.disoccupyDesk()
     cartViewModel.registerGain(selectedOption, total)
     navController.navigate(HomeScreen.PaymentVoucherScreen.route + "/${time}/$selectedOption/${total.toFloat()}/$cleanedItems")
+}
+
+
+private fun createPdfDocument(
+    context: Context,
+    time: Long,
+    cleanedItems: MutableMap<String, Double>,
+    total: Double,
+    paymentWay: String,
+    ordersViewModel: OrdersViewModel
+) {
+    val pageHeight = 1120
+    val pagewidth = 792
+    val doc = PdfDocument()
+    val title = Paint().apply {
+        typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        textSize = 16F
+        color = Color.BLACK
+        textAlign = Paint.Align.CENTER
+    }
+    val text = Paint().apply {
+        typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+        textSize = 16F
+        color = Color.BLACK
+        textAlign = Paint.Align.CENTER
+    }
+    val mypageInfo = PageInfo.Builder(pagewidth, pageHeight, 1).create()
+    val myPage: PdfDocument.Page = doc.startPage(mypageInfo)
+    val canvas = myPage.canvas
+
+    canvas.apply {
+        drawText(context.getString(R.string.payment_voucher), 396F, 80F, title)
+        drawText(time.toShowDateFormat(), 396F, 120F, text)
+        drawText("PEDIDO: ", 396F, 160F, title)
+        var height = 160F
+        cleanedItems.forEach { item ->
+            height += 20f
+            this.drawText(
+                "Item: ${item.key} Qtd. ${item.value.quantityFormat()}",
+                396F,
+                height,
+                text
+            )
+        }
+        height += 40
+        drawText("VALOR: ${total.currencyFormat()}", 396F, height, title)
+        drawText("PAGAMENTO: $paymentWay", 396F, height + 20, title)
+    }
+
+    doc.finishPage(myPage)
+
+    ordersViewModel.writeDoc(
+        doc, context
+    )
 }
 

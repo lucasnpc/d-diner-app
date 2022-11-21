@@ -1,18 +1,28 @@
 package com.example.ddinerapp.featureHome.presentation.orders
 
+import android.content.Context
+import android.graphics.pdf.PdfDocument
+import android.os.Environment
+import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ddinerapp.R
 import com.example.ddinerapp.common.util.DataStoreManager
 import com.example.ddinerapp.common.util.OrderKeys
 import com.example.ddinerapp.featureHome.domain.model.Order
 import com.example.ddinerapp.featureHome.domain.useCases.HomeUseCases
 import com.google.firebase.firestore.DocumentChange
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -89,6 +99,36 @@ class OrdersViewModel @Inject constructor(
                     time
                 )
             }
+        }
+    }
+
+    fun writeDoc(doc: PdfDocument, context: Context) {
+        _loading.value = true
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    doc.writeTo(
+                        FileOutputStream(
+                            File(
+                                Environment.getExternalStorageDirectory().path,
+                                context.getString(
+                                    R.string.documents_path,
+                                    storeManager.orderId.first()
+                                )
+                            )
+                        )
+                    )
+                }
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.voucher_saved),
+                    Toast.LENGTH_SHORT
+                ).show()
+                _loading.value = false
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            doc.close()
         }
     }
 }
