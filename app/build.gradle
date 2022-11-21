@@ -15,8 +15,8 @@ android {
         applicationId "com.example.ddinerapp"
         minSdk 21
         targetSdk 32
-        versionCode 130
-        versionName "1.30"
+        versionCode 132
+        versionName "1.32"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -27,7 +27,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            buildConfigField "boolean", "isFirebaseLocal", "false"
+            buildConfigField "boolean", "isFirebaseLocal", "true"
         }
         release {
             minifyEnabled false
