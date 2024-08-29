@@ -1,3 +1,6 @@
+import com.example.buildsrc.Configs
+import com.example.buildsrc.Dependencies
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -7,17 +10,17 @@ plugins {
 }
 
 android {
-    namespace = "com.example.ddinerapp"
-    compileSdk = 32
+    namespace = Configs.namespace
+    compileSdk = Configs.compileSdkVersion
 
     defaultConfig {
-        applicationId = "com.example.ddinerapp"
-        minSdk = 21
-        targetSdk = 32
-        versionCode = 132
-        versionName = "1.32"
+        applicationId = Configs.applicationId
+        minSdk = Configs.minSdkVersion
+        targetSdk = Configs.targetSdkVersion
+        versionCode = Configs.versionCode
+        versionName = Configs.versionName
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = Configs.instrumentationRunner
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -38,11 +41,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -51,7 +54,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.2"
+        kotlinCompilerExtensionVersion = Configs.kotlinCompilerExtensionVersion
     }
 
     packagingOptions {
@@ -62,47 +65,46 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.activity:activity-compose:1.5.1")
-    implementation("androidx.compose.ui:ui:1.2.1")
-    implementation("androidx.compose.material:material:1.2.1")
-    implementation("androidx.compose.animation:animation:1.2.1")
-    implementation("androidx.compose.ui:ui-tooling:1.2.1")
-    implementation("androidx.compose.material:material-icons-extended:1.2.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation("androidx.navigation:navigation-compose:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+    implementation(Dependencies.coreKtx)
+    implementation(Dependencies.activityCompose)
+    implementation(Dependencies.composeUi)
+    implementation(Dependencies.composeMaterial)
+    implementation(Dependencies.composeAnimation)
+    implementation(Dependencies.composeUiTooling)
+    implementation(Dependencies.composeMaterialIconsExtended)
+    implementation(Dependencies.lifecycleRuntimeKtx)
+    implementation(Dependencies.coreSplashScreen)
+    implementation(Dependencies.navigationCompose)
+    implementation(Dependencies.lifecycleViewModelCompose)
+    implementation(Dependencies.lifecycleLiveDataKtx)
 
-    implementation("com.google.dagger:hilt-android:2.48")
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    ksp("com.google.dagger:hilt-compiler:2.48")
+    implementation(Dependencies.hiltAndroid)
+    implementation(Dependencies.material)
+    implementation(Dependencies.appcompat)
+    implementation(Dependencies.constraintlayout)
+    implementation(Dependencies.navigationFragmentKtx)
+    implementation(Dependencies.navigationUiKtx)
+    implementation(Dependencies.hiltNavigationCompose)
+    ksp(Dependencies.hiltCompiler)
 
-    implementation(platform("com.google.firebase:firebase-bom:30.3.2"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.firebaseui:firebase-ui-auth:8.0.1")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation(platform(Dependencies.firebaseBom))
+    implementation(Dependencies.firebaseAnalyticsKtx)
+    implementation(Dependencies.firebaseUiAuth)
+    implementation(Dependencies.firebaseFirestoreKtx)
+    implementation(Dependencies.playServicesAuth)
 
+    implementation(Dependencies.datastorePreferences)
 
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    testImplementation(Dependencies.junit)
+    testImplementation(Dependencies.hiltAndroidTesting)
+    kspTest(Dependencies.hiltCompiler)
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.dagger:hilt-android-testing:2.48")
-    kspTest("com.google.dagger:hilt-compiler:2.48")
+    androidTestImplementation(Dependencies.testExtJunit)
+    androidTestImplementation(Dependencies.espressoCore)
+    androidTestImplementation(Dependencies.composeUiTestJunit4)
+    androidTestImplementation(Dependencies.hiltAndroidTesting)
+    kspAndroidTest(Dependencies.hiltCompiler)
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.3")
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48")
-    kspAndroidTest("com.google.dagger:hilt-compiler:2.48")
-
-    debugImplementation("androidx.compose.ui:ui-tooling:1.2.1")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.1")
+    debugImplementation(Dependencies.composeUiTooling)
+    debugImplementation(Dependencies.composeUiTestManifest)
 }
