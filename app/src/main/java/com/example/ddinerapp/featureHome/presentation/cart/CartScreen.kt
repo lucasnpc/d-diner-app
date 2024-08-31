@@ -203,7 +203,7 @@ private fun finishOrder(
     if (hasStoragePermission)
         createPdfDocument(context, time, cleanedItems, total, selectedOption, placedOrdersViewModel)
 
-    placedOrdersViewModel.concludeOrder(time)
+    placedOrdersViewModel.completeOrderAtTime(time)
     desksViewModel.disoccupyDesk()
     cartViewModel.registerGain(selectedOption, total)
     navController.navigate(HomeScreen.PaymentVoucherScreen.route + "/${time}/$selectedOption/${total.toFloat()}/$cleanedItems")

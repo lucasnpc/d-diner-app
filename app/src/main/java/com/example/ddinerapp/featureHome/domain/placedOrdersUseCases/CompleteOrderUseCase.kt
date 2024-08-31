@@ -9,6 +9,6 @@ interface CompleteOrderUseCase {
         deskId: String,
         orderId: String,
         time: Long
-    ): Task<Void>
+    )
 
 }

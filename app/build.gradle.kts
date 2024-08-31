@@ -100,6 +100,7 @@ dependencies {
     testImplementation(Dependencies.hiltAndroidTesting)
     testImplementation(TestDependencies.coroutinesTest)
     testImplementation(TestDependencies.mockk)
+    testImplementation(TestDependencies.truth)
     kspTest(Dependencies.hiltCompiler)
 
     androidTestImplementation(Dependencies.testExtJunit)

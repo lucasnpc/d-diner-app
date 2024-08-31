@@ -16,6 +16,7 @@ import com.example.ddinerapp.featureHome.domain.PlacedOrdersUseCases
 import com.example.ddinerapp.featureHome.domain.model.Order
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
@@ -44,8 +45,8 @@ class PlacedOrdersViewModel @Inject constructor(
         viewModelScope.launch {
             storeManager.run {
                 placedOrdersUseCases.deskCompletedOrdersUseCase.getCompletedOrders(
-                    businessCnpj.first(),
-                    deskId.first()
+                    cnpj = businessCnpj.first(),
+                    deskId = deskId.first()
                 ).collect { result ->
                     when (result) {
                         is ApiResult.Success -> {
@@ -79,7 +80,7 @@ class PlacedOrdersViewModel @Inject constructor(
         }
     }
 
-    fun concludeOrder(time: Long) {
+    fun completeOrderAtTime(time: Long) {
         viewModelScope.launch {
             storeManager.run {
                 placedOrdersUseCases.completeOrderUseCase.completeOrder(
@@ -115,6 +116,8 @@ class PlacedOrdersViewModel @Inject constructor(
                     Toast.LENGTH_SHORT
                 ).show()
                 _loading.value = false
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
             } catch (e: IOException) {
                 e.printStackTrace()
             }

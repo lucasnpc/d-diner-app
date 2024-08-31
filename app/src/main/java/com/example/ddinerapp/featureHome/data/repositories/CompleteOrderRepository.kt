@@ -6,7 +6,6 @@ import com.example.ddinerapp.common.util.ORDERS_COLLECTION
 import com.example.ddinerapp.common.util.toDateFormat
 import com.example.ddinerapp.common.util.toHourFormat
 import com.example.ddinerapp.featureHome.domain.placedOrdersUseCases.CompleteOrderUseCase
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 
 class CompleteOrderRepository(private val db: FirebaseFirestore) : CompleteOrderUseCase {
@@ -16,8 +15,8 @@ class CompleteOrderRepository(private val db: FirebaseFirestore) : CompleteOrder
         deskId: String,
         orderId: String,
         time: Long
-    ): Task<Void> {
-        return db.collection(BUSINESS_COLLECTION).document(cnpj).collection(DESKS_COLLECTION)
+    ) {
+        db.collection(BUSINESS_COLLECTION).document(cnpj).collection(DESKS_COLLECTION)
             .document(deskId).collection(ORDERS_COLLECTION).document(orderId).update(
                 "concluded",
                 true,
