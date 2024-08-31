@@ -1,5 +1,6 @@
 import com.example.buildsrc.Configs
 import com.example.buildsrc.Dependencies
+import com.example.buildsrc.TestDependencies
 
 plugins {
     id("com.android.application")
@@ -97,6 +98,8 @@ dependencies {
 
     testImplementation(Dependencies.junit)
     testImplementation(Dependencies.hiltAndroidTesting)
+    testImplementation(TestDependencies.coroutinesTest)
+    testImplementation(TestDependencies.mockk)
     kspTest(Dependencies.hiltCompiler)
 
     androidTestImplementation(Dependencies.testExtJunit)

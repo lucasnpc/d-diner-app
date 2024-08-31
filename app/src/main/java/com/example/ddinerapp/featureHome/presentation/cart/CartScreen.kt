@@ -35,9 +35,9 @@ import com.example.ddinerapp.featureHome.presentation.cart.components.CartCard
 import com.example.ddinerapp.featureHome.presentation.cart.components.MoneyField
 import com.example.ddinerapp.featureHome.presentation.cart.util.radioOptions
 import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewModel
-import com.example.ddinerapp.featureHome.presentation.orders.OrdersViewModel
+import com.example.ddinerapp.featureHome.presentation.placedOrders.PlacedOrdersViewModel
 import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
-import com.example.ddinerapp.featureMain.presentation.orderingDesks.DesksViewModel
+import com.example.ddinerapp.featureStartOrder.presentation.orderingDesks.DesksViewModel
 import kotlinx.coroutines.launch
 
 
@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
 fun CartScreen(navController: NavHostController) {
     val cartViewModel: CartViewModel = hiltViewModel()
     val menuItemViewModel: MenuItemViewModel = hiltViewModel()
-    val ordersViewModel: OrdersViewModel = hiltViewModel()
+    val placedOrdersViewModel: PlacedOrdersViewModel = hiltViewModel()
     val desksViewModel: DesksViewModel = hiltViewModel()
     val orderedItems = cartViewModel.orderedItems
     val itemsList = menuItemViewModel.items
@@ -68,7 +68,7 @@ fun CartScreen(navController: NavHostController) {
     ) { permissions ->
         finishOrder(
             placedMenuItems = placedMenuItems,
-            ordersViewModel = ordersViewModel,
+            placedOrdersViewModel = placedOrdersViewModel,
             desksViewModel = desksViewModel,
             cartViewModel = cartViewModel,
             selectedOption = selectedOption,
@@ -95,7 +95,7 @@ fun CartScreen(navController: NavHostController) {
     }
 
     when {
-        cartViewModel.loading.value || menuItemViewModel.loading.value || ordersViewModel.loading.value || desksViewModel.loading.value -> {
+        cartViewModel.loading.value || menuItemViewModel.loading.value || placedOrdersViewModel.loading.value || desksViewModel.loading.value -> {
             LoadingScreen()
         }
         else -> {
@@ -149,7 +149,7 @@ fun CartScreen(navController: NavHostController) {
                         ) {
                             finishOrder(
                                 placedMenuItems = placedMenuItems,
-                                ordersViewModel = ordersViewModel,
+                                placedOrdersViewModel = placedOrdersViewModel,
                                 desksViewModel = desksViewModel,
                                 cartViewModel = cartViewModel,
                                 selectedOption = selectedOption,
@@ -186,7 +186,7 @@ fun CartScreen(navController: NavHostController) {
 
 private fun finishOrder(
     placedMenuItems: MutableList<Pair<MenuItem, Double>>,
-    ordersViewModel: OrdersViewModel,
+    placedOrdersViewModel: PlacedOrdersViewModel,
     desksViewModel: DesksViewModel,
     cartViewModel: CartViewModel,
     selectedOption: String,
@@ -201,9 +201,9 @@ private fun finishOrder(
         it.first.description to it.second
     })
     if (hasStoragePermission)
-        createPdfDocument(context, time, cleanedItems, total, selectedOption, ordersViewModel)
+        createPdfDocument(context, time, cleanedItems, total, selectedOption, placedOrdersViewModel)
 
-    ordersViewModel.concludeOrder(time)
+    placedOrdersViewModel.concludeOrder(time)
     desksViewModel.disoccupyDesk()
     cartViewModel.registerGain(selectedOption, total)
     navController.navigate(HomeScreen.PaymentVoucherScreen.route + "/${time}/$selectedOption/${total.toFloat()}/$cleanedItems")
@@ -216,7 +216,7 @@ private fun createPdfDocument(
     cleanedItems: MutableMap<String, Double>,
     total: Double,
     paymentWay: String,
-    ordersViewModel: OrdersViewModel
+    placedOrdersViewModel: PlacedOrdersViewModel
 ) {
     val pageHeight = 1120
     val pagewidth = 792
@@ -258,7 +258,7 @@ private fun createPdfDocument(
 
     doc.finishPage(myPage)
 
-    ordersViewModel.writeDoc(
+    placedOrdersViewModel.writeDoc(
         doc, context
     )
 }

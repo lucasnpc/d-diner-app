@@ -32,7 +32,7 @@ import com.example.ddinerapp.featureHome.presentation.cart.CartScreen
 import com.example.ddinerapp.featureHome.presentation.makeYourPizza.MakeYourPizzaScreen
 import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemsScreen
 import com.example.ddinerapp.featureHome.presentation.orderingMenu.OrderingMenuScreen
-import com.example.ddinerapp.featureHome.presentation.orders.OrdersScreen
+import com.example.ddinerapp.featureHome.presentation.placedOrders.OrdersScreen
 import com.example.ddinerapp.featureHome.presentation.paymentVoucher.PaymentVoucherScreen
 import com.example.ddinerapp.featureHome.presentation.util.BottomNavItem
 import com.example.ddinerapp.featureHome.presentation.util.HomeScreen

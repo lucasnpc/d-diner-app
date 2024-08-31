@@ -38,7 +38,7 @@ class MenuItemViewModel @Inject constructor(
     private fun getMenuItems() {
         _loading.value = true
         viewModelScope.launch {
-            homeUseCases.getMenuItemsUseCase(storeManager.businessCnpj.first())
+            homeUseCases.getMenuItemsUseCase.getItems(storeManager.businessCnpj.first())
                 .addSnapshotListener { snapshot, exception ->
                     if (exception != null) {
                         return@addSnapshotListener

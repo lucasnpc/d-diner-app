@@ -15,7 +15,7 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val Context.dataStore by preferencesDataStore("settings")
+val Context.dataStore by preferencesDataStore("settings")
 
 @Singleton
 class DataStoreManager @Inject constructor(@ApplicationContext appContext: Context) {

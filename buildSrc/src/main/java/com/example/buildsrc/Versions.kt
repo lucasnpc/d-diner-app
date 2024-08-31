@@ -1,6 +1,8 @@
 package com.example.buildsrc
 
 object Versions {
+    const val mockk = "1.13.7"
+    const val coroutinesTest = "1.2.1"
     const val coreKtx = "1.8.0"
     const val activityCompose = "1.5.1"
     const val composeUi = "1.2.1"
