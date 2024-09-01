@@ -30,7 +30,7 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            buildConfigField("boolean", "isFirebaseLocal", "true")
+            buildConfigField("boolean", "isFirebaseLocal", "false")
         }
         release {
             isMinifyEnabled = true
@@ -78,6 +78,8 @@ dependencies {
     implementation(Dependencies.navigationCompose)
     implementation(Dependencies.lifecycleViewModelCompose)
     implementation(Dependencies.lifecycleLiveDataKtx)
+    implementation(Dependencies.coroutinesCore)
+    implementation(Dependencies.coroutinesAndroid)
 
     implementation(Dependencies.hiltAndroid)
     implementation(Dependencies.material)
@@ -97,18 +99,21 @@ dependencies {
     implementation(Dependencies.datastorePreferences)
 
     testImplementation(Dependencies.junit)
-    testImplementation(Dependencies.hiltAndroidTesting)
     testImplementation(TestDependencies.coroutinesTest)
     testImplementation(TestDependencies.mockk)
     testImplementation(TestDependencies.truth)
-    kspTest(Dependencies.hiltCompiler)
 
     androidTestImplementation(Dependencies.testExtJunit)
     androidTestImplementation(Dependencies.espressoCore)
-    androidTestImplementation(Dependencies.composeUiTestJunit4)
+    androidTestImplementation(TestDependencies.composeUiTestJunit4)
     androidTestImplementation(Dependencies.hiltAndroidTesting)
+    androidTestImplementation(Dependencies.hiltNavigationCompose)
+    androidTestImplementation(TestDependencies.coroutinesTest)
+    androidTestImplementation(TestDependencies.archCore)
+    androidTestImplementation(TestDependencies.testRunner)
+    androidTestImplementation(TestDependencies.testCore)
     kspAndroidTest(Dependencies.hiltCompiler)
 
     debugImplementation(Dependencies.composeUiTooling)
-    debugImplementation(Dependencies.composeUiTestManifest)
+    debugImplementation(TestDependencies.composeUiTestManifest)
 }

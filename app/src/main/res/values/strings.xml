@@ -31,4 +31,7 @@
     <string name="see_voucher">VER COMPROVANTE</string>
     <string name="voucher_saved">Comprovante salvo com sucesso.</string>
     <string name="documents_path">/Documents/%s.pdf</string>
+    <string name="completed_order">Pedido concluído</string>
+    <string name="see_order_details">Ver detalhes do pedido</string>
+    <string name="completed_orders">Pedidos Feitos</string>
 </resources>

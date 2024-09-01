@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
@@ -21,6 +22,8 @@ private val Context.dataStore by preferencesDataStore("settings")
 
 fun getDDinerSession(@ApplicationContext appContext: Context): DDinerSession =
     DefaultDDinerSession(appContext)
+
+fun getDDinerSessionForTesting(): DDinerSession = TestingDDinerSession
 
 @Singleton
 internal class DefaultDDinerSession @Inject constructor(@ApplicationContext appContext: Context) :
@@ -42,6 +45,21 @@ internal class DefaultDDinerSession @Inject constructor(@ApplicationContext appC
         settingsDataStore.edit {
             it.clear()
         }
+    }
+
+}
+
+internal data object TestingDDinerSession : DDinerSession {
+    override fun saveField(key: Preferences.Key<String>, field: String) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun getField(key: Preferences.Key<String>): Flow<String> {
+        return flow { emit("") }
+    }
+
+    override suspend fun clearSessionData() {
+        //TODO("Not yet implemented")
     }
 
 }

@@ -3,12 +3,12 @@ package com.example.buildsrc
 object Dependencies {
     const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
     const val activityCompose = "androidx.activity:activity-compose:${Versions.activityCompose}"
-    const val composeUi = "androidx.compose.ui:ui:${Versions.composeUi}"
-    const val composeMaterial = "androidx.compose.material:material:${Versions.composeMaterial}"
-    const val composeAnimation = "androidx.compose.animation:animation:${Versions.composeAnimation}"
-    const val composeUiTooling = "androidx.compose.ui:ui-tooling:${Versions.composeUiTooling}"
+    const val composeUi = "androidx.compose.ui:ui:${Versions.composeVersion}"
+    const val composeMaterial = "androidx.compose.material:material:${Versions.composeVersion}"
+    const val composeAnimation = "androidx.compose.animation:animation:${Versions.composeVersion}"
+    const val composeUiTooling = "androidx.compose.ui:ui-tooling:${Versions.composeVersion}"
     const val composeMaterialIconsExtended =
-        "androidx.compose.material:material-icons-extended:${Versions.composeMaterialIconsExtended}"
+        "androidx.compose.material:material-icons-extended:${Versions.composeVersion}"
     const val lifecycleRuntimeKtx =
         "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleRuntimeKtx}"
     const val coreSplashScreen = "androidx.core:core-splashscreen:${Versions.coreSplashScreen}"
@@ -42,8 +42,6 @@ object Dependencies {
         "com.google.dagger:hilt-android-testing:${Versions.hiltAndroidTesting}"
     const val testExtJunit = "androidx.test.ext:junit:${Versions.testExtJunit}"
     const val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espressoCore}"
-    const val composeUiTestJunit4 =
-        "androidx.compose.ui:ui-test-junit4:${Versions.composeUiTestJunit4}"
-    const val composeUiTestManifest =
-        "androidx.compose.ui:ui-test-manifest:${Versions.composeUiTestManifest}"
+    const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesTest}"
+    const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesTest}"
 }

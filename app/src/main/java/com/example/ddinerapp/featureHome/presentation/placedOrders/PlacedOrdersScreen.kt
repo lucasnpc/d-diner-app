@@ -21,16 +21,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.ddinerapp.R
 import com.example.ddinerapp.common.util.LoadingScreen
 import com.example.ddinerapp.featureHome.domain.model.Order
 
 @Composable
-fun OrdersScreen(viewModel: PlacedOrdersViewModel = hiltViewModel()) {
+fun CompletedOrdersScreen(viewModel: PlacedOrdersViewModel = hiltViewModel()) {
     val orders = viewModel.orders.filter { it.concluded }
 
     when {
@@ -39,14 +41,14 @@ fun OrdersScreen(viewModel: PlacedOrdersViewModel = hiltViewModel()) {
         }
 
         else -> {
-            OrdersList(orders)
+            CompletedOrdersList(orders)
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
-private fun OrdersList(orders: List<Order>) {
+private fun CompletedOrdersList(orders: List<Order>) {
     Box(modifier = Modifier.padding(PaddingValues(8.dp))) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -54,7 +56,7 @@ private fun OrdersList(orders: List<Order>) {
         ) {
             stickyHeader {
                 Text(
-                    text = "Pedidos Feitos",
+                    text = stringResource(R.string.completed_orders),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -74,13 +76,13 @@ private fun OrdersList(orders: List<Order>) {
                         )
                     ) {
                         Text(
-                            text = if (order.concluded) "Pedido concluído" else "Pedido em aberto",
+                            text = stringResource(R.string.completed_order),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.SemiBold,
                             textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier.height(5.dp))
-                        Text(text = "Ver detalhes do pedido", fontSize = 17.sp)
+                        Text(text = stringResource(R.string.see_order_details), fontSize = 17.sp)
                     }
                 }
             }
