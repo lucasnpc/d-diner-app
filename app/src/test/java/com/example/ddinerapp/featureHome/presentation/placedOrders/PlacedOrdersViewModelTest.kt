@@ -4,7 +4,10 @@ import android.content.Context
 import android.graphics.pdf.PdfDocument
 import android.os.Environment
 import com.example.ddinerapp.common.data.request.ApiResult
-import com.example.ddinerapp.common.util.DataStoreManager
+import com.example.ddinerapp.common.data.session.DDinerSession
+import com.example.ddinerapp.common.data.session.SessionPreferencesKeys.PREF_BUSINESS_CNPJ
+import com.example.ddinerapp.common.data.session.SessionPreferencesKeys.PREF_CURRENT_ORDER_ID
+import com.example.ddinerapp.common.data.session.SessionPreferencesKeys.PREF_SELECTED_DESK_ID
 import com.example.ddinerapp.commons.MainCoroutineRule
 import com.example.ddinerapp.featureHome.domain.PlacedOrdersUseCases
 import com.example.ddinerapp.featureHome.domain.model.Order
@@ -30,7 +33,7 @@ class PlacedOrdersViewModelTest {
     val mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var placedOrdersViewModel: PlacedOrdersViewModel
-    private val store: DataStoreManager = mockk(relaxed = true)
+    private val session: DDinerSession = mockk(relaxed = true)
     private lateinit var placedOrdersUseCases: PlacedOrdersUseCases
     private val deskCompletedOrdersUseCase: DeskCompletedOrdersUseCase = mockk(relaxed = true)
     private val completeOrderUseCase: CompleteOrderUseCase = mockk(relaxed = true)
@@ -41,13 +44,13 @@ class PlacedOrdersViewModelTest {
 
     @Before
     fun setUp() {
-        coEvery { store.businessCnpj } returns flow {
+        coEvery { session.getField(PREF_BUSINESS_CNPJ) } returns flow {
             emit("12345678901234")
         }
-        coEvery { store.deskId } returns flow {
+        coEvery { session.getField(PREF_SELECTED_DESK_ID) } returns flow {
             emit("12222222222222")
         }
-        coEvery { store.orderId } returns flow {
+        coEvery { session.getField(PREF_CURRENT_ORDER_ID) } returns flow {
             emit("12345678901234")
         }
     }
@@ -69,7 +72,7 @@ class PlacedOrdersViewModelTest {
             )
         placedOrdersViewModel =
             PlacedOrdersViewModel(
-                storeManager = store,
+                session = session,
                 placedOrdersUseCases = placedOrdersUseCases
             )
         assertThat(placedOrdersViewModel.orders[0].concluded).isFalse()
@@ -98,7 +101,7 @@ class PlacedOrdersViewModelTest {
             )
         placedOrdersViewModel =
             PlacedOrdersViewModel(
-                storeManager = store,
+                session = session,
                 placedOrdersUseCases = placedOrdersUseCases
             )
         placedOrdersViewModel.completeOrderAtTime(System.currentTimeMillis())
@@ -114,7 +117,7 @@ class PlacedOrdersViewModelTest {
 
         placedOrdersViewModel =
             PlacedOrdersViewModel(
-                storeManager = store,
+                session = session,
                 placedOrdersUseCases = mockk(relaxed = true)
             )
         placedOrdersViewModel.writeDoc(pdfDocument, context)

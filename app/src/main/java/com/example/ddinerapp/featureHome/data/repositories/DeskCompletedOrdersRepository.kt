@@ -11,6 +11,7 @@ import com.example.ddinerapp.featureHome.domain.placedOrdersUseCases.DeskComplet
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.ProducerScope
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
@@ -19,28 +20,32 @@ class DeskCompletedOrdersRepository(private val db: FirebaseFirestore) :
 
     override fun getCompletedOrders(cnpj: String, deskId: String): Flow<ApiResult<Order>> =
         callbackFlow {
-            db.collection(BUSINESS_COLLECTION).document(cnpj).collection(DESKS_COLLECTION)
-                .document(deskId).collection(ORDERS_COLLECTION)
-                .whereEqualTo(OrderKeys.CONCLUDED, true)
-                .limit(15).addSnapshotListener { snapshot, exception ->
-                    if (exception != null) {
-                        trySend(ApiResult.Error(exception))
-                        return@addSnapshotListener
-                    }
-                    snapshot?.documentChanges?.map { documentChange ->
-                        when (documentChange.type) {
-                            DocumentChange.Type.ADDED -> {
-                                emitOrder(documentChange)
-                            }
+            val listener =
+                db.collection(BUSINESS_COLLECTION).document(cnpj).collection(DESKS_COLLECTION)
+                    .document(deskId).collection(ORDERS_COLLECTION)
+                    .whereEqualTo(OrderKeys.CONCLUDED, true)
+                    .limit(15).addSnapshotListener { snapshot, exception ->
+                        if (exception != null) {
+                            trySend(ApiResult.Error(exception))
+                            return@addSnapshotListener
+                        }
+                        snapshot?.documentChanges?.map { documentChange ->
+                            when (documentChange.type) {
+                                DocumentChange.Type.ADDED -> {
+                                    emitOrder(documentChange)
+                                }
 
-                            DocumentChange.Type.MODIFIED -> {
-                                emitOrder(documentChange)
-                            }
+                                DocumentChange.Type.MODIFIED -> {
+                                    emitOrder(documentChange)
+                                }
 
-                            else -> Unit
+                                else -> Unit
+                            }
                         }
                     }
-                }
+            awaitClose {
+                listener.remove()
+            }
         }
 
     private fun ProducerScope<ApiResult<Order>>.emitOrder(

@@ -5,18 +5,21 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ddinerapp.common.util.DataStoreManager
+import com.example.ddinerapp.common.data.session.DDinerSession
+import com.example.ddinerapp.common.data.session.SessionPreferencesKeys.PREF_BUSINESS_CNPJ
+import com.example.ddinerapp.common.data.session.SessionPreferencesKeys.PREF_SELECTED_DESK_ID
+import com.example.ddinerapp.common.data.session.SessionPreferencesKeys.PREF_USER_CPF
 import com.example.ddinerapp.featureHome.domain.model.Desk
 import com.example.ddinerapp.featureStartOrder.domain.useCases.MainUseCases
 import com.google.firebase.firestore.DocumentChange
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class DesksViewModel @Inject constructor(
-    private val storeManager: DataStoreManager,
+    private val session: DDinerSession,
     private val mainUseCases: MainUseCases
 ) : ViewModel() {
 
@@ -33,7 +36,7 @@ class DesksViewModel @Inject constructor(
     private fun getDesks() {
         _loading.value = true
         viewModelScope.launch {
-            mainUseCases.getDesksUseCase(storeManager.businessCnpj.first())
+            mainUseCases.getDesksUseCase(session.getField(PREF_BUSINESS_CNPJ).first())
                 .addSnapshotListener { snapshot, exception ->
 
                     if (exception != null) {
@@ -51,6 +54,7 @@ class DesksViewModel @Inject constructor(
                                     )
                                 )
                             }
+
                             DocumentChange.Type.MODIFIED -> doc.document.let {
                                 _desks.run {
                                     val find = find { desk -> desk.id == it.id }
@@ -63,6 +67,7 @@ class DesksViewModel @Inject constructor(
                                     )
                                 }
                             }
+
                             else -> Unit
                         }
                     }
@@ -73,13 +78,14 @@ class DesksViewModel @Inject constructor(
 
     fun selectDesk(desk: Desk) {
         viewModelScope.launch {
-            storeManager.run {
-                val cnpj = businessCnpj.first()
-                val cpf = userCpf.first()
+            session.run {
+                val cnpj = getField(PREF_BUSINESS_CNPJ).first()
+                val cpf = getField(PREF_USER_CPF).first()
                 when (desk.description) {
                     "Delivery" -> {
                         mainUseCases.addOrderUseCase(desk.id, cnpj, cpf)
                     }
+
                     else -> {
                         if (!desk.isOccupied) {
                             mainUseCases.setOccupiedDeskUseCase(desk.id, cnpj)
@@ -88,15 +94,18 @@ class DesksViewModel @Inject constructor(
                     }
                 }
 
-                setSelectedDesk(desk.id)
+                saveField(PREF_SELECTED_DESK_ID, desk.id)
             }
         }
     }
 
     fun disoccupyDesk() {
         viewModelScope.launch {
-            storeManager.run {
-                mainUseCases.disoccupyDeskUseCase(businessCnpj.first(), deskId.first())
+            session.run {
+                mainUseCases.disoccupyDeskUseCase(
+                    getField(PREF_BUSINESS_CNPJ).first(),
+                    getField(PREF_SELECTED_DESK_ID).first()
+                )
             }
         }
     }
