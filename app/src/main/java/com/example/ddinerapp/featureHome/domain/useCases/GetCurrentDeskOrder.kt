@@ -6,7 +6,6 @@ import com.example.ddinerapp.common.util.ORDERS_COLLECTION
 import com.example.ddinerapp.common.util.OrderKeys
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 
 class GetCurrentDeskOrder(private val db: FirebaseFirestore) {

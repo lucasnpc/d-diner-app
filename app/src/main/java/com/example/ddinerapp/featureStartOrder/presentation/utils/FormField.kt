@@ -16,7 +16,7 @@ import androidx.compose.ui.text.input.KeyboardType
 class FormField(val name: String, val label: String = "", val validators: List<TextValidator>) {
     var text: String by mutableStateOf("")
     private var lbl: String by mutableStateOf(label)
-    var hasError: Boolean by mutableStateOf(false)
+    private var hasError: Boolean by mutableStateOf(false)
 
 
     private fun showError(error: String) {
