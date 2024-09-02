@@ -8,6 +8,6 @@ object Configs {
     const val targetSdkVersion = 34
     const val versionCode = 132
     const val versionName = "1.32"
-    const val instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    const val instrumentationRunner = "com.example.ddinerapp.hilt.CustomTestRunner"
     const val kotlinCompilerExtensionVersion = "1.5.2"
 }

@@ -15,7 +15,7 @@ import com.example.ddinerapp.R
 import com.example.ddinerapp.common.util.AuthenticationState
 import com.example.ddinerapp.common.util.FirebaseUserLiveData
 import com.example.ddinerapp.databinding.FragmentSignupBinding
-import com.example.ddinerapp.featureMain.presentation.MainActivity
+import com.example.ddinerapp.featureStartOrder.presentation.StartOrderActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.android.material.snackbar.Snackbar
@@ -75,7 +75,7 @@ class SignUpFragment : Fragment() {
             viewModel.authenticationState.collectLatest { state ->
                 when (state) {
                     AuthenticationState.AUTHENTICATED -> {
-                        startActivity(Intent(requireContext(), MainActivity::class.java))
+                        startActivity(Intent(requireContext(), StartOrderActivity::class.java))
                         requireActivity().finish()
                     }
                     AuthenticationState.INVALID_AUTHENTICATION -> {

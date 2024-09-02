@@ -1,10 +1,11 @@
 package com.example.ddinerapp.featureHome.domain.useCases
 
-import com.example.ddinerapp.common.util.*
+import com.example.ddinerapp.common.util.BUSINESS_COLLECTION
+import com.example.ddinerapp.common.util.DESKS_COLLECTION
+import com.example.ddinerapp.common.util.ORDERED_ITEMS_COLLECTION
+import com.example.ddinerapp.common.util.ORDERS_COLLECTION
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 class GetOrderedItemsUseCase(private val db: FirebaseFirestore) {
 

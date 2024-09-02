@@ -1,28 +1,32 @@
 package com.example.ddinerapp.featureHome.presentation.menuItems
 
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ddinerapp.common.util.DataStoreManager
+import com.example.ddinerapp.common.data.session.DDinerSession
+import com.example.ddinerapp.common.data.session.SessionPreferencesKeys.PREF_BUSINESS_CNPJ
+import com.example.ddinerapp.common.data.session.SessionPreferencesKeys.PREF_CURRENT_ORDER_ID
+import com.example.ddinerapp.common.data.session.SessionPreferencesKeys.PREF_SELECTED_DESK_ID
 import com.example.ddinerapp.featureHome.domain.model.ItemProducts
 import com.example.ddinerapp.featureHome.domain.model.MenuItem
 import com.example.ddinerapp.featureHome.domain.useCases.HomeUseCases
 import com.google.firebase.firestore.DocumentChange
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class MenuItemViewModel @Inject constructor(
-    private val storeManager: DataStoreManager,
+    private val session: DDinerSession,
     private val homeUseCases: HomeUseCases
 ) : ViewModel() {
 
-    private val _loading = mutableStateOf(false)
-    val loading: State<Boolean> = _loading
+    var loading by mutableStateOf(false)
+        private set
 
     private val _items = mutableStateListOf<MenuItem>()
     val items: List<MenuItem> = _items
@@ -36,9 +40,9 @@ class MenuItemViewModel @Inject constructor(
     }
 
     private fun getMenuItems() {
-        _loading.value = true
+        loading = true
         viewModelScope.launch {
-            homeUseCases.getMenuItemsUseCase(storeManager.businessCnpj.first())
+            homeUseCases.getMenuItemsUseCase.getItems(session.getField(PREF_BUSINESS_CNPJ).first())
                 .addSnapshotListener { snapshot, exception ->
                     if (exception != null) {
                         return@addSnapshotListener
@@ -56,22 +60,26 @@ class MenuItemViewModel @Inject constructor(
                                     )
                                 )
                             }
+
                             else -> Unit
                         }
                     }
-                    _loading.value = false
+                    loading = false
                 }
         }
     }
 
     private fun getCurrentOrder() {
-        viewModelScope.launch {
-            storeManager.run {
-                homeUseCases.getCurrentDeskOrder(businessCnpj.first(), deskId.first())
+        session.run {
+            viewModelScope.launch {
+                homeUseCases.getCurrentDeskOrder(
+                    getField(PREF_BUSINESS_CNPJ).first(),
+                    getField(PREF_SELECTED_DESK_ID).first()
+                )
                     .addOnSuccessListener { query ->
                         query?.documents?.let {
                             if (it.isNotEmpty())
-                                storeManager.setCurrentOrder(it.first().id)
+                                session.saveField(PREF_CURRENT_ORDER_ID, it.first().id)
                         }
                     }.addOnFailureListener {
                     }
@@ -81,11 +89,11 @@ class MenuItemViewModel @Inject constructor(
 
     fun placeOrder(placedOrders: Map<String, Double>, observations: String) {
         viewModelScope.launch {
-            storeManager.run {
+            session.run {
                 homeUseCases.placeOrdersUseCase(
-                    businessCnpj.first(),
-                    deskId.first(),
-                    orderId.first(),
+                    getField(PREF_BUSINESS_CNPJ).first(),
+                    getField(PREF_SELECTED_DESK_ID).first(),
+                    getField(PREF_CURRENT_ORDER_ID).first(),
                     placedOrders,
                     observations
                 )
@@ -96,8 +104,8 @@ class MenuItemViewModel @Inject constructor(
     fun getItemProducts(id: String) {
         _itemProducts.clear()
         viewModelScope.launch {
-            storeManager.run {
-                homeUseCases.getItemProducts(businessCnpj.first(), id)
+            session.run {
+                homeUseCases.getItemProducts(getField(PREF_BUSINESS_CNPJ).first(), id)
                     .addOnSuccessListener { snapshot ->
                         snapshot.documents.forEach {
                             _itemProducts.add(

@@ -10,10 +10,28 @@ import android.graphics.pdf.PdfDocument
 import android.graphics.pdf.PdfDocument.PageInfo
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.BottomDrawer
+import androidx.compose.material.BottomDrawerValue
+import androidx.compose.material.Button
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.RadioButton
+import androidx.compose.material.RadioButtonDefaults
+import androidx.compose.material.Text
+import androidx.compose.material.rememberBottomDrawerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -35,19 +53,20 @@ import com.example.ddinerapp.featureHome.presentation.cart.components.CartCard
 import com.example.ddinerapp.featureHome.presentation.cart.components.MoneyField
 import com.example.ddinerapp.featureHome.presentation.cart.util.radioOptions
 import com.example.ddinerapp.featureHome.presentation.menuItems.MenuItemViewModel
-import com.example.ddinerapp.featureHome.presentation.orders.OrdersViewModel
+import com.example.ddinerapp.featureHome.presentation.placedOrders.PlacedOrdersViewModel
 import com.example.ddinerapp.featureHome.presentation.util.HomeScreen
-import com.example.ddinerapp.featureMain.presentation.orderingDesks.DesksViewModel
+import com.example.ddinerapp.featureStartOrder.presentation.orderingDesks.DesksViewModel
 import kotlinx.coroutines.launch
-
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CartScreen(navController: NavHostController) {
-    val cartViewModel: CartViewModel = hiltViewModel()
-    val menuItemViewModel: MenuItemViewModel = hiltViewModel()
-    val ordersViewModel: OrdersViewModel = hiltViewModel()
-    val desksViewModel: DesksViewModel = hiltViewModel()
+fun CartScreen(
+    navController: NavHostController,
+    cartViewModel: CartViewModel = hiltViewModel(),
+    menuItemViewModel: MenuItemViewModel = hiltViewModel(),
+    placedOrdersViewModel: PlacedOrdersViewModel = hiltViewModel(),
+    desksViewModel: DesksViewModel = hiltViewModel()
+) {
     val orderedItems = cartViewModel.orderedItems
     val itemsList = menuItemViewModel.items
     val placedMenuItems = mutableListOf<Pair<MenuItem, Double>>()
@@ -68,7 +87,7 @@ fun CartScreen(navController: NavHostController) {
     ) { permissions ->
         finishOrder(
             placedMenuItems = placedMenuItems,
-            ordersViewModel = ordersViewModel,
+            placedOrdersViewModel = placedOrdersViewModel,
             desksViewModel = desksViewModel,
             cartViewModel = cartViewModel,
             selectedOption = selectedOption,
@@ -95,9 +114,10 @@ fun CartScreen(navController: NavHostController) {
     }
 
     when {
-        cartViewModel.loading.value || menuItemViewModel.loading.value || ordersViewModel.loading.value || desksViewModel.loading.value -> {
+        cartViewModel.loading || menuItemViewModel.loading || placedOrdersViewModel.loading || desksViewModel.loading -> {
             LoadingScreen()
         }
+
         else -> {
             BottomDrawer(drawerState = drawerState, drawerContent = {
                 radioOptions.forEach {
@@ -149,7 +169,7 @@ fun CartScreen(navController: NavHostController) {
                         ) {
                             finishOrder(
                                 placedMenuItems = placedMenuItems,
-                                ordersViewModel = ordersViewModel,
+                                placedOrdersViewModel = placedOrdersViewModel,
                                 desksViewModel = desksViewModel,
                                 cartViewModel = cartViewModel,
                                 selectedOption = selectedOption,
@@ -186,7 +206,7 @@ fun CartScreen(navController: NavHostController) {
 
 private fun finishOrder(
     placedMenuItems: MutableList<Pair<MenuItem, Double>>,
-    ordersViewModel: OrdersViewModel,
+    placedOrdersViewModel: PlacedOrdersViewModel,
     desksViewModel: DesksViewModel,
     cartViewModel: CartViewModel,
     selectedOption: String,
@@ -201,9 +221,9 @@ private fun finishOrder(
         it.first.description to it.second
     })
     if (hasStoragePermission)
-        createPdfDocument(context, time, cleanedItems, total, selectedOption, ordersViewModel)
+        createPdfDocument(context, time, cleanedItems, total, selectedOption, placedOrdersViewModel)
 
-    ordersViewModel.concludeOrder(time)
+    placedOrdersViewModel.completeOrderAtTime(time)
     desksViewModel.disoccupyDesk()
     cartViewModel.registerGain(selectedOption, total)
     navController.navigate(HomeScreen.PaymentVoucherScreen.route + "/${time}/$selectedOption/${total.toFloat()}/$cleanedItems")
@@ -216,7 +236,7 @@ private fun createPdfDocument(
     cleanedItems: MutableMap<String, Double>,
     total: Double,
     paymentWay: String,
-    ordersViewModel: OrdersViewModel
+    placedOrdersViewModel: PlacedOrdersViewModel
 ) {
     val pageHeight = 1120
     val pagewidth = 792
@@ -258,7 +278,7 @@ private fun createPdfDocument(
 
     doc.finishPage(myPage)
 
-    ordersViewModel.writeDoc(
+    placedOrdersViewModel.writeDoc(
         doc, context
     )
 }

@@ -1,13 +1,14 @@
 package com.example.buildsrc
 
 object Versions {
+    const val testCore = "1.4.0"
+    const val archCore = "2.2.0"
+    const val truth = "1.1.4"
+    const val mockk = "1.13.7"
+    const val coroutinesTest = "1.6.1"
     const val coreKtx = "1.8.0"
     const val activityCompose = "1.5.1"
-    const val composeUi = "1.2.1"
-    const val composeMaterial = "1.2.1"
-    const val composeAnimation = "1.2.1"
-    const val composeUiTooling = "1.2.1"
-    const val composeMaterialIconsExtended = "1.2.1"
+    const val composeVersion = "1.2.1"
     const val lifecycleRuntimeKtx = "2.5.1"
     const val coreSplashScreen = "1.0.0"
     const val navigationCompose = "2.5.1"
@@ -29,6 +30,4 @@ object Versions {
     const val hiltAndroidTesting = "2.48"
     const val testExtJunit = "1.1.5"
     const val espressoCore = "3.5.1"
-    const val composeUiTestJunit4 = "1.5.3"
-    const val composeUiTestManifest = "1.2.1"
 }
