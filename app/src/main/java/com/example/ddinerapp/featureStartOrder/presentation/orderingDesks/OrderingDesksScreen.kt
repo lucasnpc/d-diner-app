@@ -30,7 +30,7 @@ fun OrderingDesksScreen(
     val desks = viewModel.desks.filter { it.description != "Delivery" }
 
     when {
-        viewModel.loading.value -> {
+        viewModel.loading -> {
             LoadingScreen()
         }
         else -> {

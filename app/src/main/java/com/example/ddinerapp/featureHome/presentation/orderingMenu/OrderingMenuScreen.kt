@@ -26,7 +26,7 @@ fun OrderingMenuScreen(
         viewModel.items.distinctBy { it.category }
 
     when {
-        viewModel.loading.value -> {
+        viewModel.loading -> {
             LoadingScreen()
         }
         itemsCategory.isNotEmpty() -> {

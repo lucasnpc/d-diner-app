@@ -36,7 +36,7 @@ fun CompletedOrdersScreen(viewModel: PlacedOrdersViewModel = hiltViewModel()) {
     val orders = viewModel.orders.filter { it.concluded }
 
     when {
-        viewModel.loading.value -> {
+        viewModel.loading -> {
             LoadingScreen()
         }
 

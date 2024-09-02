@@ -4,9 +4,10 @@ import android.content.Context
 import android.graphics.pdf.PdfDocument
 import android.os.Environment
 import android.widget.Toast
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.R
@@ -34,11 +35,11 @@ class PlacedOrdersViewModel @Inject constructor(
     private val placedOrdersUseCases: PlacedOrdersUseCases
 ) : ViewModel() {
 
-    private val _loading = mutableStateOf(false)
-    val loading: State<Boolean> = _loading
+    var loading by mutableStateOf(false)
+        private set
 
     private val _orders = mutableStateListOf<Order>()
-    val orders: List<Order> = _orders
+    var orders: List<Order> = _orders
 
     init {
         getDeskOrders()
@@ -46,6 +47,7 @@ class PlacedOrdersViewModel @Inject constructor(
 
     private fun getDeskOrders() {
         viewModelScope.launch {
+            loading = true
             session.run {
                 placedOrdersUseCases.deskCompletedOrdersUseCase.getCompletedOrders(
                     cnpj = getField(PREF_BUSINESS_CNPJ).first(),
@@ -74,9 +76,12 @@ class PlacedOrdersViewModel @Inject constructor(
                                     )
                                 )
                             }
+                            this@PlacedOrdersViewModel.loading = false
                         }
 
-                        is ApiResult.Error -> {}
+                        is ApiResult.Error -> {
+                            this@PlacedOrdersViewModel.loading = false
+                        }
                     }
                 }
             }
@@ -97,7 +102,7 @@ class PlacedOrdersViewModel @Inject constructor(
     }
 
     fun writeDoc(doc: PdfDocument, context: Context) {
-        _loading.value = true
+        this.loading = true
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
@@ -118,7 +123,7 @@ class PlacedOrdersViewModel @Inject constructor(
                     context.getString(R.string.voucher_saved),
                     Toast.LENGTH_SHORT
                 ).show()
-                _loading.value = false
+                this@PlacedOrdersViewModel.loading = false
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
             } catch (e: IOException) {

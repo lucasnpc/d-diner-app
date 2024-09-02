@@ -53,7 +53,7 @@ fun OrderingDeliveryScreen(
     val deliveryDesk = viewModel.desks.find { it.description == "Delivery" }
 
     when {
-        viewModel.loading.value -> {
+        viewModel.loading -> {
             LoadingScreen()
         }
         else -> {

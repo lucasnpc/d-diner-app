@@ -114,7 +114,7 @@ fun CartScreen(
     }
 
     when {
-        cartViewModel.loading.value || menuItemViewModel.loading.value || placedOrdersViewModel.loading.value || desksViewModel.loading.value -> {
+        cartViewModel.loading || menuItemViewModel.loading || placedOrdersViewModel.loading || desksViewModel.loading -> {
             LoadingScreen()
         }
 

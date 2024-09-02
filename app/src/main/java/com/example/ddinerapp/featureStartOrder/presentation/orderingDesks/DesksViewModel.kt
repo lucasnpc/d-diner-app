@@ -1,8 +1,9 @@
 package com.example.ddinerapp.featureStartOrder.presentation.orderingDesks
 
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.common.data.session.DDinerSession
@@ -23,8 +24,8 @@ class DesksViewModel @Inject constructor(
     private val mainUseCases: MainUseCases
 ) : ViewModel() {
 
-    private val _loading = mutableStateOf(false)
-    val loading: State<Boolean> = _loading
+    var loading by mutableStateOf(false)
+        private set
 
     private val _desks = mutableStateListOf<Desk>()
     val desks: List<Desk> = _desks
@@ -34,7 +35,7 @@ class DesksViewModel @Inject constructor(
     }
 
     private fun getDesks() {
-        _loading.value = true
+        loading = true
         viewModelScope.launch {
             mainUseCases.getDesksUseCase(session.getField(PREF_BUSINESS_CNPJ).first())
                 .addSnapshotListener { snapshot, exception ->
@@ -71,7 +72,7 @@ class DesksViewModel @Inject constructor(
                             else -> Unit
                         }
                     }
-                    _loading.value = false
+                    loading = false
                 }
         }
     }

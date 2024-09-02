@@ -1,8 +1,9 @@
 package com.example.ddinerapp.featureHome.presentation.menuItems
 
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ddinerapp.common.data.session.DDinerSession
@@ -24,8 +25,8 @@ class MenuItemViewModel @Inject constructor(
     private val homeUseCases: HomeUseCases
 ) : ViewModel() {
 
-    private val _loading = mutableStateOf(false)
-    val loading: State<Boolean> = _loading
+    var loading by mutableStateOf(false)
+        private set
 
     private val _items = mutableStateListOf<MenuItem>()
     val items: List<MenuItem> = _items
@@ -39,7 +40,7 @@ class MenuItemViewModel @Inject constructor(
     }
 
     private fun getMenuItems() {
-        _loading.value = true
+        loading = true
         viewModelScope.launch {
             homeUseCases.getMenuItemsUseCase.getItems(session.getField(PREF_BUSINESS_CNPJ).first())
                 .addSnapshotListener { snapshot, exception ->
@@ -63,7 +64,7 @@ class MenuItemViewModel @Inject constructor(
                             else -> Unit
                         }
                     }
-                    _loading.value = false
+                    loading = false
                 }
         }
     }
