@@ -1,6 +1,7 @@
 import com.example.buildsrc.Configs
 import com.example.buildsrc.Dependencies
 import com.example.buildsrc.TestDependencies
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -14,6 +15,8 @@ android {
     namespace = Configs.namespace
     compileSdk = Configs.compileSdkVersion
 
+    val properties = Properties()
+    file(Configs.configProperties).inputStream().use { properties.load(it) }
     defaultConfig {
         applicationId = Configs.applicationId
         minSdk = Configs.minSdkVersion
@@ -27,10 +30,17 @@ android {
         }
     }
 
+
     buildTypes {
         debug {
             isMinifyEnabled = false
             buildConfigField("boolean", "isFirebaseLocal", "false")
+            buildConfigField(
+                "String",
+                "DATADOG_CLIENT_TOKEN",
+                "\"${properties["DATADOG_CLIENT_TOKEN"]}\""
+            )
+            buildConfigField("String", "DATADOG_APP_ID", "\"${properties["DATADOG_APP_ID"]}\"")
         }
         release {
             isMinifyEnabled = true
@@ -39,6 +49,12 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("boolean", "isFirebaseLocal", "false")
+            buildConfigField(
+                "String",
+                "DATADOG_CLIENT_TOKEN",
+                "\"${properties["DATADOG_CLIENT_TOKEN"]}\""
+            )
+            buildConfigField("String", "DATADOG_APP_ID", "\"${properties["DATADOG_APP_ID"]}\"")
         }
     }
     compileOptions {
@@ -95,8 +111,11 @@ dependencies {
     implementation(Dependencies.firebaseUiAuth)
     implementation(Dependencies.firebaseFirestoreKtx)
     implementation(Dependencies.playServicesAuth)
+    implementation(Dependencies.firebaseRemoteConfig)
 
     implementation(Dependencies.datastorePreferences)
+
+    implementation(Dependencies.datadogRum)
 
     testImplementation(Dependencies.junit)
     testImplementation(TestDependencies.coroutinesTest)

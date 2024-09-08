@@ -35,6 +35,7 @@ object Dependencies {
     const val firebaseFirestoreKtx = "com.google.firebase:firebase-firestore-ktx"
     const val playServicesAuth =
         "com.google.android.gms:play-services-auth:${Versions.playServicesAuth}"
+    const val firebaseRemoteConfig = "com.google.firebase:firebase-config-ktx:${Versions.firebaseRemoteConfig}"
     const val datastorePreferences =
         "androidx.datastore:datastore-preferences:${Versions.datastorePreferences}"
     const val junit = "junit:junit:${Versions.junit}"
@@ -44,4 +45,5 @@ object Dependencies {
     const val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espressoCore}"
     const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesTest}"
     const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesTest}"
+    const val datadogRum = "com.datadoghq:dd-sdk-android-rum:${Versions.datadogRum}"
 }
