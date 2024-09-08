@@ -1,5 +1,6 @@
 package com.example.ddinerapp.di
 
+import com.example.ddinerapp.common.data.logger.DDinerLogger
 import com.example.ddinerapp.featureAuthentication.domain.useCases.AuthenticateUserUseCase
 import com.example.ddinerapp.featureAuthentication.domain.useCases.AuthenticationUseCases
 import com.example.ddinerapp.featureHome.data.repositories.CompleteOrderRepository
@@ -55,9 +56,9 @@ object UseCasesModule {
 
     @ViewModelScoped
     @Provides
-    fun providePlacedOrdersUseCases(db: FirebaseFirestore): PlacedOrdersUseCases =
+    fun providePlacedOrdersUseCases(db: FirebaseFirestore, logger: DDinerLogger): PlacedOrdersUseCases =
         PlacedOrdersUseCases(
             deskCompletedOrdersUseCase = DeskCompletedOrdersRepository(db),
-            completeOrderUseCase = CompleteOrderRepository(db)
+            completeOrderUseCase = CompleteOrderRepository(db, logger)
         )
 }

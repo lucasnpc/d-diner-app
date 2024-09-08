@@ -1,5 +1,6 @@
 package com.example.ddinerapp.featureHome.data.repositories
 
+import com.example.ddinerapp.common.data.logger.DDinerLogger
 import com.example.ddinerapp.common.util.BUSINESS_COLLECTION
 import com.example.ddinerapp.common.util.DESKS_COLLECTION
 import com.example.ddinerapp.common.util.ORDERS_COLLECTION
@@ -8,7 +9,11 @@ import com.example.ddinerapp.common.util.toHourFormat
 import com.example.ddinerapp.featureHome.domain.placedOrdersUseCases.CompleteOrderUseCase
 import com.google.firebase.firestore.FirebaseFirestore
 
-class CompleteOrderRepository(private val db: FirebaseFirestore) : CompleteOrderUseCase {
+class CompleteOrderRepository(
+    private val db: FirebaseFirestore,
+    private val logger: DDinerLogger
+) :
+    CompleteOrderUseCase {
 
     override fun completeOrder(
         cnpj: String,
@@ -24,6 +29,10 @@ class CompleteOrderRepository(private val db: FirebaseFirestore) : CompleteOrder
                 time.toDateFormat(),
                 "endHour",
                 time.toHourFormat()
-            )
+            ).addOnCompleteListener {
+                if (it.isSuccessful){
+                    logger.recordCompletedOrder(orderId)
+                }
+            }
     }
 }

@@ -116,6 +116,7 @@ dependencies {
     implementation(Dependencies.datastorePreferences)
 
     implementation(Dependencies.datadogRum)
+    implementation(Dependencies.datadogLogs)
 
     testImplementation(Dependencies.junit)
     testImplementation(TestDependencies.coroutinesTest)

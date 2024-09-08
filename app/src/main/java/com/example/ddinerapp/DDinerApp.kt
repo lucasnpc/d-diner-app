@@ -19,8 +19,11 @@ class DDinerApp : Application() {
 
         FirebaseRemoteConfig.getInstance().also { instance ->
             instance.fetchAndActivate().addOnCompleteListener {
-                if (it.isSuccessful && instance.getBoolean("IS_DATADOG_AVAILABLE")) {
+                if (it.isSuccessful) {
                     initDataDog()
+                    if (instance.getBoolean("IS_DATADOG_RUM_AVAILABLE")) {
+                        initPerformanceMonitoring()
+                    }
                 }
             }
         }
@@ -28,7 +31,6 @@ class DDinerApp : Application() {
 
     private fun initDataDog(
         clientToken: String = BuildConfig.DATADOG_CLIENT_TOKEN,
-        applicationId: String = BuildConfig.DATADOG_APP_ID
     ) {
         if (Datadog.isInitialized()) return
         val environmentName = "production"
@@ -40,7 +42,9 @@ class DDinerApp : Application() {
             .useSite(DatadogSite.US5)
             .build()
         Datadog.initialize(this, configuration, TrackingConsent.GRANTED)
+    }
 
+    private fun initPerformanceMonitoring(applicationId: String = BuildConfig.DATADOG_APP_ID) {
         val rumConfiguration = RumConfiguration.Builder(applicationId)
             .trackUserInteractions()
             .trackLongTasks()

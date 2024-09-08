@@ -45,5 +45,6 @@ object Dependencies {
     const val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espressoCore}"
     const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesTest}"
     const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesTest}"
-    const val datadogRum = "com.datadoghq:dd-sdk-android-rum:${Versions.datadogRum}"
+    const val datadogRum = "com.datadoghq:dd-sdk-android-rum:${Versions.datadog}"
+    const val datadogLogs = "com.datadoghq:dd-sdk-android-logs:${Versions.datadog}"
 }

@@ -1,7 +1,7 @@
 package com.example.buildsrc
 
 object Versions {
-    const val datadogRum = "2.13.0"
+    const val datadog = "2.13.0"
     const val firebaseRemoteConfig = "21.0.0"
     const val testCore = "1.4.0"
     const val archCore = "2.2.0"
